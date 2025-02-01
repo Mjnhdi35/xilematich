@@ -1,3 +1,5 @@
+import { addTwoNumber } from '@xilematich/samplemost'
+
 export default function Home() {
-  return <h1>hello</h1>
+  return <h1>hello, {addTwoNumber(4, 5)}</h1>
 }

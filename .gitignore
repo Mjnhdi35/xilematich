@@ -3,7 +3,7 @@ build
 .env
 .dist
 .next
-
+dist
 
 .nx/cache
 .nx/workspace-data

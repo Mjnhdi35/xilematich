@@ -1,3 +1,3 @@
-const addTwoNumber = (a: number, b: number) => {
-  return a + b
-}
+export const addTwoNumber = (a: number, b: number) => a + b
+
+export default { addTwoNumber }
