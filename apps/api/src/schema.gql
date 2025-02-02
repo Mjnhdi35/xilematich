@@ -1,0 +1,102 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Admin {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Manager {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+  cinemaId: String!
+}
+
+type Booking {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+  showtimeId: String!
+  row: Int!
+  column: Int!
+  screenId: String!
+  ticketId: String!
+}
+
+type Ticket {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+  qrCode: String!
+}
+
+type User {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String
+  admin: Admin
+  manager: Manager
+  bookings: [Booking!]
+  tickets: [Ticket!]
+}
+
+type LoginOutput {
+  token: String!
+  user: User!
+}
+
+type Query {
+  users: [User!]!
+  user(id: String!): User!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+  registerWithCredentials(registerWithCredentials: RegisterWithCredentialsInput!): User!
+  registerWithProvider(registerWithProvider: RegisterWithProviderInput!): User!
+  login(login: Login!): LoginOutput!
+}
+
+input CreateUserInput {
+  name: String
+}
+
+input UpdateUserInput {
+  user: String!
+}
+
+input RegisterWithCredentialsInput {
+  name: String
+  email: String!
+  password: String!
+}
+
+input RegisterWithProviderInput {
+  name: String
+  type: AuthsProviderType!
+}
+
+enum AuthsProviderType {
+  GOOGLE
+  CREDENTIALS
+}
+
+input Login {
+  email: String!
+  password: String!
+}

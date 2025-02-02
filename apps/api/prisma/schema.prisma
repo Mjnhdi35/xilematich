@@ -1,0 +1,241 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name  String?
+  admin Admin?
+  manager Manager?
+  authsProvier AuthsProvider?
+  credentials Credentials?
+
+  bookings Booking[]
+  tickets Ticket[]
+}
+model Credentials {
+    id String   @id @default(uuid())
+
+    user User   @relation(fields: [id], references: [id])
+
+    email        String @unique
+    passwordHash String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model AuthsProvider {
+    id String   @id @default(uuid())
+
+    type AuthsProviderType
+    user User @relation(fields: [id], references: [id])
+}
+
+enum AuthsProviderType {
+    GOOGLE
+    CREDENTIALS
+}
+model Admin {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @unique
+  user User @relation(fields: [userId],references: [id])
+}
+
+model Manager {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @unique
+  user User @relation(fields: [userId],references: [id])
+
+  cinemaId String
+  cinema Cinema? @relation(fields: [cinemaId],references: [id])
+}
+
+model Cinema {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  managers Manager[]
+  screens Screen[]
+  address Address?
+}
+
+model Address {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cinemaId String @unique
+  cinema Cinema @relation(fields: [cinemaId],references: [id])
+
+  address String
+  lat Float
+  lng Float
+
+}
+
+model Screen {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  numberRoom Int
+  price Float @default(49)
+  cinemaId String
+  cinema Cinema @relation(fields: [cinemaId],references: [id])
+
+  seats Seat[]
+  showtime Showtime[]
+
+  projectionType  ProjectionType  @default(STANDARD)
+  soundSystemType SoundSystemType @default(DOLBY_ATMOS)
+
+@@unique([cinemaId,numberRoom])
+
+}
+ model Seat {
+  row Int
+  column Int
+
+  screenId String
+  screen Screen @relation(fields: [screenId],references: [id])
+  bookings Booking[]
+
+  @@id([screenId,row,column])
+ }
+
+model Movie {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title String
+  director String
+  genre Genre?
+  duration Int
+  releaseDate DateTime
+  posterUrl String?
+  showtimes Showtime[]
+}
+
+model Showtime {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  startTime DateTime
+  status ShowtimeStatus?
+
+  movieId String
+  movie Movie @relation(fields: [movieId],references: [id])
+  screenId String
+  screen Screen @relation(fields: [screenId],references: [id])
+  bookings Booking[]
+
+  @@unique([startTime,screenId])
+}
+
+model Booking {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId],references: [id])
+
+  showtimeId String
+  showtime Showtime @relation(fields: [showtimeId],references: [id])
+
+  row Int
+  column Int
+  screenId String
+  seat Seat @relation(fields: [screenId,row,column],references: [screenId,row,column])
+
+  ticketId String
+  ticket Ticket @relation(fields: [ticketId],references: [id])
+}
+
+model Ticket {
+  id String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId],references: [id])
+
+  qrCode String?
+
+  bookings Booking[]
+}
+
+
+
+enum ProjectionType {
+    STANDARD
+    IMAX
+    DOLBY_CINEMA
+    RPX
+    SCREENX
+    PLF // Premium Large Format
+}
+
+enum SoundSystemType {
+    MONO
+    STEREO
+    DOLBY_DIGITAL
+    DOLBY_ATMOS
+    DTS
+    DTS_X
+    SONY_SDDS
+    AURO_3D
+    IMAX_ENHANCED
+}
+
+enum Genre {
+    ACTION
+    ADVENTURE
+    ANIMATION
+    COMEDY
+    CRIME
+    DOCUMENTARY
+    DRAMA
+    FAMILY
+    FANTASY
+    FILM_NOIR
+    HISTORY
+    HORROR
+    MUSIC
+    MYSTERY
+    ROMANCE
+    SCI_FI
+    SHORT
+    SPORT
+    THRILLER
+    WAR
+    WESTERN
+}
+
+enum ShowtimeStatus {
+    POSTPONED
+    CANCELLED
+}
