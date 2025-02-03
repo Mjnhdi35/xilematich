@@ -9,31 +9,32 @@ export class TicketsResolver {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Mutation(() => Ticket)
-  createTicket(
+  async createTicket(
     @Args('createTicketInput') createTicketInput: CreateTicketInput,
   ) {
-    return this.ticketsService.create(createTicketInput)
+    return await this.ticketsService.create(createTicketInput)
   }
 
   @Query(() => [Ticket], { name: 'tickets' })
-  findAll() {
-    return this.ticketsService.findAll()
+  async findAll() {
+    return await this.ticketsService.findAll()
   }
 
   @Query(() => Ticket, { name: 'ticket' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.ticketsService.findOne(id)
+  async findOne(@Args('id') id: string) {
+    return await this.ticketsService.findOne(id)
   }
 
   @Mutation(() => Ticket)
-  updateTicket(
+  async updateTicket(
+    @Args('id') id: string,
     @Args('updateTicketInput') updateTicketInput: UpdateTicketInput,
   ) {
-    return this.ticketsService.update(updateTicketInput.id, updateTicketInput)
+    return await this.ticketsService.update(id, updateTicketInput)
   }
 
   @Mutation(() => Ticket)
-  removeTicket(@Args('id', { type: () => Int }) id: number) {
-    return this.ticketsService.remove(id)
+  async deleteTicket(@Args('id') id: string) {
+    return await this.ticketsService.remove(id)
   }
 }

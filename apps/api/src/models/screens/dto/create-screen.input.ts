@@ -11,6 +11,6 @@ export class CreateScreenInput {
   projectionType?: ProjectionType
   @Field(() => SoundSystemType, { nullable: true })
   soundSystemType?: SoundSystemType
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   price?: number
 }

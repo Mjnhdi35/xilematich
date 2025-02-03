@@ -192,6 +192,26 @@ type LoginOutput {
 type Query {
   users: [User!]!
   user(id: String!): User!
+  admins: [Admin!]!
+  admin(id: String!): Admin!
+  managers: [Manager!]!
+  manager(id: String!): Manager!
+  addresses: [Address!]!
+  address(id: String!): Address!
+  bookings: [Booking!]!
+  booking(id: String!): Booking!
+  cinemas: [Cinema!]!
+  cinema(id: String!): Cinema!
+  movies: [Movie!]!
+  movie(id: String!): Movie!
+  screens: [Screen!]!
+  screen(id: String!): Screen!
+  seats: [Seat!]!
+  seat(screenId: String!, row: Int!, column: Int!): Seat!
+  showtimes: [Showtime!]!
+  showtime(id: String!): Showtime!
+  tickets: [Ticket!]!
+  ticket(id: String!): Ticket!
 }
 
 type Mutation {
@@ -201,6 +221,36 @@ type Mutation {
   login(login: Login!): LoginOutput!
   updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
   deleteUser(id: String!): User!
+  createAdmin(createAdminInput: CreateAdminInput!): Admin!
+  updateAdmin(id: String!, updateAdminInput: UpdateAdminInput!): Admin!
+  deleteAdmin(id: String!): Admin!
+  createManager(createManagerInput: CreateManagerInput!): Manager!
+  updateManager(id: String!, updateManagerInput: UpdateManagerInput!): Manager!
+  deleteManager(id: String!): Manager!
+  createAddress(createAddressInput: CreateAddressInput!): Address!
+  updateAddress(id: String!, updateAddressInput: UpdateAddressInput!): Address!
+  deleteAddress(id: String!): Address!
+  createBooking(createBookingInput: CreateBookingInput!): Booking!
+  updateBooking(id: String!, updateBookingInput: UpdateBookingInput!): Booking!
+  deleteBooking(id: String!): Booking!
+  createCinema(createCinemaInput: CreateCinemaInput!): Cinema!
+  updateCinema(id: String!, updateCinemaInput: UpdateCinemaInput!): Cinema!
+  deleteCinema(id: String!): Cinema!
+  createMovie(createMovieInput: CreateMovieInput!): Movie!
+  updateMovie(id: String!, updateMovieInput: UpdateMovieInput!): Movie!
+  deleteMovie(id: String!): Movie!
+  createScreen(createScreenInput: CreateScreenInput!): Screen!
+  updateScreen(id: String!, updateScreenInput: UpdateScreenInput!): Screen!
+  deleteScreen(id: String!): Screen!
+  createSeat(createSeatInput: CreateSeatInput!): Seat!
+  updateSeat(screenId: String!, row: Int!, column: Int!, updateSeatInput: UpdateSeatInput!): Seat!
+  deleteSeat(screenId: String!, row: Int!, column: Int!): Seat!
+  createShowtime(createShowtimeInput: CreateShowtimeInput!): Showtime!
+  updateShowtime(id: String!, updateShowtimeInput: UpdateShowtimeInput!): Showtime!
+  deleteShowtime(id: String!): Showtime!
+  createTicket(createTicketInput: CreateTicketInput!): Ticket!
+  updateTicket(id: String!, updateTicketInput: UpdateTicketInput!): Ticket!
+  deleteTicket(id: String!): Ticket!
 }
 
 input CreateUserInput {
@@ -230,4 +280,132 @@ input Login {
 
 input UpdateUserInput {
   name: String
+}
+
+input CreateAdminInput {
+  userId: String!
+}
+
+input UpdateAdminInput {
+  userId: String
+}
+
+input CreateManagerInput {
+  userId: String!
+  cinemaId: String
+}
+
+input UpdateManagerInput {
+  userId: String
+  cinemaId: String
+}
+
+input CreateAddressInput {
+  cinemaId: String!
+  address: String!
+  lat: Int!
+  lng: Int!
+}
+
+input UpdateAddressInput {
+  cinemaId: String
+  address: String
+  lat: Int
+  lng: Int
+}
+
+input CreateBookingInput {
+  userId: String!
+  showtimeId: String!
+  row: Int!
+  column: Int!
+  screenId: String!
+  ticketId: String!
+}
+
+input UpdateBookingInput {
+  userId: String
+  showtimeId: String
+  row: Int
+  column: Int
+  screenId: String
+  ticketId: String
+}
+
+input CreateCinemaInput {
+  name: String!
+}
+
+input UpdateCinemaInput {
+  name: String
+}
+
+input CreateMovieInput {
+  title: String!
+  director: String!
+  genre: Genre
+  duration: Int!
+  releaseDate: DateTime!
+  posterUrl: String
+}
+
+input UpdateMovieInput {
+  title: String
+  director: String
+  genre: Genre
+  duration: Int
+  releaseDate: DateTime
+  posterUrl: String
+}
+
+input CreateScreenInput {
+  numberRoom: Int!
+  cinemaId: String!
+  projectionType: ProjectionType
+  soundSystemType: SoundSystemType
+  price: Int
+}
+
+input UpdateScreenInput {
+  numberRoom: Int
+  cinemaId: String
+  projectionType: ProjectionType
+  soundSystemType: SoundSystemType
+  price: Int
+}
+
+input CreateSeatInput {
+  screenId: String!
+  row: Int!
+  column: Int!
+}
+
+input UpdateSeatInput {
+  screenId: String
+  row: Int
+  column: Int
+}
+
+input CreateShowtimeInput {
+  startTime: DateTime!
+  status: ShowtimeStatus
+  movieId: String!
+  screenId: String!
+}
+
+input UpdateShowtimeInput {
+  startTime: DateTime
+  status: ShowtimeStatus
+  movieId: String
+  screenId: String
+}
+
+input CreateTicketInput {
+  userId: String!
+  qrCode: String
+}
+
+input UpdateTicketInput {
+  userId: String
+  qrCode: String
 }

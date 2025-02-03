@@ -9,34 +9,32 @@ export class BookingsResolver {
   constructor(private readonly bookingsService: BookingsService) {}
 
   @Mutation(() => Booking)
-  createBooking(
+  async createBooking(
     @Args('createBookingInput') createBookingInput: CreateBookingInput,
   ) {
-    return this.bookingsService.create(createBookingInput)
+    return await this.bookingsService.create(createBookingInput)
   }
 
   @Query(() => [Booking], { name: 'bookings' })
-  findAll() {
-    return this.bookingsService.findAll()
+  async findAll() {
+    return await this.bookingsService.findAll()
   }
 
   @Query(() => Booking, { name: 'booking' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.bookingsService.findOne(id)
+  async findOne(@Args('id') id: string) {
+    return await this.bookingsService.findOne(id)
   }
 
   @Mutation(() => Booking)
-  updateBooking(
+  async updateBooking(
+    @Args('id') id: string,
     @Args('updateBookingInput') updateBookingInput: UpdateBookingInput,
   ) {
-    return this.bookingsService.update(
-      updateBookingInput.id,
-      updateBookingInput,
-    )
+    return await this.bookingsService.update(id, updateBookingInput)
   }
 
   @Mutation(() => Booking)
-  removeBooking(@Args('id', { type: () => Int }) id: number) {
-    return this.bookingsService.remove(id)
+  async deleteBooking(@Args('id') id: string) {
+    return await this.bookingsService.remove(id)
   }
 }

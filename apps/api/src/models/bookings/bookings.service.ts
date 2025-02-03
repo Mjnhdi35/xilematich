@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common'
-import { CreateBookingInput } from './dto/create-booking.input'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { UpdateBookingInput } from './dto/update-booking.input'
+import { PrismaService } from '../../common/prisma/prisma.service'
+import { CreateBookingInput } from './dto/create-booking.input'
 
 @Injectable()
 export class BookingsService {
-  create(createBookingInput: CreateBookingInput) {
-    return 'This action adds a new booking'
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createBookingInput: CreateBookingInput) {
+    return await this.prisma.booking.create({
+      data: { ...createBookingInput },
+    })
   }
 
-  findAll() {
-    return `This action returns all bookings`
+  async findAll() {
+    return await this.prisma.booking.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} booking`
+  async findOne(id: string) {
+    const booking = await this.prisma.booking.findUnique({ where: { id } })
+    if (!booking) {
+      throw new NotFoundException(`Booking with id ${id} not found`)
+    }
+    return booking
   }
 
-  update(id: number, updateBookingInput: UpdateBookingInput) {
-    return `This action updates a #${id} booking`
+  async update(id: string, updateBookingInput: UpdateBookingInput) {
+    await this.findOne(id)
+    return await this.prisma.booking.update({
+      where: { id },
+      data: { ...updateBookingInput },
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} booking`
+  async remove(id: string) {
+    await this.findOne(id)
+    return await this.prisma.booking.delete({
+      where: { id },
+    })
   }
 }

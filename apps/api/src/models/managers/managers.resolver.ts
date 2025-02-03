@@ -9,34 +9,32 @@ export class ManagersResolver {
   constructor(private readonly managersService: ManagersService) {}
 
   @Mutation(() => Manager)
-  createManager(
+  async createManager(
     @Args('createManagerInput') createManagerInput: CreateManagerInput,
   ) {
-    return this.managersService.create(createManagerInput)
+    return await this.managersService.create(createManagerInput)
   }
 
   @Query(() => [Manager], { name: 'managers' })
-  findAll() {
-    return this.managersService.findAll()
+  async findAll() {
+    return await this.managersService.findAll()
   }
 
   @Query(() => Manager, { name: 'manager' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.managersService.findOne(id)
+  async findOne(@Args('id') id: string) {
+    return await this.managersService.findOne(id)
   }
 
   @Mutation(() => Manager)
-  updateManager(
+  async updateManager(
+    @Args('id') id: string,
     @Args('updateManagerInput') updateManagerInput: UpdateManagerInput,
   ) {
-    return this.managersService.update(
-      updateManagerInput.id,
-      updateManagerInput,
-    )
+    return await this.managersService.update(id, updateManagerInput)
   }
 
   @Mutation(() => Manager)
-  removeManager(@Args('id', { type: () => Int }) id: number) {
-    return this.managersService.remove(id)
+  async deleteManager(@Args('id') id: string) {
+    return await this.managersService.remove(id)
   }
 }

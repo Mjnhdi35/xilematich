@@ -9,27 +9,32 @@ export class AdminsResolver {
   constructor(private readonly adminsService: AdminsService) {}
 
   @Mutation(() => Admin)
-  createAdmin(@Args('createAdminInput') createAdminInput: CreateAdminInput) {
-    return this.adminsService.create(createAdminInput)
+  async createAdmin(
+    @Args('createAdminInput') createAdminInput: CreateAdminInput,
+  ) {
+    return await this.adminsService.create(createAdminInput)
   }
 
   @Query(() => [Admin], { name: 'admins' })
-  findAll() {
-    return this.adminsService.findAll()
+  async findAll() {
+    return await this.adminsService.findAll()
   }
 
   @Query(() => Admin, { name: 'admin' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.adminsService.findOne(id)
+  async findOne(@Args('id') id: string) {
+    return await this.adminsService.findOne(id)
   }
 
   @Mutation(() => Admin)
-  updateAdmin(@Args('updateAdminInput') updateAdminInput: UpdateAdminInput) {
-    return this.adminsService.update(updateAdminInput.id, updateAdminInput)
+  async updateAdmin(
+    @Args('id') id: string,
+    @Args('updateAdminInput') updateAdminInput: UpdateAdminInput,
+  ) {
+    return await this.adminsService.update(id, updateAdminInput)
   }
 
   @Mutation(() => Admin)
-  removeAdmin(@Args('id', { type: () => Int }) id: number) {
-    return this.adminsService.remove(id)
+  async deleteAdmin(@Args('id') id: string) {
+    return await this.adminsService.remove(id)
   }
 }

@@ -9,7 +9,7 @@ export class CreateMovieInput {
   director: string
   @Field(() => Genre, { nullable: true })
   genre?: Genre
-  @Field()
+  @Field(() => Int)
   duration: number
   @Field()
   releaseDate: Date

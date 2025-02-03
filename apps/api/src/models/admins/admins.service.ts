@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { CreateAdminInput } from './dto/create-admin.input'
 import { UpdateAdminInput } from './dto/update-admin.input'
+import { PrismaService } from '../../common/prisma/prisma.service'
 
 @Injectable()
 export class AdminsService {
-  create(createAdminInput: CreateAdminInput) {
-    return 'This action adds a new admin'
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createAdminInput: CreateAdminInput) {
+    return await this.prisma.admin.create({
+      data: { ...createAdminInput },
+    })
   }
 
-  findAll() {
-    return `This action returns all admins`
+  async findAll() {
+    return await this.prisma.admin.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} admin`
+  async findOne(id: string) {
+    const admin = await this.prisma.admin.findUnique({ where: { id } })
+    if (!admin) {
+      throw new NotFoundException(`Admin với id ${id} không tồn tại`)
+    }
+    return admin
   }
 
-  update(id: number, updateAdminInput: UpdateAdminInput) {
-    return `This action updates a #${id} admin`
+  async update(id: string, updateAdminInput: UpdateAdminInput) {
+    await this.findOne(id)
+    return await this.prisma.admin.update({
+      where: { id },
+      data: { ...updateAdminInput },
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} admin`
+  async remove(id: string) {
+    await this.findOne(id)
+    return await this.prisma.admin.delete({
+      where: { id },
+    })
   }
 }

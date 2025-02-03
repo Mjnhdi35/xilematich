@@ -1,26 +1,46 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { CreateManagerInput } from './dto/create-manager.input'
 import { UpdateManagerInput } from './dto/update-manager.input'
+import { PrismaService } from '../../common/prisma/prisma.service'
 
 @Injectable()
 export class ManagersService {
-  create(createManagerInput: CreateManagerInput) {
-    return 'This action adds a new manager'
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createManagerInput: CreateManagerInput) {
+    const { userId, cinemaId } = createManagerInput
+    return await this.prisma.manager.create({
+      data: {
+        user: { connect: { id: userId } },
+        cinema: { connect: { id: cinemaId } },
+      },
+    })
   }
 
-  findAll() {
-    return `This action returns all managers`
+  async findAll() {
+    return await this.prisma.manager.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} manager`
+  async findOne(id: string) {
+    const manager = await this.prisma.manager.findUnique({ where: { id } })
+    if (!manager) {
+      throw new NotFoundException(`Manager với id ${id} không tồn tại`)
+    }
+    return manager
   }
 
-  update(id: number, updateManagerInput: UpdateManagerInput) {
-    return `This action updates a #${id} manager`
+  async update(id: string, updateManagerInput: UpdateManagerInput) {
+    await this.findOne(id)
+    return await this.prisma.manager.update({
+      where: { id },
+      data: { ...updateManagerInput },
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} manager`
+  async remove(id: string) {
+    await this.findOne(id)
+    return await this.prisma.manager.delete({
+      where: { id },
+    })
   }
 }

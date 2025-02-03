@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { CreateCinemaInput } from './dto/create-cinema.input'
 import { UpdateCinemaInput } from './dto/update-cinema.input'
 import { PrismaService } from '../../common/prisma/prisma.service'
@@ -6,32 +6,36 @@ import { PrismaService } from '../../common/prisma/prisma.service'
 @Injectable()
 export class CinemasService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createCinemaInput: CreateCinemaInput) {
-    return this.prisma.cinema.create({
-      data: createCinemaInput,
+
+  async create(createCinemaInput: CreateCinemaInput) {
+    return await this.prisma.cinema.create({
+      data: { ...createCinemaInput },
     })
   }
 
-  findAll() {
-    return this.prisma.cinema.findMany()
+  async findAll() {
+    return await this.prisma.cinema.findMany()
   }
 
-  findOne(id: string) {
-    return this.prisma.cinema.findUnique({
+  async findOne(id: string) {
+    const cinema = await this.prisma.cinema.findUnique({ where: { id } })
+    if (!cinema) {
+      throw new NotFoundException(`Cinema with id ${id} not found`)
+    }
+    return cinema
+  }
+
+  async update(id: string, updateCinemaInput: UpdateCinemaInput) {
+    await this.findOne(id)
+    return await this.prisma.cinema.update({
       where: { id },
-      include: { managers: true, screens: true, address: true },
+      data: { ...updateCinemaInput },
     })
   }
 
-  update(id: string, updateCinemaInput: UpdateCinemaInput) {
-    return this.prisma.cinema.update({
-      where: { id },
-      data: updateCinemaInput,
-    })
-  }
-
-  remove(id: string) {
-    return this.prisma.cinema.delete({
+  async remove(id: string) {
+    await this.findOne(id)
+    return await this.prisma.cinema.delete({
       where: { id },
     })
   }

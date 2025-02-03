@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { CreateTicketInput } from './dto/create-ticket.input'
 import { UpdateTicketInput } from './dto/update-ticket.input'
+import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Injectable()
 export class TicketsService {
-  create(createTicketInput: CreateTicketInput) {
-    return 'This action adds a new ticket'
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createTicketInput: CreateTicketInput) {
+    return await this.prisma.ticket.create({
+      data: { ...createTicketInput },
+    })
   }
 
-  findAll() {
-    return `This action returns all tickets`
+  async findAll() {
+    return await this.prisma.ticket.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`
+  async findOne(id: string) {
+    const ticket = await this.prisma.ticket.findUnique({ where: { id } })
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with id ${id} not found`)
+    }
+    return ticket
   }
 
-  update(id: number, updateTicketInput: UpdateTicketInput) {
-    return `This action updates a #${id} ticket`
+  async update(id: string, updateTicketInput: UpdateTicketInput) {
+    await this.findOne(id)
+    return await this.prisma.ticket.update({
+      where: { id },
+      data: { ...updateTicketInput },
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ticket`
+  async remove(id: string) {
+    await this.findOne(id)
+    return await this.prisma.ticket.delete({
+      where: { id },
+    })
   }
 }

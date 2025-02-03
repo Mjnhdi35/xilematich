@@ -9,34 +9,32 @@ export class AddressesResolver {
   constructor(private readonly addressesService: AddressesService) {}
 
   @Mutation(() => Address)
-  createAddress(
+  async createAddress(
     @Args('createAddressInput') createAddressInput: CreateAddressInput,
   ) {
-    return this.addressesService.create(createAddressInput)
+    return await this.addressesService.create(createAddressInput)
   }
 
   @Query(() => [Address], { name: 'addresses' })
-  findAll() {
-    return this.addressesService.findAll()
+  async findAll() {
+    return await this.addressesService.findAll()
   }
 
   @Query(() => Address, { name: 'address' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.addressesService.findOne(id)
+  async findOne(@Args('id') id: string) {
+    return await this.addressesService.findOne(id)
   }
 
   @Mutation(() => Address)
-  updateAddress(
+  async updateAddress(
+    @Args('id') id: string,
     @Args('updateAddressInput') updateAddressInput: UpdateAddressInput,
   ) {
-    return this.addressesService.update(
-      updateAddressInput.id,
-      updateAddressInput,
-    )
+    return await this.addressesService.update(id, updateAddressInput)
   }
 
   @Mutation(() => Address)
-  removeAddress(@Args('id', { type: () => Int }) id: number) {
-    return this.addressesService.remove(id)
+  async deleteAddress(@Args('id') id: string) {
+    return await this.addressesService.remove(id)
   }
 }
