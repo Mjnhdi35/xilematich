@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { ScreensService } from './screens.service'
-import { ScreensResolver } from './screens.resolver'
+import { ScreensService } from './graphql/screens.service'
+import { ScreensResolver } from './graphql/screens.resolver'
 
 @Module({
   providers: [ScreensResolver, ScreensService],

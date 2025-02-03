@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { SeatsResolver } from './seats.resolver'
-import { SeatsService } from './seats.service'
+import { SeatsResolver } from './graphql/seats.resolver'
+import { SeatsService } from './graphql/seats.service'
 
 @Module({
   providers: [SeatsResolver, SeatsService],

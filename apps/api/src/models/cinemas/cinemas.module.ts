@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { CinemasService } from './cinemas.service'
-import { CinemasResolver } from './cinemas.resolver'
+import { CinemasService } from './graphql/cinemas.service'
+import { CinemasResolver } from './graphql/cinemas.resolver'
 
 @Module({
   providers: [CinemasResolver, CinemasService],

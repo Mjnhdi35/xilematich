@@ -159,7 +159,7 @@ type Cinema {
   id: ID!
   address: Address
   managers: [Manager!]
-  screens: Screen
+  screens: [Screen!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
