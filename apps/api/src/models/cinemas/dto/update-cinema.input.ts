@@ -1,8 +1,7 @@
-import { CreateCinemaInput } from './create-cinema.input'
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql'
+import { InputType, Field } from '@nestjs/graphql'
 
 @InputType()
-export class UpdateCinemaInput extends PartialType(CreateCinemaInput) {
-  @Field(() => Int)
-  id: number
+export class UpdateCinemaInput {
+  @Field({ nullable: true })
+  name?: string
 }

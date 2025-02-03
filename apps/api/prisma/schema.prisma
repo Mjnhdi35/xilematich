@@ -30,7 +30,7 @@ model User {
 model Credentials {
     id String   @id @default(uuid())
 
-    user User   @relation(fields: [id], references: [id])
+    user User   @relation(fields: [id], references: [id],onDelete: Cascade)
 
     email        String @unique
     passwordHash String
@@ -43,7 +43,7 @@ model AuthsProvider {
     id String   @id @default(uuid())
 
     type AuthsProviderType
-    user User @relation(fields: [id], references: [id])
+    user User @relation(fields: [id], references: [id],onDelete: Cascade)
 }
 
 enum AuthsProviderType {
@@ -56,7 +56,7 @@ model Admin {
   updatedAt DateTime @updatedAt
 
   userId String @unique
-  user User @relation(fields: [userId],references: [id])
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
 
 model Manager {
@@ -65,7 +65,7 @@ model Manager {
   updatedAt DateTime @updatedAt
 
   userId String @unique
-  user User @relation(fields: [userId],references: [id])
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
 
   cinemaId String
   cinema Cinema? @relation(fields: [cinemaId],references: [id])

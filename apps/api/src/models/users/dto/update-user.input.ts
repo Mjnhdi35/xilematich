@@ -1,7 +1,7 @@
-import { InputType, PartialType } from '@nestjs/graphql'
-import { User } from '../entities/user.entity'
+import { Field, ID, InputType } from '@nestjs/graphql'
 
 @InputType()
-export class UpdateUserInput extends PartialType(User) {
-  user: User['id']
+export class UpdateUserInput {
+  @Field({ nullable: true })
+  name?: string
 }

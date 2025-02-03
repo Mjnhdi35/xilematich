@@ -18,24 +18,16 @@ export class UsersResolver {
     private readonly prisma: PrismaService,
   ) {}
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput)
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    return await this.usersService.create(createUserInput)
   }
   @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll()
+  async findAll() {
+    return await this.usersService.findAll()
   }
   @Query(() => User, { name: 'user' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.usersService.findOne(id)
-  }
-  @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.name, updateUserInput)
-  }
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => String }) id: string) {
-    return this.usersService.remove(id)
   }
 
   @Mutation(() => User)
@@ -55,5 +47,18 @@ export class UsersResolver {
   @Mutation(() => LoginOutput)
   async login(@Args('login') args: Login) {
     return this.usersService.login(args)
+  }
+
+  @Mutation(() => User)
+  async updateUser(
+    @Args('id') id: string,
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+  ) {
+    return this.usersService.update(id, updateUserInput)
+  }
+
+  @Mutation(() => User)
+  async deleteUser(@Args('id') id: string) {
+    return this.usersService.remove(id)
   }
 }

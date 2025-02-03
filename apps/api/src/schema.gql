@@ -3,10 +3,11 @@
 # ------------------------------------------------------
 
 type Admin {
-  id: String!
+  id: ID!
+  userId: User!
+  user: User!
   createdAt: DateTime!
   updatedAt: DateTime!
-  userId: String!
 }
 
 """
@@ -14,32 +15,162 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Manager {
-  id: String!
+type Address {
+  address: String!
+  id: ID!
+  cinemaId: Cinema!
+  cinema: Cinema!
+  lat: Float
+  lng: Float
   createdAt: DateTime!
   updatedAt: DateTime!
-  userId: String!
-  cinemaId: String!
 }
 
-type Booking {
-  id: String!
+type Movie {
+  id: ID!
+  title: String!
+  director: String!
+  genre: Genre
+  duration: Int!
+  releaseDate: DateTime!
+  posterUrl: String
+  showtimes: [Showtime!]
   createdAt: DateTime!
   updatedAt: DateTime!
-  userId: String!
-  showtimeId: String!
-  row: Int!
-  column: Int!
-  screenId: String!
-  ticketId: String!
+}
+
+"""Enum for roles"""
+enum Genre {
+  ACTION
+  ADVENTURE
+  ANIMATION
+  COMEDY
+  CRIME
+  DOCUMENTARY
+  DRAMA
+  FAMILY
+  FANTASY
+  FILM_NOIR
+  HISTORY
+  HORROR
+  MUSIC
+  MYSTERY
+  ROMANCE
+  SCI_FI
+  SHORT
+  SPORT
+  THRILLER
+  WAR
+  WESTERN
+}
+
+type Showtime {
+  id: ID!
+  startTime: DateTime!
+  status: ShowtimeStatus
+  movieId: Movie!
+  movie: Movie!
+  screenId: Screen!
+  screen: Screen!
+  bookings: [Booking!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Enum for roles"""
+enum ShowtimeStatus {
+  POSTPONED
+  CANCELLED
 }
 
 type Ticket {
-  id: String!
+  id: ID!
+  userId: User!
+  user: User!
+  qrCode: String
+  bookings: [Booking!]!
   createdAt: DateTime!
   updatedAt: DateTime!
-  userId: String!
-  qrCode: String!
+}
+
+type Booking {
+  id: ID!
+  userId: User!
+  user: User!
+  showtimeId: Showtime!
+  showtime: Showtime!
+  row: Int!
+  column: Int!
+  screenId: Screen!
+  ticketId: Ticket!
+  ticket: Ticket!
+  seat: Seat!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Seat {
+  row: Int!
+  column: Int!
+  screenId: Screen!
+  screen: Screen!
+  bookings: [Booking!]!
+}
+
+type Screen {
+  id: ID!
+  numberRoom: Int!
+  price: Float!
+  projectionType: ProjectionType!
+  soundSystemType: SoundSystemType!
+  cinemaId: Cinema
+  saets: [Seat!]
+  cinema: Cinema
+  showtime: [Showtime!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Enum for roles"""
+enum ProjectionType {
+  STANDARD
+  IMAX
+  DOLBY_CINEMA
+  RPX
+  SCREENX
+  PLF
+}
+
+"""Enum for roles"""
+enum SoundSystemType {
+  MONO
+  STEREO
+  DOLBY_DIGITAL
+  DOLBY_ATMOS
+  DTS
+  DTS_X
+  SONY_SDDS
+  AURO_3D
+  IMAX_ENHANCED
+}
+
+type Cinema {
+  name: String!
+  id: ID!
+  address: Address
+  managers: [Manager!]
+  screens: Screen
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Manager {
+  id: ID!
+  user: User!
+  userId: User!
+  cinemaId: Cinema
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type User {
@@ -65,19 +196,15 @@ type Query {
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: String!): User!
   registerWithCredentials(registerWithCredentials: RegisterWithCredentialsInput!): User!
   registerWithProvider(registerWithProvider: RegisterWithProviderInput!): User!
   login(login: Login!): LoginOutput!
+  updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
+  deleteUser(id: String!): User!
 }
 
 input CreateUserInput {
   name: String
-}
-
-input UpdateUserInput {
-  user: String!
 }
 
 input RegisterWithCredentialsInput {
@@ -99,4 +226,8 @@ enum AuthsProviderType {
 input Login {
   email: String!
   password: String!
+}
+
+input UpdateUserInput {
+  name: String
 }

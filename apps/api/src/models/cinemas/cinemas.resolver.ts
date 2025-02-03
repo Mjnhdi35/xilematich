@@ -1,19 +1,10 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql'
 import { CinemasService } from './cinemas.service'
 import { Cinema } from './entities/cinema.entity'
-import { CreateCinemaInput } from './dto/create-cinema.input'
-import { UpdateCinemaInput } from './dto/update-cinema.input'
 
 @Resolver(() => Cinema)
 export class CinemasResolver {
   constructor(private readonly cinemasService: CinemasService) {}
-
-  @Mutation(() => Cinema)
-  createCinema(
-    @Args('createCinemaInput') createCinemaInput: CreateCinemaInput,
-  ) {
-    return this.cinemasService.create(createCinemaInput)
-  }
 
   @Query(() => [Cinema], { name: 'cinemas' })
   findAll() {
@@ -21,19 +12,12 @@ export class CinemasResolver {
   }
 
   @Query(() => Cinema, { name: 'cinema' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.cinemasService.findOne(id)
   }
 
-  @Mutation(() => Cinema)
-  updateCinema(
-    @Args('updateCinemaInput') updateCinemaInput: UpdateCinemaInput,
-  ) {
-    return this.cinemasService.update(updateCinemaInput.id, updateCinemaInput)
-  }
-
-  @Mutation(() => Cinema)
-  removeCinema(@Args('id', { type: () => Int }) id: number) {
-    return this.cinemasService.remove(id)
-  }
+  // @ResolveField(() => Address, { nullable: true })
+  // address(@Parent() cinema: Cinema) {
+  //   return this.prisma.address.findUnique({ where: { cinemaId: cinema.id } })
+  // }
 }

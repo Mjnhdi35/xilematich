@@ -11,7 +11,7 @@ import {
   RegisterWithProviderInput,
 } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
-import { PrismaService } from 'src/common/prisma/prisma.service'
+import { PrismaService } from '../../common/prisma/prisma.service'
 import * as bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid'
 import { JwtService } from '@nestjs/jwt'
@@ -22,8 +22,8 @@ export class UsersService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
-  create(createUserInput: CreateUserInput) {
-    return this.prisma.user.create({
+  async create(createUserInput: CreateUserInput) {
+    return await this.prisma.user.create({
       data: createUserInput,
     })
   }
@@ -31,14 +31,7 @@ export class UsersService {
     return this.prisma.user.findMany()
   }
   findOne(id: string) {
-    return `This action returns a #${id} user`
-  }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(id: string, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`
-  }
-  remove(id: string) {
-    return `This action removes a #${id} user`
+    return this.prisma.user.findFirst({ where: { id } })
   }
 
   async registerWithProvider({ name, type }: RegisterWithProviderInput) {
@@ -119,5 +112,18 @@ export class UsersService {
       token: jwtToken,
       user,
     }
+  }
+
+  async update(id: string, updateUserInput: UpdateUserInput) {
+    return this.prisma.user.update({
+      where: { id },
+      data: updateUserInput,
+    })
+  }
+
+  async remove(id: string) {
+    return this.prisma.user.delete({
+      where: { id },
+    })
   }
 }
