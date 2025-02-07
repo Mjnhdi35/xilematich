@@ -13,7 +13,8 @@
     "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@xilematich/samplemost": "*"
+    "@xilematich/samplemost": "*",
+    "@xilematich/network": "*"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

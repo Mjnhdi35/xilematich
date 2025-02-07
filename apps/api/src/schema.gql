@@ -2,12 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Admin {
+type FieldError {
+  field: String!
+  message: String!
+}
+
+type User {
   id: ID!
-  userId: User!
-  user: User!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  name: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 """
@@ -15,246 +19,52 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Address {
-  address: String!
+type AuthsProvider {
   id: ID!
-  cinemaId: Cinema!
-  cinema: Cinema!
-  lat: Float
-  lng: Float
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  type: AuthsProviderType!
 }
 
-type Movie {
-  id: ID!
-  title: String!
-  director: String!
-  genre: Genre
-  duration: Int!
-  releaseDate: DateTime!
-  posterUrl: String
-  showtimes: [Showtime!]
-  createdAt: DateTime!
-  updatedAt: DateTime!
+enum AuthsProviderType {
+  GOOGLE
+  CREDENTIALS
 }
 
-"""Enum for roles"""
-enum Genre {
-  ACTION
-  ADVENTURE
-  ANIMATION
-  COMEDY
-  CRIME
-  DOCUMENTARY
-  DRAMA
-  FAMILY
-  FANTASY
-  FILM_NOIR
-  HISTORY
-  HORROR
-  MUSIC
-  MYSTERY
-  ROMANCE
-  SCI_FI
-  SHORT
-  SPORT
-  THRILLER
-  WAR
-  WESTERN
+type UserMutationResponse implements IMutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String
+  user: User
+  errors: [FieldError!]
 }
 
-type Showtime {
-  id: ID!
-  startTime: DateTime!
-  status: ShowtimeStatus
-  movieId: Movie!
-  movie: Movie!
-  screenId: Screen!
-  screen: Screen!
-  bookings: [Booking!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+interface IMutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String
 }
 
-"""Enum for roles"""
-enum ShowtimeStatus {
-  POSTPONED
-  CANCELLED
-}
-
-type Ticket {
-  id: ID!
-  userId: User!
-  user: User!
-  qrCode: String
-  bookings: [Booking!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type Booking {
-  id: ID!
-  userId: User!
-  user: User!
-  showtimeId: Showtime!
-  showtime: Showtime!
-  row: Int!
-  column: Int!
-  screenId: Screen!
-  ticketId: Ticket!
-  ticket: Ticket!
-  seat: Seat!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type Seat {
-  row: Int!
-  column: Int!
-  screenId: Screen!
-  screen: Screen!
-  bookings: [Booking!]!
-}
-
-type Screen {
-  id: ID!
-  numberRoom: Int!
-  price: Float!
-  projectionType: ProjectionType!
-  soundSystemType: SoundSystemType!
-  cinemaId: Cinema
-  saets: [Seat!]
-  cinema: Cinema
-  showtime: [Showtime!]
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-"""Enum for roles"""
-enum ProjectionType {
-  STANDARD
-  IMAX
-  DOLBY_CINEMA
-  RPX
-  SCREENX
-  PLF
-}
-
-"""Enum for roles"""
-enum SoundSystemType {
-  MONO
-  STEREO
-  DOLBY_DIGITAL
-  DOLBY_ATMOS
-  DTS
-  DTS_X
-  SONY_SDDS
-  AURO_3D
-  IMAX_ENHANCED
-}
-
-type Cinema {
-  name: String!
-  id: ID!
-  address: Address
-  managers: [Manager!]
-  screens: [Screen!]
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type Manager {
-  id: ID!
-  user: User!
-  userId: User!
-  cinemaId: Cinema
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type User {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String
-  admin: Admin
-  manager: Manager
-  bookings: [Booking!]
-  tickets: [Ticket!]
-}
-
-type LoginOutput {
+type LoginOutputMutationResponse implements IMutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String
   token: String!
-  user: User!
+  user: User
+  errors: [FieldError!]
 }
 
 type Query {
   users: [User!]!
-  user(id: String!): User!
-  admins: [Admin!]!
-  admin(id: String!): Admin!
-  managers: [Manager!]!
-  manager(id: String!): Manager!
-  addresses: [Address!]!
-  address(id: String!): Address!
-  bookings: [Booking!]!
-  booking(id: String!): Booking!
-  cinemas: [Cinema!]!
-  cinema(id: String!): Cinema!
-  movies: [Movie!]!
-  movie(id: String!): Movie!
-  screens: [Screen!]!
-  screen(id: String!): Screen!
-  seats: [Seat!]!
-  seat(screenId: String!, row: Int!, column: Int!): Seat!
-  showtimes: [Showtime!]!
-  showtime(id: String!): Showtime!
-  tickets: [Ticket!]!
-  ticket(id: String!): Ticket!
+  user(id: String!): User
+  whoami: User
+  getAuthProvider(id: String!): AuthsProvider
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  registerWithCredentials(registerWithCredentials: RegisterWithCredentialsInput!): User!
-  registerWithProvider(registerWithProvider: RegisterWithProviderInput!): User!
-  login(login: Login!): LoginOutput!
-  updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
-  deleteUser(id: String!): User!
-  createAdmin(createAdminInput: CreateAdminInput!): Admin!
-  updateAdmin(id: String!, updateAdminInput: UpdateAdminInput!): Admin!
-  deleteAdmin(id: String!): Admin!
-  createManager(createManagerInput: CreateManagerInput!): Manager!
-  updateManager(id: String!, updateManagerInput: UpdateManagerInput!): Manager!
-  deleteManager(id: String!): Manager!
-  createAddress(createAddressInput: CreateAddressInput!): Address!
-  updateAddress(id: String!, updateAddressInput: UpdateAddressInput!): Address!
-  deleteAddress(id: String!): Address!
-  createBooking(createBookingInput: CreateBookingInput!): Booking!
-  updateBooking(id: String!, updateBookingInput: UpdateBookingInput!): Booking!
-  deleteBooking(id: String!): Booking!
-  createCinema(createCinemaInput: CreateCinemaInput!): Cinema!
-  updateCinema(id: String!, updateCinemaInput: UpdateCinemaInput!): Cinema!
-  deleteCinema(id: String!): Cinema!
-  createMovie(createMovieInput: CreateMovieInput!): Movie!
-  updateMovie(id: String!, updateMovieInput: UpdateMovieInput!): Movie!
-  deleteMovie(id: String!): Movie!
-  createScreen(createScreenInput: CreateScreenInput!): Screen!
-  updateScreen(id: String!, updateScreenInput: UpdateScreenInput!): Screen!
-  deleteScreen(id: String!): Screen!
-  createSeat(createSeatInput: CreateSeatInput!): Seat!
-  updateSeat(screenId: String!, row: Int!, column: Int!, updateSeatInput: UpdateSeatInput!): Seat!
-  deleteSeat(screenId: String!, row: Int!, column: Int!): Seat!
-  createShowtime(createShowtimeInput: CreateShowtimeInput!): Showtime!
-  updateShowtime(id: String!, updateShowtimeInput: UpdateShowtimeInput!): Showtime!
-  deleteShowtime(id: String!): Showtime!
-  createTicket(createTicketInput: CreateTicketInput!): Ticket!
-  updateTicket(id: String!, updateTicketInput: UpdateTicketInput!): Ticket!
-  deleteTicket(id: String!): Ticket!
-}
-
-input CreateUserInput {
-  name: String
+  registerWithCredentials(registerWithCredentialsInput: RegisterWithCredentialsInput!): UserMutationResponse!
+  registerWithProvider(registerWithProviderInput: RegisterWithProviderInput!): UserMutationResponse!
+  updateUser(updateUserInput: UpdateUserInput!): UserMutationResponse!
+  login(loginInput: LoginInput!): LoginOutputMutationResponse!
+  removeUser(id: String!): UserMutationResponse!
 }
 
 input RegisterWithCredentialsInput {
@@ -264,148 +74,16 @@ input RegisterWithCredentialsInput {
 }
 
 input RegisterWithProviderInput {
+  id: ID!
   name: String
   type: AuthsProviderType!
 }
 
-enum AuthsProviderType {
-  GOOGLE
-  CREDENTIALS
+input UpdateUserInput {
+  id: String!
 }
 
-input Login {
+input LoginInput {
   email: String!
   password: String!
-}
-
-input UpdateUserInput {
-  name: String
-}
-
-input CreateAdminInput {
-  userId: String!
-}
-
-input UpdateAdminInput {
-  userId: String
-}
-
-input CreateManagerInput {
-  userId: String!
-  cinemaId: String
-}
-
-input UpdateManagerInput {
-  userId: String
-  cinemaId: String
-}
-
-input CreateAddressInput {
-  cinemaId: String!
-  address: String!
-  lat: Int!
-  lng: Int!
-}
-
-input UpdateAddressInput {
-  cinemaId: String
-  address: String
-  lat: Int
-  lng: Int
-}
-
-input CreateBookingInput {
-  userId: String!
-  showtimeId: String!
-  row: Int!
-  column: Int!
-  screenId: String!
-  ticketId: String!
-}
-
-input UpdateBookingInput {
-  userId: String
-  showtimeId: String
-  row: Int
-  column: Int
-  screenId: String
-  ticketId: String
-}
-
-input CreateCinemaInput {
-  name: String!
-}
-
-input UpdateCinemaInput {
-  name: String
-}
-
-input CreateMovieInput {
-  title: String!
-  director: String!
-  genre: Genre
-  duration: Int!
-  releaseDate: DateTime!
-  posterUrl: String
-}
-
-input UpdateMovieInput {
-  title: String
-  director: String
-  genre: Genre
-  duration: Int
-  releaseDate: DateTime
-  posterUrl: String
-}
-
-input CreateScreenInput {
-  numberRoom: Int!
-  cinemaId: String!
-  projectionType: ProjectionType
-  soundSystemType: SoundSystemType
-  price: Int
-}
-
-input UpdateScreenInput {
-  numberRoom: Int
-  cinemaId: String
-  projectionType: ProjectionType
-  soundSystemType: SoundSystemType
-  price: Int
-}
-
-input CreateSeatInput {
-  screenId: String!
-  row: Int!
-  column: Int!
-}
-
-input UpdateSeatInput {
-  screenId: String
-  row: Int
-  column: Int
-}
-
-input CreateShowtimeInput {
-  startTime: DateTime!
-  status: ShowtimeStatus
-  movieId: String!
-  screenId: String!
-}
-
-input UpdateShowtimeInput {
-  startTime: DateTime
-  status: ShowtimeStatus
-  movieId: String
-  screenId: String
-}
-
-input CreateTicketInput {
-  userId: String!
-  qrCode: String
-}
-
-input UpdateTicketInput {
-  userId: String
-  qrCode: String
 }

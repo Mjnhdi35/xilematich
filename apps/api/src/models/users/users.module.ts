@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common'
-import { UsersService } from './graphql/users.service'
-import { UsersResolver } from './graphql/users.resolver'
-import { JwtModule, JwtService } from '@nestjs/jwt'
-import { UsersController } from './rest/users.controller'
+import { UsersService } from './users.service'
+import { UsersResolver } from './users.resolver'
+import { UsersController } from './users.controller'
 
 @Module({
-  imports: [JwtModule],
-  providers: [UsersResolver, UsersService, JwtService],
+  providers: [UsersResolver, UsersService],
+  exports: [UsersService],
   controllers: [UsersController],
 })
 export class UsersModule {}

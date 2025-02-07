@@ -4,11 +4,11 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common'
-import { Reflector } from '@nestjs/core'
-import { JwtService } from '@nestjs/jwt'
-import { PrismaService } from '../prisma/prisma.service'
+import { Role } from '../types/user.type'
 import { GqlExecutionContext } from '@nestjs/graphql'
-import { Role } from '../types'
+import { JwtService } from '@nestjs/jwt'
+import { Reflector } from '@nestjs/core'
+import { PrismaService } from '../prisma/prisma.service'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -17,41 +17,49 @@ export class AuthGuard implements CanActivate {
     private readonly reflector: Reflector,
     private readonly prisma: PrismaService,
   ) {}
-
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context)
     const req = ctx.getContext().req
+
     await this.authenticateUser(req)
+
     return this.authorizeUser(req, context)
   }
 
   private async authenticateUser(req: any): Promise<void> {
     const bearerHeader = req.headers.authorization
+    // Bearer eylskfdjlsdf309
     const token = bearerHeader?.split(' ')[1]
+
     if (!token) {
-      throw new UnauthorizedException('token khong dung ')
+      throw new UnauthorizedException('No token provided.')
     }
 
     try {
       const payload = await this.jwtService.verify(token)
       const id = payload.id
-
       if (!id) {
-        throw new UnauthorizedException('token sai, khong co id trong token')
+        throw new UnauthorizedException(
+          'Invalid token. No uid present in the token.',
+        )
       }
-      const user = await this.prisma.user.findUnique({ where: { id } })
 
+      const user = await this.prisma.user.findUnique({ where: { id } })
       if (!user) {
-        throw new UnauthorizedException('token sai, khong co user nao voi id')
+        throw new UnauthorizedException(
+          'Invalid token. No user present with the uid.',
+        )
       }
-      console.log('jwt payload', payload)
+
+      console.log('jwt payload: ', payload)
       req.user = payload
-    } catch (error: any) {
-      console.log('Token valid error: ', error)
-      throw error
+    } catch (err) {
+      console.error('Token validation error:', err)
+      throw err
     }
+
     if (!req.user) {
-      throw new UnauthorizedException('token sai')
+      throw new UnauthorizedException('Invalid token.')
     }
   }
 
@@ -60,12 +68,13 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): Promise<boolean> {
     const requiredRoles = this.getMetadata<Role[]>('roles', context)
-    const userRoles = await this.getUserRoles(req.user.id)
-
+    const userRoles = await this.getUserRoles(req.user.uid)
     req.user.roles = userRoles
+
     if (!requiredRoles || requiredRoles.length === 0) {
       return true
     }
+
     return requiredRoles.some((role) => userRoles.includes(role))
   }
 
@@ -82,6 +91,8 @@ export class AuthGuard implements CanActivate {
     const [admin, manager] = await Promise.all([
       this.prisma.admin.findUnique({ where: { id } }),
       this.prisma.manager.findUnique({ where: { id } }),
+
+      // Add promises for other role models here
     ])
 
     if (admin) {

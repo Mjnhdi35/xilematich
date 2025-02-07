@@ -21,7 +21,7 @@ model User {
   name  String?
   admin Admin?
   manager Manager?
-  authsProvier AuthsProvider?
+  authsProvider AuthsProvider?
   credentials Credentials?
 
   bookings Booking[]

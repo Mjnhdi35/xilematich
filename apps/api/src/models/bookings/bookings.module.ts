@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common'
-import { BookingsResolver } from './graphql/bookings.resolver'
-import { BookingsService } from './graphql/bookings.service'
+import { BookingsService } from './bookings.service'
+import { BookingsResolver } from './bookings.resolver'
+import { BookingsController } from './bookings.controller'
 
 @Module({
   providers: [BookingsResolver, BookingsService],
+  controllers: [BookingsController],
 })
 export class BookingsModule {}

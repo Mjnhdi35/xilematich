@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common'
-import { SeatsResolver } from './graphql/seats.resolver'
-import { SeatsService } from './graphql/seats.service'
+import { SeatsService } from './seats.service'
+import { SeatsResolver } from './seats.resolver'
+import { SeatsController } from './seats.controller'
 
 @Module({
   providers: [SeatsResolver, SeatsService],
+  controllers: [SeatsController],
 })
 export class SeatsModule {}

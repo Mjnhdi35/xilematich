@@ -5,7 +5,7 @@ import {
   SetMetadata,
   UseGuards,
 } from '@nestjs/common'
-import { Role } from '../types'
+import { Role } from '../types/user.type'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { AuthGuard } from './auth.guard'
 
