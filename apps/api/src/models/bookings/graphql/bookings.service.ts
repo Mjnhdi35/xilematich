@@ -15,6 +15,7 @@ export class BookingsService {
     private readonly cloudinary: CloudinaryService,
   ) {}
   async create(args: CreateBookingInput) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const bookingUser = await this.usersService.createIfNotFound({
       name: '',
       id: args.userId,

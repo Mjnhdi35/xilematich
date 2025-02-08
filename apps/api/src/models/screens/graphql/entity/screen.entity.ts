@@ -6,7 +6,6 @@ import {
   registerEnumType,
 } from '@nestjs/graphql'
 import {
-  $Enums,
   ProjectionType,
   Screen as ScreenType,
   SoundSystemType,

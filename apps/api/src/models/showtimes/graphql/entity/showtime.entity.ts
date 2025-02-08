@@ -1,9 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
-import {
-  $Enums,
-  ShowtimeStatus,
-  Showtime as ShowtimeType,
-} from '@prisma/client'
+import { ShowtimeStatus, Showtime as ShowtimeType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { Screen } from 'src/models/screens/graphql/entity/screen.entity'
 

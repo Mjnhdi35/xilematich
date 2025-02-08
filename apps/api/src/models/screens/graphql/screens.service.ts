@@ -19,7 +19,7 @@ export class ScreensService {
 
     const screen = await this.prisma.screen.create({
       data: {
-        numberRoom: screenNumber + 1,
+        numberRoom: screenNumber,
         cinemaId,
         projectionType,
         soundSystemType,
@@ -28,6 +28,7 @@ export class ScreensService {
 
     for (let i = 1; i <= rows; i++) {
       for (let j = 1; j <= columns; j++) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const seat = await this.prisma.seat.create({
           data: { column: j, row: i, screenId: screen.id },
         })

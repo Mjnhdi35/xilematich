@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
-import { $Enums, Genre, Movie as MovieType } from '@prisma/client'
+import { Genre, Movie as MovieType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
 registerEnumType(Genre, { name: 'Genre', description: 'Enum for roles' })
