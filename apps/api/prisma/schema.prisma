@@ -27,6 +27,7 @@ model User {
   bookings Booking[]
   tickets Ticket[]
 }
+
 model Credentials {
     id String   @id @default(uuid())
 
@@ -51,24 +52,23 @@ enum AuthsProviderType {
     CREDENTIALS
 }
 model Admin {
-  id String   @id @default(uuid())
+  id String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId String @unique
-  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+
+  user User @relation(fields: [id],references: [id],onDelete: Cascade)
 }
 
 model Manager {
-  id String   @id @default(uuid())
+  id String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId String @unique
-  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
 
-  cinemaId String
-  cinema Cinema? @relation(fields: [cinemaId],references: [id])
+  user User @relation(fields: [id],references: [id],onDelete: Cascade)
+
+  cinema Cinema[]
 }
 
 model Cinema {
@@ -88,8 +88,8 @@ model Address {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cinemaId String @unique
-  cinema Cinema @relation(fields: [cinemaId],references: [id])
+  cinemaId String? @unique
+  cinema Cinema? @relation(fields: [cinemaId],references: [id])
 
   address String
   lat Float
@@ -107,7 +107,7 @@ model Screen {
   cinema Cinema @relation(fields: [cinemaId],references: [id])
 
   seats Seat[]
-  showtime Showtime[]
+  showtimes Showtime[]
 
   projectionType  ProjectionType  @default(STANDARD)
   soundSystemType SoundSystemType @default(DOLBY_ATMOS)
@@ -132,7 +132,7 @@ model Movie {
   updatedAt DateTime @updatedAt
   title String
   director String
-  genre Genre?
+  genre Genre
   duration Int
   releaseDate DateTime
   posterUrl String?
@@ -168,11 +168,14 @@ model Booking {
 
   row Int
   column Int
-  screenId String
-  seat Seat @relation(fields: [screenId,row,column],references: [screenId,row,column])
+  screenId String?
+  seat Seat? @relation(fields: [screenId,row,column],references: [screenId,row,column])
 
-  ticketId String
-  ticket Ticket @relation(fields: [ticketId],references: [id])
+  ticketId String?
+  ticket Ticket? @relation(fields: [ticketId],references: [id])
+
+  @@unique([screenId, row, column, showtimeId], name: "uniqueSeatShowtime")
+  @@index([screenId, row, column], name: "seatIndex")
 }
 
 model Ticket {

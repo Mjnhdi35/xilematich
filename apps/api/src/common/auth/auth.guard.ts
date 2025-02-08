@@ -4,11 +4,11 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common'
-import { Role } from '../types/user.type'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { JwtService } from '@nestjs/jwt'
 import { Reflector } from '@nestjs/core'
-import { PrismaService } from '../prisma/prisma.service'
+import { Role } from 'src/common/types'
+import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -36,26 +36,10 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verify(token)
-      const id = payload.id
-      if (!id) {
-        throw new UnauthorizedException(
-          'Invalid token. No uid present in the token.',
-        )
-      }
-
-      const user = await this.prisma.user.findUnique({ where: { id } })
-      if (!user) {
-        throw new UnauthorizedException(
-          'Invalid token. No user present with the uid.',
-        )
-      }
-
-      console.log('jwt payload: ', payload)
-      req.user = payload
+      const user = await this.jwtService.verify(token)
+      req.user = user
     } catch (err) {
       console.error('Token validation error:', err)
-      throw err
     }
 
     if (!req.user) {
@@ -67,10 +51,10 @@ export class AuthGuard implements CanActivate {
     req: any,
     context: ExecutionContext,
   ): Promise<boolean> {
-    const requiredRoles = this.getMetadata<Role[]>('roles', context)
-    const userRoles = await this.getUserRoles(req.user.uid)
+    const userRoles = await this.getUserRoles(req.user.id)
     req.user.roles = userRoles
 
+    const requiredRoles = this.getMetadata<Role[]>('roles', context)
     if (!requiredRoles || requiredRoles.length === 0) {
       return true
     }
@@ -86,22 +70,22 @@ export class AuthGuard implements CanActivate {
   }
 
   private async getUserRoles(id: string): Promise<Role[]> {
-    const roles: Role[] = []
-
-    const [admin, manager] = await Promise.all([
+    const rolePromises = [
       this.prisma.admin.findUnique({ where: { id } }),
       this.prisma.manager.findUnique({ where: { id } }),
-
       // Add promises for other role models here
-    ])
+    ]
 
+    const roles: Role[] = []
+
+    const [admin] = await Promise.all(rolePromises)
+    const [manager] = await Promise.all(rolePromises)
     if (admin) {
       roles.push('admin')
     }
     if (manager) {
       roles.push('manager')
     }
-
     return roles
   }
 }
