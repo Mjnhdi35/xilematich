@@ -9,7 +9,7 @@ import { Prisma } from '@prisma/client'
 export class CinemasService {
   constructor(private readonly prisma: PrismaService) {}
   async create({
-    managers,
+    manager,
     address,
     screens,
     ...createCinemaInput
@@ -32,15 +32,15 @@ export class CinemasService {
     })
 
     const existingManager = await this.prisma.manager.findUnique({
-      where: { id: managers.id },
+      where: { id: manager.id },
     })
 
     return this.prisma.cinema.create({
       data: {
         ...createCinemaInput,
         ...(existingManager?.id
-          ? { managers: { connect: { id: managers.id } } }
-          : { managers: { create: managers } }),
+          ? { managers: { connect: { id: manager.id } } }
+          : { managers: { create: manager } }),
         address: { create: address },
         screens: { create: screensWithSeats },
       },
@@ -55,11 +55,44 @@ export class CinemasService {
     return this.prisma.cinema.findUnique(args)
   }
 
-  update(updateCinemaInput: UpdateCinemaInput) {
-    const { id, screens, address, managers, ...data } = updateCinemaInput
+  async update(updateCinemaInput: UpdateCinemaInput) {
+    const { id, screens, address, manager, ...data } = updateCinemaInput
+
     return this.prisma.cinema.update({
-      where: { id: id },
-      data: data,
+      where: { id },
+      data: {
+        ...data,
+
+        managers: manager
+          ? {
+              set: Array.isArray(manager)
+                ? manager.map((m) => ({ id: m.id }))
+                : [{ id: manager.id }],
+            }
+          : undefined,
+
+        address: address
+          ? {
+              update: {
+                address: address.address,
+                lat: address.lat,
+                lng: address.lng,
+              },
+            }
+          : undefined,
+
+        screens: screens
+          ? {
+              update: screens.map((screen) => ({
+                where: { id: screen.id },
+                data: {
+                  numberRoom: screen.numberRoom,
+                  price: screen.price,
+                },
+              })),
+            }
+          : undefined,
+      },
     })
   }
 

@@ -8,23 +8,24 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   const configService = app.get(ConfigService)
   const port = configService.get('PORT')
-  app.enableCors({
-    origin: [
-      'http://localhost:3001',
-      'http://localhost:3002',
-      'http://localhost:3003',
-      'https://studio.apollographql.com',
-    ],
-    credentials: true,
-    allowedHeaders: [
-      'Accept',
-      'Authorization',
-      'Content-Type',
-      'X-Requested-With',
-      'apollo-require-preflight',
-    ],
-    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-  })
+  // app.enableCors({
+  //   origin: [
+  //     'http://localhost:3001',
+  //     'http://localhost:3002',
+  //     'http://localhost:3003',
+  //     'https://studio.apollographql.com',
+  //   ],
+  //   credentials: true,
+  //   allowedHeaders: [
+  //     'Accept',
+  //     'Authorization',
+  //     'Content-Type',
+  //     'X-Requested-With',
+  //     'apollo-require-preflight',
+  //   ],
+  //   methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+  // })
+  app.enableCors()
   app.use(cookieParser())
   app.useGlobalPipes(
     new ValidationPipe({ transform: true, forbidNonWhitelisted: true }),

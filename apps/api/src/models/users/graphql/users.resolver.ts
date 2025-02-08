@@ -17,7 +17,6 @@ import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
 import {
   CreateUserInput,
   LoginInput,
-  LoginOutput,
   RegisterWithCredentialsInput,
   RegisterWithProviderInput,
 } from './dtos/create-user.input'

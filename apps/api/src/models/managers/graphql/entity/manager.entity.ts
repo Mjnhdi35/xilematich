@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { ObjectType } from '@nestjs/graphql'
 import { Manager as ManagerType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
