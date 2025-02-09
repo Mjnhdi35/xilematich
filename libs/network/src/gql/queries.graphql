@@ -34,3 +34,16 @@ mutation RegisterWithProvider(
     updatedAt
   }
 }
+
+mutation RegisterWithCredentials(
+  $registerWithCredentialsInput: RegisterWithCredentialsInput!
+) {
+  registerWithCredentials(
+    registerWithCredentialsInput: $registerWithCredentialsInput
+  ) {
+    name
+    updatedAt
+    id
+    createdAt
+  }
+}
