@@ -19,7 +19,7 @@ export const BrandIcon = ({
     <div style={{ perspective: '20px' }}>
       <RectangleHorizontal
         className={`${className}`}
-        style={{ transform: 'rotateX(25deg' }}
+        style={{ transform: 'rotateX(22deg' }}
       />
     </div>
   )

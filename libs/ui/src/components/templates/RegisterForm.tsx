@@ -3,13 +3,13 @@
 import { useMutation } from '@apollo/client'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { Role } from '../../lib/types'
 import { Form } from '../ui/form'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useFormRegister } from '@xilematich/forms/src/register'
 import { RegisterWithCredentialsDocument } from '@xilematich/network/src/gql/generated'
+import { Role } from '@xilematich/util/types'
 export interface ISignupFormProps {
   className?: string
   role?: Role
