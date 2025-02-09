@@ -41,7 +41,7 @@ export class UsersResolver {
     checkRowLevelPermission(user, args.id)
     return this.usersService.createIfNotFound(args)
   }
-
+  @AllowAuthenticated()
   @Query(() => [User], { name: 'users' })
   findAll(@Args() args: FindManyUserArgs) {
     return this.usersService.findAll(args)

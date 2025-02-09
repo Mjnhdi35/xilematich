@@ -20,6 +20,9 @@ export default function Home() {
           <Link href={'/login'}>Login</Link>
         )}
       </div>
+      <div>
+        {data?.users.map((user) => <div key={user.id}>{user.name}</div>)}
+      </div>
     </main>
   )
 }
