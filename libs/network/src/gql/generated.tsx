@@ -129,8 +129,8 @@ export type AggregateCountOutput = {
 
 export type AuthsProvider = {
   __typename?: 'AuthsProvider'
+  id: Scalars['String']['output']
   type: AuthsProviderType
-  uid: Scalars['String']['output']
 }
 
 export enum AuthsProviderType {
@@ -290,7 +290,7 @@ export type CreateBookingInput = {
 
 export type CreateCinemaInput = {
   address: CreateAddressInputWithoutCinemaId
-  managers: CreateManagerInputWithoutCinemaId
+  manager: CreateManagerInputWithoutCinemaId
   name: Scalars['String']['input']
   screens: Array<CreateScreenInputWithoutCinemaId>
 }
@@ -317,6 +317,7 @@ export type CreateScreenInput = {
   cinemaId: Scalars['String']['input']
   columns: Scalars['Int']['input']
   id: Scalars['String']['input']
+  numberRoom: Scalars['Int']['input']
   price: Scalars['Float']['input']
   projectionType: ProjectionType
   rows: Scalars['Int']['input']
@@ -326,6 +327,7 @@ export type CreateScreenInput = {
 export type CreateScreenInputWithoutCinemaId = {
   columns: Scalars['Int']['input']
   id: Scalars['String']['input']
+  numberRoom: Scalars['Int']['input']
   price: Scalars['Float']['input']
   projectionType: ProjectionType
   rows: Scalars['Int']['input']
@@ -392,12 +394,6 @@ export type EnumSoundSystemTypeFilter = {
   notIn?: InputMaybe<Array<SoundSystemType>>
 }
 
-export type FieldError = {
-  __typename?: 'FieldError'
-  field: Scalars['String']['output']
-  message: Scalars['String']['output']
-}
-
 export type FloatFilter = {
   equals?: InputMaybe<Scalars['Int']['input']>
   gt?: InputMaybe<Scalars['Int']['input']>
@@ -438,12 +434,6 @@ export type GroupedShowtime = {
   showtimes: Array<ShowtimeSimple>
 }
 
-export type IMutationResponse = {
-  code: Scalars['Int']['output']
-  message?: Maybe<Scalars['String']['output']>
-  success: Scalars['Boolean']['output']
-}
-
 export type IntFilter = {
   equals?: InputMaybe<Scalars['Int']['input']>
   gt?: InputMaybe<Scalars['Int']['input']>
@@ -457,14 +447,10 @@ export type LoginInput = {
   password: Scalars['String']['input']
 }
 
-export type LoginOutputMutationResponse = IMutationResponse & {
-  __typename?: 'LoginOutputMutationResponse'
-  code: Scalars['Int']['output']
-  errors?: Maybe<Array<FieldError>>
-  message?: Maybe<Scalars['String']['output']>
-  success: Scalars['Boolean']['output']
+export type LoginOutput = {
+  __typename?: 'LoginOutput'
   token: Scalars['String']['output']
-  user?: Maybe<User>
+  user: User
 }
 
 export type Manager = {
@@ -589,10 +575,10 @@ export type Mutation = {
   createSeat: Seat
   createShowtime: BatchPayload
   createTicket: Ticket
-  createUser: UserMutationResponse
-  login: LoginOutputMutationResponse
-  registerWithCredentials: UserMutationResponse
-  registerWithProvider: UserMutationResponse
+  createUser: User
+  login: LoginOutput
+  registerWithCredentials: User
+  registerWithProvider: User
   removeAddress: Address
   removeAdmin: Admin
   removeBooking: Booking
@@ -778,7 +764,7 @@ export type Query = {
   bookings: Array<Booking>
   cinema: Cinema
   cinemas: Array<Cinema>
-  getAuthProvider?: Maybe<AuthsProvider>
+  getAuthsProvider?: Maybe<AuthsProvider>
   manager: Manager
   managers: Array<Manager>
   movie: Movie
@@ -857,8 +843,8 @@ export type QueryCinemasArgs = {
   where?: InputMaybe<CinemaWhereInput>
 }
 
-export type QueryGetAuthProviderArgs = {
-  uid: Scalars['String']['input']
+export type QueryGetAuthsProviderArgs = {
+  id: Scalars['String']['input']
 }
 
 export type QueryManagerArgs = {
@@ -1356,7 +1342,7 @@ export type UpdateBookingInput = {
 export type UpdateCinemaInput = {
   address?: InputMaybe<CreateAddressInputWithoutCinemaId>
   id: Scalars['String']['input']
-  managers?: InputMaybe<CreateManagerInputWithoutCinemaId>
+  manager?: InputMaybe<CreateManagerInputWithoutCinemaId>
   name?: InputMaybe<Scalars['String']['input']>
   screens?: InputMaybe<Array<CreateScreenInputWithoutCinemaId>>
 }
@@ -1379,6 +1365,7 @@ export type UpdateScreenInput = {
   cinemaId?: InputMaybe<Scalars['String']['input']>
   columns?: InputMaybe<Scalars['Int']['input']>
   id: Scalars['String']['input']
+  numberRoom?: InputMaybe<Scalars['Int']['input']>
   price?: InputMaybe<Scalars['Float']['input']>
   projectionType?: InputMaybe<ProjectionType>
   rows?: InputMaybe<Scalars['Int']['input']>
@@ -1404,20 +1391,12 @@ export type UpdateUserInput = {
 export type User = {
   __typename?: 'User'
   admin?: Maybe<Admin>
+  bookings: Array<Booking>
   createdAt: Scalars['DateTime']['output']
   id: Scalars['String']['output']
   manager?: Maybe<Manager>
   name?: Maybe<Scalars['String']['output']>
   updatedAt: Scalars['DateTime']['output']
-}
-
-export type UserMutationResponse = IMutationResponse & {
-  __typename?: 'UserMutationResponse'
-  code: Scalars['Int']['output']
-  errors?: Maybe<Array<FieldError>>
-  message?: Maybe<Scalars['String']['output']>
-  success: Scalars['Boolean']['output']
-  user?: Maybe<User>
 }
 
 export type UserOrderByWithRelationInput = {
@@ -1458,32 +1437,6 @@ export type UserWhereUniqueInput = {
   id: Scalars['String']['input']
 }
 
-export type RegisterWithCredentialsMutationVariables = Exact<{
-  registerWithCredentialsInput: RegisterWithCredentialsInput
-}>
-
-export type RegisterWithCredentialsMutation = {
-  __typename?: 'Mutation'
-  registerWithCredentials: {
-    __typename?: 'UserMutationResponse'
-    code: number
-    success: boolean
-    message?: string | null
-    user?: {
-      __typename?: 'User'
-      updatedAt: any
-      name?: string | null
-      id: string
-      createdAt: any
-    } | null
-    errors?: Array<{
-      __typename?: 'FieldError'
-      field: string
-      message: string
-    }> | null
-  }
-}
-
 export type UsersQueryVariables = Exact<{ [key: string]: never }>
 
 export type UsersQuery = {
@@ -1497,104 +1450,58 @@ export type UsersQuery = {
   }>
 }
 
+export type LoginMutationVariables = Exact<{
+  loginInput: LoginInput
+}>
+
+export type LoginMutation = {
+  __typename?: 'Mutation'
+  login: {
+    __typename?: 'LoginOutput'
+    token: string
+    user: { __typename?: 'User'; id: string; name?: string | null }
+  }
+}
+
+export type GetAuthsProviderQueryVariables = Exact<{
+  getAuthsProviderId: Scalars['String']['input']
+}>
+
+export type GetAuthsProviderQuery = {
+  __typename?: 'Query'
+  getAuthsProvider?: {
+    __typename?: 'AuthsProvider'
+    type: AuthsProviderType
+    id: string
+  } | null
+}
+
+export type RegisterWithProviderMutationVariables = Exact<{
+  registerWithProviderInput: RegisterWithProviderInput
+}>
+
+export type RegisterWithProviderMutation = {
+  __typename?: 'Mutation'
+  registerWithProvider: {
+    __typename?: 'User'
+    id: string
+    createdAt: any
+    name?: string | null
+    updatedAt: any
+  }
+}
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
+    GetAuthsProvider: 'GetAuthsProvider',
   },
   Mutation: {
-    RegisterWithCredentials: 'RegisterWithCredentials',
+    Login: 'Login',
+    RegisterWithProvider: 'RegisterWithProvider',
   },
 }
 
-export const RegisterWithCredentialsDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'RegisterWithCredentials' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'registerWithCredentialsInput' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'RegisterWithCredentialsInput' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'registerWithCredentials' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'registerWithCredentialsInput' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'registerWithCredentialsInput' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'code' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'success' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'user' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'updatedAt' },
-                      },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'createdAt' },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'errors' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'field' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'message' },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  RegisterWithCredentialsMutation,
-  RegisterWithCredentialsMutationVariables
->
 export const UsersDocument = {
   kind: 'Document',
   definitions: [
@@ -1623,3 +1530,177 @@ export const UsersDocument = {
     },
   ],
 } as unknown as DocumentNode<UsersQuery, UsersQueryVariables>
+export const LoginDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'Login' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'loginInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'LoginInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'login' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'loginInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'loginInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'token' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>
+export const GetAuthsProviderDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAuthsProvider' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'getAuthsProviderId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'getAuthsProvider' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'getAuthsProviderId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetAuthsProviderQuery,
+  GetAuthsProviderQueryVariables
+>
+export const RegisterWithProviderDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RegisterWithProvider' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'registerWithProviderInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'RegisterWithProviderInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'registerWithProvider' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'registerWithProviderInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'registerWithProviderInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RegisterWithProviderMutation,
+  RegisterWithProviderMutationVariables
+>

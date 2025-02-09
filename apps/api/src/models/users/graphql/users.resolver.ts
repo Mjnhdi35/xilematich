@@ -7,16 +7,12 @@ import {
   Parent,
 } from '@nestjs/graphql'
 import { UsersService } from './users.service'
-import {
-  AuthsProvider,
-  LoginOutputMutationResponse,
-  User,
-  UserMutationResponse,
-} from './entity/user.entity'
+import { AuthsProvider, User } from './entity/user.entity'
 import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
 import {
   CreateUserInput,
   LoginInput,
+  LoginOutput,
   RegisterWithCredentialsInput,
   RegisterWithProviderInput,
 } from './dtos/create-user.input'
@@ -27,6 +23,7 @@ import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Admin } from 'src/models/admins/graphql/entity/admin.entity'
 import { Manager } from 'src/models/managers/graphql/entity/manager.entity'
+import { Booking } from 'src/models/bookings/graphql/entity/booking.entity'
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -36,7 +33,7 @@ export class UsersResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => UserMutationResponse)
+  @Mutation(() => User)
   async createUser(
     @Args('createUserInput') args: CreateUserInput,
     @GetUser() user: GetUserType,
@@ -61,34 +58,8 @@ export class UsersResolver {
     @Args('updateUserInput') args: UpdateUserInput,
     @GetUser() user: GetUserType,
   ) {
-    try {
-      const userInfo = await this.prisma.user.findUnique({
-        where: { id: args.id },
-      })
-      checkRowLevelPermission(user, userInfo.id)
-      if (!userInfo) {
-        return {
-          code: 404,
-          success: false,
-          message: 'User not found',
-          errors: [{ field: 'id', message: 'Invalid user ID' }],
-        }
-      }
-      const updatedUser = await this.usersService.update(args)
-      return {
-        code: 200,
-        success: true,
-        message: 'User updated successfully',
-        user: updatedUser,
-      }
-    } catch (error) {
-      return {
-        code: 500,
-        success: false,
-        message: 'Error updating user',
-        errors: [{ field: 'general', message: error.message }],
-      }
-    }
+    checkRowLevelPermission(user, args.id)
+    return this.usersService.update(args)
   }
 
   @AllowAuthenticated()
@@ -96,107 +67,29 @@ export class UsersResolver {
   async removeUser(
     @Args() args: FindUniqueUserArgs,
     @GetUser() user: GetUserType,
-  ): Promise<UserMutationResponse> {
-    const userInfo = await this.prisma.user.findUnique(args)
-    checkRowLevelPermission(user, userInfo.id)
-
-    try {
-      const userInfo = await this.prisma.user.findUnique({
-        where: { id: user.id },
-      })
-      if (!userInfo) {
-        return {
-          code: 404,
-          success: false,
-          message: 'User not found',
-          errors: [{ field: 'id', message: 'Invalid user ID' }],
-        }
-      }
-
-      await this.usersService.remove(args)
-      return {
-        code: 200,
-        success: true,
-        message: 'User deleted successfully',
-      }
-    } catch (error) {
-      return {
-        code: 500,
-        success: false,
-        message: 'Error deleting user',
-        errors: [{ field: 'general', message: error.message }],
-      }
-    }
+  ) {
+    checkRowLevelPermission(user, args.where.id)
+    return this.usersService.remove(args)
   }
 
-  @Mutation(() => UserMutationResponse)
+  @Mutation(() => User)
   async registerWithCredentials(
     @Args('registerWithCredentialsInput')
     args: RegisterWithCredentialsInput,
-  ): Promise<UserMutationResponse> {
-    try {
-      const newUser = await this.usersService.registerWithCredentials(args)
-      return {
-        code: 200,
-        success: true,
-        message: 'user register with provider successfully',
-        user: newUser,
-      }
-    } catch (error) {
-      return {
-        code: 500,
-        success: false,
-        message: 'Error registering user',
-        errors: [{ field: 'general', message: error.message }],
-      }
-    }
+  ) {
+    return await this.usersService.registerWithCredentials(args)
   }
 
-  @Mutation(() => UserMutationResponse)
+  @Mutation(() => User)
   async registerWithProvider(
     @Args('registerWithProviderInput') args: RegisterWithProviderInput,
-  ): Promise<UserMutationResponse> {
-    try {
-      const newUser = await this.usersService.registerWithProvider(args)
-      return {
-        code: 200,
-        success: true,
-        message: 'user register with provider successfully',
-        user: newUser,
-      }
-    } catch (error) {
-      return {
-        code: 500,
-        success: false,
-        message: 'Error registering user',
-        errors: [{ field: 'general', message: error.message }],
-      }
-    }
+  ) {
+    return await this.usersService.registerWithProvider(args)
   }
 
-  @Mutation(() => LoginOutputMutationResponse)
-  async login(
-    @Args('loginInput') args: LoginInput,
-  ): Promise<LoginOutputMutationResponse> {
-    try {
-      const loggedInUser = await this.usersService.login(args)
-
-      return {
-        code: 200,
-        success: true,
-        message: 'Login successful',
-        user: loggedInUser.user,
-        token: loggedInUser.token,
-      }
-    } catch (error) {
-      return {
-        code: 401,
-        success: false,
-        message: 'Login failed',
-        errors: [{ field: 'general', message: error.message }],
-        token: '',
-      }
-    }
+  @Mutation(() => LoginOutput)
+  async login(@Args('loginInput') args: LoginInput) {
+    return await this.usersService.login(args)
   }
 
   @AllowAuthenticated()
@@ -205,8 +98,8 @@ export class UsersResolver {
     return this.usersService.findOne({ where: { id: user.id } })
   }
 
-  @Query(() => AuthsProvider, { name: 'getAuthProvider', nullable: true })
-  getAuthProvider(@Args('uid') id: string) {
+  @Query(() => AuthsProvider, { name: 'getAuthsProvider', nullable: true })
+  getAuthsProvider(@Args('id') id: string) {
     return this.prisma.authsProvider.findUnique({ where: { id } })
   }
 
@@ -218,5 +111,10 @@ export class UsersResolver {
   @ResolveField(() => Manager, { nullable: true })
   manager(@Parent() user: User) {
     return this.prisma.manager.findUnique({ where: { id: user.id } })
+  }
+
+  @ResolveField(() => [Booking])
+  bookings(@Parent() user: User) {
+    return this.prisma.booking.findMany({ where: { userId: user.id } })
   }
 }

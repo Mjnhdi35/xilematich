@@ -20,13 +20,15 @@ import { TicketsModule } from './models/tickets/tickets.module'
 import { UsersModule } from './models/users/users.module'
 import { CloudinaryModule } from './common/cloudinary/cloudinary.module'
 
+const MAX_AGE = 24 * 60 * 60
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: '30d' },
+      signOptions: { expiresIn: MAX_AGE },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

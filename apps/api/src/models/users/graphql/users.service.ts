@@ -135,7 +135,7 @@ export class UsersService {
     }
 
     const jwtToken = this.jwtService.sign(
-      { uid: user.id },
+      { id: user.id },
       {
         algorithm: 'HS256',
       },

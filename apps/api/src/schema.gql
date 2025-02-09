@@ -40,11 +40,6 @@ type Admin {
   user: User
 }
 
-type FieldError {
-  field: String!
-  message: String!
-}
-
 type User {
   name: String
   id: String!
@@ -52,39 +47,17 @@ type User {
   updatedAt: DateTime!
   admin: Admin
   manager: Manager
+  bookings: [Booking!]!
 }
 
 type AuthsProvider {
   type: AuthsProviderType!
-  uid: String!
+  id: String!
 }
 
 enum AuthsProviderType {
   GOOGLE
   CREDENTIALS
-}
-
-type UserMutationResponse implements IMutationResponse {
-  code: Int!
-  success: Boolean!
-  message: String
-  user: User
-  errors: [FieldError!]
-}
-
-interface IMutationResponse {
-  code: Int!
-  success: Boolean!
-  message: String
-}
-
-type LoginOutputMutationResponse implements IMutationResponse {
-  code: Int!
-  success: Boolean!
-  message: String
-  token: String!
-  user: User
-  errors: [FieldError!]
 }
 
 type Booking {
@@ -97,6 +70,11 @@ type Booking {
   showtimeId: String!
   row: Int!
   column: Int!
+}
+
+type LoginOutput {
+  token: String!
+  user: User!
 }
 
 type Manager {
@@ -249,7 +227,7 @@ type Query {
   users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
   user(where: UserWhereUniqueInput!): User!
   whoami: User!
-  getAuthProvider(uid: String!): AuthsProvider
+  getAuthsProvider(id: String!): AuthsProvider
   cinemas(distinct: [CinemaScalarFieldEnum!], where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int): [Cinema!]!
   cinema(where: CinemaWhereUniqueInput!): Cinema!
   managers(distinct: [ManagerScalarFieldEnum!], where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int): [Manager!]!
@@ -880,12 +858,12 @@ type Mutation {
   createBooking(createBookingInput: CreateBookingInput!): Booking!
   updateBooking(updateBookingInput: UpdateBookingInput!): Booking!
   removeBooking(where: BookingWhereUniqueInput!): Booking!
-  createUser(createUserInput: CreateUserInput!): UserMutationResponse!
+  createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput!): User!
-  registerWithCredentials(registerWithCredentialsInput: RegisterWithCredentialsInput!): UserMutationResponse!
-  registerWithProvider(registerWithProviderInput: RegisterWithProviderInput!): UserMutationResponse!
-  login(loginInput: LoginInput!): LoginOutputMutationResponse!
+  registerWithCredentials(registerWithCredentialsInput: RegisterWithCredentialsInput!): User!
+  registerWithProvider(registerWithProviderInput: RegisterWithProviderInput!): User!
+  login(loginInput: LoginInput!): LoginOutput!
   createCinema(createCinemaInput: CreateCinemaInput!): Cinema!
   updateCinema(updateCinemaInput: UpdateCinemaInput!): Cinema!
   removeCinema(where: CinemaWhereUniqueInput!): Cinema!
@@ -979,7 +957,7 @@ input LoginInput {
 
 input CreateCinemaInput {
   name: String!
-  managers: CreateManagerInputWithoutCinemaId!
+  manager: CreateManagerInputWithoutCinemaId!
   address: CreateAddressInputWithoutCinemaId!
   screens: [CreateScreenInputWithoutCinemaId!]!
 }
@@ -995,6 +973,7 @@ input CreateAddressInputWithoutCinemaId {
 }
 
 input CreateScreenInputWithoutCinemaId {
+  numberRoom: Int!
   price: Float!
   projectionType: ProjectionType!
   soundSystemType: SoundSystemType!
@@ -1005,7 +984,7 @@ input CreateScreenInputWithoutCinemaId {
 
 input UpdateCinemaInput {
   name: String
-  managers: CreateManagerInputWithoutCinemaId
+  manager: CreateManagerInputWithoutCinemaId
   address: CreateAddressInputWithoutCinemaId
   screens: [CreateScreenInputWithoutCinemaId!]
   id: String!
@@ -1040,6 +1019,7 @@ input UpdateMovieInput {
 }
 
 input CreateScreenInput {
+  numberRoom: Int!
   price: Float!
   projectionType: ProjectionType!
   soundSystemType: SoundSystemType!
@@ -1050,6 +1030,7 @@ input CreateScreenInput {
 }
 
 input UpdateScreenInput {
+  numberRoom: Int
   price: Float
   projectionType: ProjectionType
   soundSystemType: SoundSystemType
