@@ -15,7 +15,7 @@ const MAX_AGE = 1 * 24 * 60 * 60
 
 const secureCookies = process.env.NEXTAUTH_URL?.startsWith('https://')
 const hostName = new URL(process.env.NEXTAUTH_URL || '').hostname
-const rootDomain = 'karthicktech.com'
+const rootDomain = 'mdj.com'
 
 export const authOptions: NextAuthOptions = {
   // Configure authentication providers
@@ -59,8 +59,9 @@ export const authOptions: NextAuthOptions = {
           const id = data.login.user.id
 
           const name = data.login.user.name
+          const image = data.login.user.image
 
-          return { id: id, name, email }
+          return { id: id, name, email, image }
         } catch (error) {}
         return null
       },
@@ -136,7 +137,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       // Implement sign-in logic, e.g., create user in database
       if (account?.provider === 'google') {
-        const { id, name } = user
+        const { id, name, image } = user
 
         const existingUser = await fetchGraphQL({
           document: GetAuthsProviderDocument,
@@ -153,6 +154,7 @@ export const authOptions: NextAuthOptions = {
                 id: id,
                 type: AuthsProviderType.Google,
                 name: name || '',
+                image,
               },
             },
           })

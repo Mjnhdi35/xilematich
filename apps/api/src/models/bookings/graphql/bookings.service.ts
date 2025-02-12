@@ -19,6 +19,7 @@ export class BookingsService {
     const bookingUser = await this.usersService.createIfNotFound({
       name: '',
       id: args.userId,
+      image: '',
     })
 
     const showtime = await this.prisma.showtime.findUnique({

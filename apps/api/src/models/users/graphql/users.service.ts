@@ -56,7 +56,8 @@ export class UsersService {
     return this.prisma.user.delete(args)
   }
 
-  registerWithProvider({ name, id, type }: RegisterWithProviderInput) {
+  registerWithProvider({ name, type }: RegisterWithProviderInput) {
+    const id = uuid()
     return this.prisma.user.create({
       data: {
         id,

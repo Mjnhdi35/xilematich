@@ -4,12 +4,12 @@
 
 type Address {
   cinemaId: String
+  lat: Float!
+  lng: Float!
   address: String!
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  lat: Int!
-  lng: Int!
   cinema: Cinema
 }
 
@@ -42,6 +42,7 @@ type Admin {
 
 type User {
   name: String
+  image: String
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -748,6 +749,7 @@ enum UserScalarFieldEnum {
   createdAt
   updatedAt
   name
+  image
 }
 
 input UserWhereUniqueInput {
@@ -888,16 +890,16 @@ type Mutation {
 
 input CreateAddressInput {
   cinemaId: String
+  lat: Float!
+  lng: Float!
   address: String!
-  lat: Int!
-  lng: Int!
 }
 
 input UpdateAddressInput {
   cinemaId: String
+  lat: Float
+  lng: Float
   address: String
-  lat: Int
-  lng: Int
   id: String!
 }
 
@@ -930,22 +932,26 @@ input UpdateBookingInput {
 
 input CreateUserInput {
   name: String
+  image: String
   id: String!
 }
 
 input UpdateUserInput {
   name: String
+  image: String
   id: String!
 }
 
 input RegisterWithCredentialsInput {
   name: String
+  image: String
   email: String!
   password: String!
 }
 
 input RegisterWithProviderInput {
   name: String
+  image: String
   id: String!
   type: AuthsProviderType!
 }
@@ -967,9 +973,9 @@ input CreateManagerInputWithoutCinemaId {
 }
 
 input CreateAddressInputWithoutCinemaId {
+  lat: Float!
+  lng: Float!
   address: String!
-  lat: Int!
-  lng: Int!
 }
 
 input CreateScreenInputWithoutCinemaId {

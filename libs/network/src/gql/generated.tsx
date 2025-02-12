@@ -37,8 +37,8 @@ export type Address = {
   cinemaId?: Maybe<Scalars['String']['output']>
   createdAt: Scalars['DateTime']['output']
   id: Scalars['String']['output']
-  lat: Scalars['Int']['output']
-  lng: Scalars['Int']['output']
+  lat: Scalars['Float']['output']
+  lng: Scalars['Float']['output']
   updatedAt: Scalars['DateTime']['output']
 }
 
@@ -267,14 +267,14 @@ export type CinemaWhereUniqueInput = {
 export type CreateAddressInput = {
   address: Scalars['String']['input']
   cinemaId?: InputMaybe<Scalars['String']['input']>
-  lat: Scalars['Int']['input']
-  lng: Scalars['Int']['input']
+  lat: Scalars['Float']['input']
+  lng: Scalars['Float']['input']
 }
 
 export type CreateAddressInputWithoutCinemaId = {
   address: Scalars['String']['input']
-  lat: Scalars['Int']['input']
-  lng: Scalars['Int']['input']
+  lat: Scalars['Float']['input']
+  lng: Scalars['Float']['input']
 }
 
 export type CreateAdminInput = {
@@ -353,6 +353,7 @@ export type CreateTicketInput = {
 
 export type CreateUserInput = {
   id: Scalars['String']['input']
+  image?: InputMaybe<Scalars['String']['input']>
   name?: InputMaybe<Scalars['String']['input']>
 }
 
@@ -977,12 +978,14 @@ export enum QueryMode {
 
 export type RegisterWithCredentialsInput = {
   email: Scalars['String']['input']
+  image?: InputMaybe<Scalars['String']['input']>
   name?: InputMaybe<Scalars['String']['input']>
   password: Scalars['String']['input']
 }
 
 export type RegisterWithProviderInput = {
   id: Scalars['String']['input']
+  image?: InputMaybe<Scalars['String']['input']>
   name?: InputMaybe<Scalars['String']['input']>
   type: AuthsProviderType
 }
@@ -1324,8 +1327,8 @@ export type UpdateAddressInput = {
   address?: InputMaybe<Scalars['String']['input']>
   cinemaId?: InputMaybe<Scalars['String']['input']>
   id: Scalars['String']['input']
-  lat?: InputMaybe<Scalars['Int']['input']>
-  lng?: InputMaybe<Scalars['Int']['input']>
+  lat?: InputMaybe<Scalars['Float']['input']>
+  lng?: InputMaybe<Scalars['Float']['input']>
 }
 
 export type UpdateAdminInput = {
@@ -1385,6 +1388,7 @@ export type UpdateTicketInput = {
 
 export type UpdateUserInput = {
   id: Scalars['String']['input']
+  image?: InputMaybe<Scalars['String']['input']>
   name?: InputMaybe<Scalars['String']['input']>
 }
 
@@ -1394,6 +1398,7 @@ export type User = {
   bookings: Array<Booking>
   createdAt: Scalars['DateTime']['output']
   id: Scalars['String']['output']
+  image?: Maybe<Scalars['String']['output']>
   manager?: Maybe<Manager>
   name?: Maybe<Scalars['String']['output']>
   updatedAt: Scalars['DateTime']['output']
@@ -1417,6 +1422,7 @@ export type UserRelationFilter = {
 export enum UserScalarFieldEnum {
   CreatedAt = 'createdAt',
   Id = 'id',
+  Image = 'image',
   Name = 'name',
   UpdatedAt = 'updatedAt',
 }
@@ -1459,7 +1465,12 @@ export type LoginMutation = {
   login: {
     __typename?: 'LoginOutput'
     token: string
-    user: { __typename?: 'User'; id: string; name?: string | null }
+    user: {
+      __typename?: 'User'
+      id: string
+      name?: string | null
+      image?: string | null
+    }
   }
 }
 
@@ -1506,15 +1517,134 @@ export type RegisterWithCredentialsMutation = {
   }
 }
 
+export type UserQueryVariables = Exact<{
+  where: UserWhereUniqueInput
+}>
+
+export type UserQuery = {
+  __typename?: 'Query'
+  user: {
+    __typename?: 'User'
+    name?: string | null
+    updatedAt: any
+    id: string
+    createdAt: any
+    image?: string | null
+  }
+}
+
+export type MutationCreateMovieMutationVariables = Exact<{
+  createMovieInput: CreateMovieInput
+}>
+
+export type MutationCreateMovieMutation = {
+  __typename?: 'Mutation'
+  createMovie: {
+    __typename?: 'Movie'
+    genre: Genre
+    posterUrl?: string | null
+    id: string
+    createdAt: any
+    updatedAt: any
+    title: string
+    director: string
+    duration: number
+    releaseDate: any
+  }
+}
+
+export type MutationCreateAddressMutationVariables = Exact<{
+  createAddressInput: CreateAddressInput
+}>
+
+export type MutationCreateAddressMutation = {
+  __typename?: 'Mutation'
+  createAddress: {
+    __typename?: 'Address'
+    cinemaId?: string | null
+    lat: number
+    lng: number
+    address: string
+    id: string
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type MutationCreateCinemaMutationVariables = Exact<{
+  createCinemaInput: CreateCinemaInput
+}>
+
+export type MutationCreateCinemaMutation = {
+  __typename?: 'Mutation'
+  createCinema: {
+    __typename?: 'Cinema'
+    id: string
+    name: string
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type MutationCreateScreenMutationVariables = Exact<{
+  createScreenInput: CreateScreenInput
+}>
+
+export type MutationCreateScreenMutation = {
+  __typename?: 'Mutation'
+  createScreen: {
+    __typename?: 'Screen'
+    numberRoom: number
+    price: number
+    projectionType: ProjectionType
+    soundSystemType: SoundSystemType
+    id: string
+    createdAt: any
+    updatedAt: any
+    cinemaId: string
+    seatsCount: string
+    cinema: { __typename?: 'Cinema'; name: string; id: string }
+    seats: Array<{
+      __typename?: 'Seat'
+      screenId: string
+      row: number
+      column: number
+    }>
+    showtimes: Array<{
+      __typename?: 'Showtime'
+      startTime: any
+      screenId: string
+      movieId: string
+      id: string
+      status?: ShowtimeStatus | null
+    }>
+  }
+}
+
+export type MutationCreateShowtimeMutationVariables = Exact<{
+  createShowtimeInput: CreateShowtimeInput
+}>
+
+export type MutationCreateShowtimeMutation = {
+  __typename?: 'Mutation'
+  createShowtime: { __typename?: 'BatchPayload'; count: number }
+}
+
 export const namedOperations = {
   Query: {
     Users: 'Users',
     GetAuthsProvider: 'GetAuthsProvider',
+    User: 'User',
   },
   Mutation: {
     Login: 'Login',
     RegisterWithProvider: 'RegisterWithProvider',
     RegisterWithCredentials: 'RegisterWithCredentials',
+    MutationCreateMovie: 'MutationCreateMovie',
+    MutationCreateAddress: 'MutationCreateAddress',
+    MutationCreateCinema: 'MutationCreateCinema',
+    MutationCreateScreen: 'MutationCreateScreen',
+    MutationCreateShowtime: 'MutationCreateShowtime',
   },
 }
 
@@ -1597,6 +1727,7 @@ export const LoginDocument = {
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'image' } },
                     ],
                   },
                 },
@@ -1776,4 +1907,415 @@ export const RegisterWithCredentialsDocument = {
 } as unknown as DocumentNode<
   RegisterWithCredentialsMutation,
   RegisterWithCredentialsMutationVariables
+>
+export const UserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'User' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'UserWhereUniqueInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'user' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UserQuery, UserQueryVariables>
+export const MutationCreateMovieDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'MutationCreateMovie' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createMovieInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateMovieInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createMovie' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createMovieInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createMovieInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'genre' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'posterUrl' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'director' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'duration' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'releaseDate' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  MutationCreateMovieMutation,
+  MutationCreateMovieMutationVariables
+>
+export const MutationCreateAddressDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'MutationCreateAddress' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createAddressInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateAddressInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createAddress' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createAddressInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createAddressInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'cinemaId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'lat' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'lng' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'address' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  MutationCreateAddressMutation,
+  MutationCreateAddressMutationVariables
+>
+export const MutationCreateCinemaDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'MutationCreateCinema' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createCinemaInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateCinemaInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createCinema' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createCinemaInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createCinemaInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  MutationCreateCinemaMutation,
+  MutationCreateCinemaMutationVariables
+>
+export const MutationCreateScreenDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'MutationCreateScreen' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createScreenInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateScreenInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createScreen' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createScreenInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createScreenInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'numberRoom' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'price' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'projectionType' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'soundSystemType' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'cinemaId' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'cinema' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'seats' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'screenId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'row' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'column' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'seatsCount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'showtimes' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'startTime' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'screenId' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'movieId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'status' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  MutationCreateScreenMutation,
+  MutationCreateScreenMutationVariables
+>
+export const MutationCreateShowtimeDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'MutationCreateShowtime' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createShowtimeInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateShowtimeInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createShowtime' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createShowtimeInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createShowtimeInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  MutationCreateShowtimeMutation,
+  MutationCreateShowtimeMutationVariables
 >

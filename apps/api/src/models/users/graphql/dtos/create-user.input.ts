@@ -16,14 +16,14 @@ registerEnumType(AuthsProviderType, {
 @InputType()
 export class CreateUserInput extends PickType(
   User,
-  ['id', 'name'],
+  ['id', 'name', 'image'],
   InputType,
 ) {}
 
 @InputType()
 export class RegisterWithProviderInput extends PickType(
   User,
-  ['id', 'name'],
+  ['id', 'name', 'image'],
   InputType,
 ) {
   @Field(() => AuthsProviderType)
@@ -33,7 +33,7 @@ export class RegisterWithProviderInput extends PickType(
 @InputType()
 export class RegisterWithCredentialsInput extends PickType(
   User,
-  ['name'],
+  ['name', 'image'],
   InputType,
 ) {
   @IsEmail()

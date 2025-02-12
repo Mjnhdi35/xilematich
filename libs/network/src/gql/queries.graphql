@@ -13,6 +13,7 @@ mutation Login($loginInput: LoginInput!) {
     user {
       id
       name
+      image
     }
   }
 }
@@ -45,5 +46,86 @@ mutation RegisterWithCredentials(
     updatedAt
     id
     createdAt
+  }
+}
+
+query User($where: UserWhereUniqueInput!) {
+  user(where: $where) {
+    name
+    updatedAt
+    id
+    createdAt
+    image
+  }
+}
+
+mutation MutationCreateMovie($createMovieInput: CreateMovieInput!) {
+  createMovie(createMovieInput: $createMovieInput) {
+    genre
+    posterUrl
+    id
+    createdAt
+    updatedAt
+    title
+    director
+    duration
+    releaseDate
+  }
+}
+
+mutation MutationCreateAddress($createAddressInput: CreateAddressInput!) {
+  createAddress(createAddressInput: $createAddressInput) {
+    cinemaId
+    lat
+    lng
+    address
+    id
+    createdAt
+    updatedAt
+  }
+}
+
+mutation MutationCreateCinema($createCinemaInput: CreateCinemaInput!) {
+  createCinema(createCinemaInput: $createCinemaInput) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+
+mutation MutationCreateScreen($createScreenInput: CreateScreenInput!) {
+  createScreen(createScreenInput: $createScreenInput) {
+    numberRoom
+    price
+    projectionType
+    soundSystemType
+    id
+    createdAt
+    updatedAt
+    cinemaId
+    cinema {
+      name
+      id
+    }
+    seats {
+      screenId
+      row
+      column
+    }
+    seatsCount
+    showtimes {
+      startTime
+      screenId
+      movieId
+      id
+      status
+    }
+  }
+}
+
+mutation MutationCreateShowtime($createShowtimeInput: CreateShowtimeInput!) {
+  createShowtime(createShowtimeInput: $createShowtimeInput) {
+    count
   }
 }
