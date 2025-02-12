@@ -1,12 +1,3 @@
-query Users {
-  users {
-    name
-    id
-    createdAt
-    updatedAt
-  }
-}
-
 mutation Login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
     token
@@ -49,83 +40,18 @@ mutation RegisterWithCredentials(
   }
 }
 
-query User($where: UserWhereUniqueInput!) {
-  user(where: $where) {
-    name
-    updatedAt
+query Users {
+  users {
     id
-    createdAt
-    image
   }
 }
 
-mutation MutationCreateMovie($createMovieInput: CreateMovieInput!) {
-  createMovie(createMovieInput: $createMovieInput) {
-    genre
-    posterUrl
+query Admin($where: AdminWhereUniqueInput!) {
+  admin(where: $where) {
     id
-    createdAt
-    updatedAt
-    title
-    director
-    duration
-    releaseDate
-  }
-}
-
-mutation MutationCreateAddress($createAddressInput: CreateAddressInput!) {
-  createAddress(createAddressInput: $createAddressInput) {
-    cinemaId
-    lat
-    lng
-    address
-    id
-    createdAt
-    updatedAt
-  }
-}
-
-mutation MutationCreateCinema($createCinemaInput: CreateCinemaInput!) {
-  createCinema(createCinemaInput: $createCinemaInput) {
-    id
-    name
-    createdAt
-    updatedAt
-  }
-}
-
-mutation MutationCreateScreen($createScreenInput: CreateScreenInput!) {
-  createScreen(createScreenInput: $createScreenInput) {
-    numberRoom
-    price
-    projectionType
-    soundSystemType
-    id
-    createdAt
-    updatedAt
-    cinemaId
-    cinema {
+    user {
+      id
       name
-      id
     }
-    seats {
-      screenId
-      row
-      column
-    }
-    seatsCount
-    showtimes {
-      startTime
-      screenId
-      movieId
-      id
-      status
-    }
-  }
-}
-
-mutation MutationCreateShowtime($createShowtimeInput: CreateShowtimeInput!) {
-  createShowtime(createShowtimeInput: $createShowtimeInput) {
-    count
   }
 }
