@@ -31,6 +31,8 @@ type Cinema {
   name: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  managers: [Manager!]!
+  screens: [Screen!]!
 }
 
 type Admin {
@@ -231,6 +233,9 @@ type Query {
   getAuthsProvider(id: String!): AuthsProvider
   cinemas(distinct: [CinemaScalarFieldEnum!], where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int): [Cinema!]!
   cinema(where: CinemaWhereUniqueInput!): Cinema!
+  cinemaByManager(id: String!): Cinema!
+  cinemasCount(where: CinemaWhereUniqueInput): AggregateCountOutput!
+  searchCinemas(locationFilter: LocationFilterInput!, distinct: [CinemaScalarFieldEnum!]!, where: CinemaWhereInput!, orderBy: [CinemaOrderByWithRelationInput!]!, cursor: CinemaWhereUniqueInput!, take: Int!, skip: Int!): [Cinema!]!
   managers(distinct: [ManagerScalarFieldEnum!], where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int): [Manager!]!
   manager(where: ManagerWhereUniqueInput!): Manager!
   movies(distinct: [MovieScalarFieldEnum!], where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int): [Movie!]!
@@ -765,6 +770,13 @@ enum CinemaScalarFieldEnum {
 
 input CinemaWhereUniqueInput {
   id: String!
+}
+
+input LocationFilterInput {
+  ne_lat: Float!
+  ne_lng: Float!
+  sw_lat: Float!
+  sw_lng: Float!
 }
 
 enum ManagerScalarFieldEnum {

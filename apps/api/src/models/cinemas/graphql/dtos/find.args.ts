@@ -9,7 +9,7 @@ registerEnumType(Prisma.CinemaScalarFieldEnum, {
 })
 
 @ArgsType()
-class FindManyCinemaArgsStrict
+export class FindManyCinemaArgsStrict
   implements
     RestrictProperties<
       FindManyCinemaArgsStrict,

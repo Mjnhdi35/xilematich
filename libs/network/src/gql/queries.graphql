@@ -55,3 +55,19 @@ query Admin($where: AdminWhereUniqueInput!) {
     }
   }
 }
+
+query AdminMe {
+  adminMe {
+    id
+    user {
+      id
+      name
+    }
+  }
+}
+query Cinema($where: CinemaWhereUniqueInput!) {
+  cinema(where: $where) {
+    id
+    name
+  }
+}

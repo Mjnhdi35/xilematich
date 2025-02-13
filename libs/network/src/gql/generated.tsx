@@ -221,7 +221,9 @@ export type Cinema = {
   __typename?: 'Cinema'
   createdAt: Scalars['DateTime']['output']
   id: Scalars['String']['output']
+  managers: Array<Manager>
   name: Scalars['String']['output']
+  screens: Array<Screen>
   updatedAt: Scalars['DateTime']['output']
 }
 
@@ -441,6 +443,13 @@ export type IntFilter = {
   gte?: InputMaybe<Scalars['Int']['input']>
   lt?: InputMaybe<Scalars['Int']['input']>
   lte?: InputMaybe<Scalars['Int']['input']>
+}
+
+export type LocationFilterInput = {
+  ne_lat: Scalars['Float']['input']
+  ne_lng: Scalars['Float']['input']
+  sw_lat: Scalars['Float']['input']
+  sw_lng: Scalars['Float']['input']
 }
 
 export type LoginInput = {
@@ -764,7 +773,9 @@ export type Query = {
   booking: Booking
   bookings: Array<Booking>
   cinema: Cinema
+  cinemaByManager: Cinema
   cinemas: Array<Cinema>
+  cinemasCount: AggregateCountOutput
   getAuthsProvider?: Maybe<AuthsProvider>
   manager: Manager
   managers: Array<Manager>
@@ -775,6 +786,7 @@ export type Query = {
   myTickets: Array<Ticket>
   screen: Screen
   screens: Array<Screen>
+  searchCinemas: Array<Cinema>
   seat: Seat
   seats: Array<Seat>
   showtime: Showtime
@@ -835,6 +847,10 @@ export type QueryCinemaArgs = {
   where: CinemaWhereUniqueInput
 }
 
+export type QueryCinemaByManagerArgs = {
+  id: Scalars['String']['input']
+}
+
 export type QueryCinemasArgs = {
   cursor?: InputMaybe<CinemaWhereUniqueInput>
   distinct?: InputMaybe<Array<CinemaScalarFieldEnum>>
@@ -842,6 +858,10 @@ export type QueryCinemasArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
   where?: InputMaybe<CinemaWhereInput>
+}
+
+export type QueryCinemasCountArgs = {
+  where?: InputMaybe<CinemaWhereUniqueInput>
 }
 
 export type QueryGetAuthsProviderArgs = {
@@ -908,6 +928,16 @@ export type QueryScreensArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
   where?: InputMaybe<ScreenWhereInput>
+}
+
+export type QuerySearchCinemasArgs = {
+  cursor: CinemaWhereUniqueInput
+  distinct: Array<CinemaScalarFieldEnum>
+  locationFilter: LocationFilterInput
+  orderBy: Array<CinemaOrderByWithRelationInput>
+  skip: Scalars['Int']['input']
+  take: Scalars['Int']['input']
+  where: CinemaWhereInput
 }
 
 export type QuerySeatArgs = {
@@ -1524,11 +1554,33 @@ export type AdminQuery = {
   }
 }
 
+export type AdminMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type AdminMeQuery = {
+  __typename?: 'Query'
+  adminMe: {
+    __typename?: 'Admin'
+    id: string
+    user?: { __typename?: 'User'; id: string; name?: string | null } | null
+  }
+}
+
+export type CinemaQueryVariables = Exact<{
+  where: CinemaWhereUniqueInput
+}>
+
+export type CinemaQuery = {
+  __typename?: 'Query'
+  cinema: { __typename?: 'Cinema'; id: string; name: string }
+}
+
 export const namedOperations = {
   Query: {
     GetAuthsProvider: 'GetAuthsProvider',
     Users: 'Users',
     Admin: 'Admin',
+    AdminMe: 'AdminMe',
+    Cinema: 'Cinema',
   },
   Mutation: {
     Login: 'Login',
@@ -1856,3 +1908,91 @@ export const AdminDocument = {
     },
   ],
 } as unknown as DocumentNode<AdminQuery, AdminQueryVariables>
+export const AdminMeDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'AdminMe' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'adminMe' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AdminMeQuery, AdminMeQueryVariables>
+export const CinemaDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Cinema' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CinemaWhereUniqueInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'cinema' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CinemaQuery, CinemaQueryVariables>

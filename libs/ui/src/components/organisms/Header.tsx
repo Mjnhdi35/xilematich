@@ -48,6 +48,7 @@ export const Header = ({ type, menuItems }: IHeaderProps) => {
           </div>
         </Container>
       </nav>
+      <div className="h-16" />
     </header>
   )
 }
