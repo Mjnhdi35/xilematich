@@ -4,6 +4,7 @@ import { IconArrowBack } from '@tabler/icons-react'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 import { GoogleButton } from './GoogleButton'
+import { BrandIcon } from '../atoms/BrandIcon'
 
 export interface IAuthLayoutProps {
   children: ReactNode
@@ -12,12 +13,12 @@ export interface IAuthLayoutProps {
 
 export const AuthLayout = ({ title, children }: IAuthLayoutProps) => {
   return (
-    <div className="relative h-[calc(100vh-4rem)]  ">
+    <div className="relative h-[calc(100vh-10rem)]">
       <div className=" flex flex-col justify-center items-center absolute top-0 bg-white/25 backdrop-blur-sm bottom-0  ">
-        <div className="p-4 text-black ">
+        <div className="p-8 text-black ">
           <div className="w-full max-w-lg mx-auto ">
-            <h1 className="flex items-center gap-2 mb-2 text-2xl">
-              <div>{title}</div>
+            <h1 className="flex items-center gap-6 mb-4 text-2xl">
+              <BrandIcon /> <div>{title}</div>
             </h1>
             {children}
             <div className="mt-4 text-sm text-gray-700">
