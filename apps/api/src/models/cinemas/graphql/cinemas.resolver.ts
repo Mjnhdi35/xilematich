@@ -27,6 +27,7 @@ import {
 } from 'src/common/dtos/common.input'
 import { CinemaWhereUniqueInput } from './dtos/where.args'
 import { Prisma } from '@prisma/client'
+import { Address } from 'src/models/addresses/graphql/entity/address.entity'
 
 @Resolver(() => Cinema)
 export class CinemasResolver {
@@ -91,7 +92,10 @@ export class CinemasResolver {
       where: { cinema: { some: { id: cinema.id } } },
     })
   }
-
+  @ResolveField(() => Address, { nullable: true })
+  address(@Parent() cinema: Cinema) {
+    return this.prisma.address.findUnique({ where: { cinemaId: cinema.id } })
+  }
   @ResolveField(() => [Screen])
   screens(@Parent() cinema: Cinema) {
     return this.prisma.screen.findMany({ where: { cinemaId: cinema.id } })

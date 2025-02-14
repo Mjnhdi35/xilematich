@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 import { MoviesService } from './movies.service'
 import { Movie } from './entity/movie.entity'
 import { FindManyMovieArgs, FindUniqueMovieArgs } from './dtos/find.args'
@@ -11,6 +18,7 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { MovieWhereInput } from './dtos/where.args'
 import { Prisma } from '@prisma/client'
+import { Showtime } from 'src/models/showtimes/graphql/entity/showtime.entity'
 
 @Resolver(() => Movie)
 export class MoviesResolver {
@@ -99,5 +107,9 @@ export class MoviesResolver {
       },
     })
     return movies.filter((movie) => movie.showtimes.length > 0)
+  }
+  @ResolveField(() => [Showtime])
+  showtimes(@Parent() movie: Movie) {
+    return this.prisma.showtime.findMany({ where: { movieId: movie.id } })
   }
 }

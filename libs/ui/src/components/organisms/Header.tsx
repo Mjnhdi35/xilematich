@@ -9,20 +9,20 @@ import { useSession } from 'next-auth/react'
 import { Button } from '../ui/button'
 import { Container } from '../atoms/Container'
 import { Menus } from './Menus'
-import Sidebar from './Sidebar'
 import { NavSidebar } from './NavSidebar'
 
 export type IHeaderProps = {
   type?: Role
   menuItems: MenuItem[]
 } & BaseComponent
-const menu: { href: string; title: string }[] = [
-  { href: '/', title: 'Dashboard' },
-  { href: '/cinemas', title: 'Cinemas' },
-  { href: '/movies', title: 'Movies' },
-  { href: '/manage-admins', title: 'Manage Admin' },
-  { href: '/manage-managers', title: 'Manage Manager' },
-]
+
+// const menu: { href: string; title: string }[] = [
+//   { href: '/', title: 'Dashboard' },
+//   { href: '/cinemas', title: 'Cinemas' },
+//   { href: '/movies', title: 'Movies' },
+//   { href: '/manage-admins', title: 'Manage Admin' },
+//   { href: '/manage-managers', title: 'Manage Manager' },
+// ]
 
 export const Header = ({ type, menuItems }: IHeaderProps) => {
   const session = useSession()

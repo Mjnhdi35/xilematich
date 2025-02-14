@@ -76,4 +76,11 @@ export class ManagersResolver {
       },
     })
   }
+  @AllowAuthenticated()
+  @Query(() => Manager, { name: 'managerMe' })
+  managerMe(@GetUser() user: GetUserType) {
+    return this.managersService.findOne({
+      where: { id: user.id },
+    })
+  }
 }

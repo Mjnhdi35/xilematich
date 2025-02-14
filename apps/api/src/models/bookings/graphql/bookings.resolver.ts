@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql'
 import { BookingsService } from './bookings.service'
 import { Booking } from './entity/booking.entity'
 import { FindManyBookingArgs, FindUniqueBookingArgs } from './dtos/find.args'
@@ -8,6 +15,10 @@ import { checkRowLevelPermission } from 'src/common/auth/util'
 import { GetUserType } from 'src/common/types'
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { PrismaService } from 'src/common/prisma/prisma.service'
+import { Seat } from 'src/models/seats/graphql/entity/seat.entity'
+import { Ticket } from 'src/models/tickets/graphql/entity/ticket.entity'
+import { Showtime } from 'src/models/showtimes/graphql/entity/showtime.entity'
+import { User } from 'src/models/users/graphql/entity/user.entity'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
@@ -58,5 +69,32 @@ export class BookingsResolver {
     const booking = await this.prisma.booking.findUnique(args)
     checkRowLevelPermission(user, booking.id)
     return this.bookingsService.remove(args)
+  }
+
+  @ResolveField(() => User)
+  user(@Parent() booking: Booking) {
+    return this.prisma.user.findUnique({ where: { id: booking.userId } })
+  }
+
+  @ResolveField(() => Showtime)
+  showtime(@Parent() booking: Booking) {
+    return this.prisma.showtime.findUnique({
+      where: { id: booking.showtimeId },
+    })
+  }
+
+  @ResolveField(() => Ticket, { nullable: true })
+  ticket(@Parent() booking: Booking) {
+    return this.prisma.ticket.findUnique({
+      where: { id: booking.ticketId },
+    })
+  }
+  @ResolveField(() => Seat, { nullable: true })
+  seat(@Parent() { column, row, screenId }: Booking) {
+    return this.prisma.seat.findUnique({
+      where: {
+        screenId_row_column: { column, row, screenId },
+      },
+    })
   }
 }

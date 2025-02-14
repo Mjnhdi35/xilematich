@@ -71,3 +71,240 @@ query Cinema($where: CinemaWhereUniqueInput!) {
     name
   }
 }
+mutation MutationCreateCinema($createCinemaInput: CreateCinemaInput!) {
+  createCinema(createCinemaInput: $createCinemaInput) {
+    id
+  }
+}
+mutation MutationCreateMovie($createMovieInput: CreateMovieInput!) {
+  createMovie(createMovieInput: $createMovieInput) {
+    id
+  }
+}
+mutation MutationCreateManager($createManagerInput: CreateManagerInput!) {
+  createManager(createManagerInput: $createManagerInput) {
+    id
+  }
+}
+query QueryFindCinema($where: CinemaWhereUniqueInput!) {
+  cinema(where: $where) {
+    id
+    name
+    screens {
+      id
+      numberRoom
+      seatsCount
+      showtimes {
+        id
+        startTime
+      }
+    }
+  }
+}
+mutation MutationCreateScreen($createScreenInput: CreateScreenInput!) {
+  createScreen(createScreenInput: $createScreenInput) {
+    id
+  }
+}
+query SearchCinemas(
+  $locationFilter: LocationFilterInput!
+  $distinct: [CinemaScalarFieldEnum!]!
+  $where: CinemaWhereInput!
+  $orderBy: [CinemaOrderByWithRelationInput!]!
+  $cursor: CinemaWhereUniqueInput!
+  $take: Int!
+  $skip: Int!
+) {
+  searchCinemas(
+    locationFilter: $locationFilter
+    distinct: $distinct
+    where: $where
+    orderBy: $orderBy
+    cursor: $cursor
+    take: $take
+    skip: $skip
+  ) {
+    id
+    name
+    address {
+      lng
+      lat
+    }
+  }
+}
+query Movies(
+  $skip: Int
+  $take: Int
+  $cursor: MovieWhereUniqueInput
+  $orderBy: [MovieOrderByWithRelationInput!]
+  $where: MovieWhereInput
+  $distinct: [MovieScalarFieldEnum!]
+) {
+  movies(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    id
+    genre
+    duration
+    director
+    createdAt
+    posterUrl
+    releaseDate
+    title
+  }
+  moviesCount(where: $where) {
+    count
+  }
+}
+query QueryCinemas(
+  $skip: Int
+  $take: Int
+  $cursor: CinemaWhereUniqueInput
+  $orderBy: [CinemaOrderByWithRelationInput!]
+  $where: CinemaWhereInput
+  $distinct: [CinemaScalarFieldEnum!]
+) {
+  cinemas(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    id
+    name
+    screens {
+      id
+      numberRoom
+      seatsCount
+      showtimes {
+        id
+        startTime
+        status
+        movie {
+          title
+          posterUrl
+        }
+      }
+    }
+  }
+  cinemasCount {
+    count
+  }
+}
+
+mutation MutationCreateShowtime($createShowtimeInput: CreateShowtimeInput!) {
+  createShowtime(createShowtimeInput: $createShowtimeInput) {
+    count
+  }
+}
+query QueryMoviesPerCinema($cinemaId: String!) {
+  moviesPerCinema(cinemaId: $cinemaId) {
+    id
+    title
+    director
+    posterUrl
+  }
+}
+query BookedSeatsInShowtime($showtimeId: String!) {
+  bookedSeatsInShowtime(showtimeId: $showtimeId) {
+    total
+    booked
+  }
+}
+query ShowtimesInCinema($cinemaId: String!, $movieId: String!) {
+  showtimesInCinema(cinemaId: $cinemaId, movieId: $movieId) {
+    showtimes {
+      id
+      startTime
+      screen {
+        id
+        price
+        numberRoom
+        projectionType
+        soundSystemType
+      }
+    }
+  }
+}
+query Showtime($where: ShowtimeWhereUniqueInput!, $showtimeId: String!) {
+  showtime(where: $where) {
+    screen {
+      price
+      seats {
+        row
+        column
+        booked(showtimeId: $showtimeId)
+      }
+    }
+  }
+}
+mutation MutationCreateBooking($createBookingInput: CreateBookingInput!) {
+  createBooking(createBookingInput: $createBookingInput) {
+    id
+  }
+}
+query Tickets(
+  $skip: Int
+  $take: Int
+  $cursor: TicketWhereUniqueInput
+  $orderBy: [TicketOrderByWithRelationInput!]
+  $where: TicketWhereInput
+  $distinct: [TicketScalarFieldEnum!]
+) {
+  tickets(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+    distinct: $distinct
+  ) {
+    userId
+    qrCode
+    id
+    bookings {
+      row
+      column
+      showtime {
+        startTime
+        screen {
+          seats {
+            row
+            column
+          }
+          numberRoom
+          cinema {
+            name
+          }
+        }
+        movie {
+          title
+          posterUrl
+        }
+      }
+    }
+  }
+}
+
+mutation MutationUpdateShowtime($updateShowtimeInput: UpdateShowtimeInput!) {
+  updateShowtime(updateShowtimeInput: $updateShowtimeInput) {
+    id
+  }
+}
+query QueryAdminMe {
+  adminMe {
+    id
+  }
+}
+query QueryMangerMe {
+  managerMe {
+    id
+  }
+}

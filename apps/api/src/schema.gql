@@ -32,6 +32,7 @@ type Cinema {
   createdAt: DateTime!
   updatedAt: DateTime!
   managers: [Manager!]!
+  address: Address
   screens: [Screen!]!
 }
 
@@ -73,18 +74,28 @@ type Booking {
   showtimeId: String!
   row: Int!
   column: Int!
-}
-
-type LoginOutput {
-  token: String!
   user: User!
+  showtime: Showtime!
+  ticket: Ticket
+  seat: Seat
 }
 
-type Manager {
+type Seat {
+  row: Int!
+  column: Int!
+  screenId: String!
+  booked(showtimeId: String!): Boolean
+  screen: Screen!
+  bookings: [Booking!]!
+}
+
+type Ticket {
+  qrCode: String
+  id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  id: String!
-  cinema: Cinema
+  userId: String!
+  bookings: [Booking!]!
 }
 
 type Screen {
@@ -127,52 +138,6 @@ enum SoundSystemType {
   IMAX_ENHANCED
 }
 
-type Movie {
-  genre: Genre!
-  posterUrl: String
-  id: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  director: String!
-  duration: Int!
-  releaseDate: DateTime!
-}
-
-"""Enum for roles"""
-enum Genre {
-  ACTION
-  ADVENTURE
-  ANIMATION
-  COMEDY
-  CRIME
-  DOCUMENTARY
-  DRAMA
-  FAMILY
-  FANTASY
-  FILM_NOIR
-  HISTORY
-  HORROR
-  MUSIC
-  MYSTERY
-  ROMANCE
-  SCI_FI
-  SHORT
-  SPORT
-  THRILLER
-  WAR
-  WESTERN
-}
-
-type Seat {
-  row: Int!
-  column: Int!
-  screenId: String!
-  booked(showtimeId: String!): Boolean
-  screen: Screen!
-  bookings: [Booking!]!
-}
-
 type Showtime {
   status: ShowtimeStatus
   id: String!
@@ -210,13 +175,54 @@ type GroupedShowtime {
   date: String!
 }
 
-type Ticket {
-  qrCode: String
+type LoginOutput {
+  token: String!
+  user: User!
+}
+
+type Manager {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  id: String!
+  cinema: Cinema
+}
+
+type Movie {
+  genre: Genre!
+  posterUrl: String
   id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  userId: String!
-  bookings: [Booking!]!
+  title: String!
+  director: String!
+  duration: Int!
+  releaseDate: DateTime!
+  showtimes: [Showtime!]!
+}
+
+"""Enum for roles"""
+enum Genre {
+  ACTION
+  ADVENTURE
+  ANIMATION
+  COMEDY
+  CRIME
+  DOCUMENTARY
+  DRAMA
+  FAMILY
+  FANTASY
+  FILM_NOIR
+  HISTORY
+  HORROR
+  MUSIC
+  MYSTERY
+  ROMANCE
+  SCI_FI
+  SHORT
+  SPORT
+  THRILLER
+  WAR
+  WESTERN
 }
 
 type Query {
@@ -238,6 +244,7 @@ type Query {
   searchCinemas(locationFilter: LocationFilterInput!, distinct: [CinemaScalarFieldEnum!]!, where: CinemaWhereInput!, orderBy: [CinemaOrderByWithRelationInput!]!, cursor: CinemaWhereUniqueInput!, take: Int!, skip: Int!): [Cinema!]!
   managers(distinct: [ManagerScalarFieldEnum!], where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int): [Manager!]!
   manager(where: ManagerWhereUniqueInput!): Manager!
+  managerMe: Manager!
   movies(distinct: [MovieScalarFieldEnum!], where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int): [Movie!]!
   movie(where: MovieWhereUniqueInput!): Movie!
   moviesCount(where: MovieWhereInput): AggregateCountOutput!
@@ -248,7 +255,7 @@ type Query {
   seat(where: SeatWhereUniqueInput!): Seat!
   showtimes(distinct: [ShowtimeScalarFieldEnum!], where: ShowtimeWhereInput, orderBy: [ShowtimeOrderByWithRelationInput!], cursor: ShowtimeWhereUniqueInput, take: Int, skip: Int): [Showtime!]!
   showtime(where: ShowtimeWhereUniqueInput!): Showtime!
-  showtimesInCinema(cinemaId: Int!, movieId: Int!): [GroupedShowtime!]!
+  showtimesInCinema(cinemaId: String!, movieId: String!): [GroupedShowtime!]!
   bookedSeatsInShowtime(showtimeId: String!): RemainingSeats!
   tickets(distinct: [TicketScalarFieldEnum!], where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int): [Ticket!]!
   ticket(where: TicketWhereUniqueInput!): Ticket!

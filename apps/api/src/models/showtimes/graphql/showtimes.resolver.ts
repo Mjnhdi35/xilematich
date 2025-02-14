@@ -111,8 +111,8 @@ export class ShowtimesResolver {
 
   @Query(() => [GroupedShowtime], { name: 'showtimesInCinema' })
   async showtimesInCinema(
-    @Args('cinemaId') cinemaId: number,
-    @Args('movieId') movieId: number,
+    @Args('cinemaId') cinemaId: string,
+    @Args('movieId') movieId: string,
   ) {
     const shows: any[] = await this.prisma.$queryRaw`
         SELECT
