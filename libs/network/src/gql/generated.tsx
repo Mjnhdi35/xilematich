@@ -1561,17 +1561,6 @@ export type AdminQuery = {
   }
 }
 
-export type AdminMeQueryVariables = Exact<{ [key: string]: never }>
-
-export type AdminMeQuery = {
-  __typename?: 'Query'
-  adminMe: {
-    __typename?: 'Admin'
-    id: string
-    user?: { __typename?: 'User'; id: string; name?: string | null } | null
-  }
-}
-
 export type CinemaQueryVariables = Exact<{
   where: CinemaWhereUniqueInput
 }>
@@ -1881,12 +1870,26 @@ export type QueryMangerMeQuery = {
   managerMe: { __typename?: 'Manager'; id: string }
 }
 
+export type WhoamiQueryVariables = Exact<{ [key: string]: never }>
+
+export type WhoamiQuery = {
+  __typename?: 'Query'
+  whoami: {
+    __typename?: 'User'
+    id: string
+    admin?: {
+      __typename?: 'Admin'
+      id: string
+      user?: { __typename?: 'User'; id: string; name?: string | null } | null
+    } | null
+  }
+}
+
 export const namedOperations = {
   Query: {
     GetAuthsProvider: 'GetAuthsProvider',
     Users: 'Users',
     Admin: 'Admin',
-    AdminMe: 'AdminMe',
     Cinema: 'Cinema',
     QueryFindCinema: 'QueryFindCinema',
     SearchCinemas: 'SearchCinemas',
@@ -1899,6 +1902,7 @@ export const namedOperations = {
     Tickets: 'Tickets',
     QueryAdminMe: 'QueryAdminMe',
     QueryMangerMe: 'QueryMangerMe',
+    Whoami: 'Whoami',
   },
   Mutation: {
     Login: 'Login',
@@ -2233,42 +2237,6 @@ export const AdminDocument = {
     },
   ],
 } as unknown as DocumentNode<AdminQuery, AdminQueryVariables>
-export const AdminMeDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'AdminMe' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'adminMe' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'user' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<AdminMeQuery, AdminMeQueryVariables>
 export const CinemaDocument = {
   kind: 'Document',
   definitions: [
@@ -3987,3 +3955,55 @@ export const QueryMangerMeDocument = {
     },
   ],
 } as unknown as DocumentNode<QueryMangerMeQuery, QueryMangerMeQueryVariables>
+export const WhoamiDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Whoami' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'whoami' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'admin' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'user' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'id' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'name' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<WhoamiQuery, WhoamiQueryVariables>

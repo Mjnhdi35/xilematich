@@ -6,6 +6,8 @@ import { SessionProvider } from '@xilematich/ui/src/components/molecules/Session
 import { Header } from '@xilematich/ui/src/components/organisms/Header'
 import { Container } from '@xilematich/ui/src/components/atoms/container'
 import { MenuItem } from '@xilematich/util/types'
+import { Toaster } from '@xilematich/ui/src/components/molecules/Toaster/toaster'
+import { Navbar } from '@xilematich/ui/src/components/organisms/Navbar'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -16,7 +18,12 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
-const MenuItems: MenuItem[] = [{ label: '', href: '' }]
+
+const MenuItems: MenuItem[] = [
+  { label: 'Cinemas', href: '/cinemas' },
+  { label: 'Movies', href: '/movies' },
+]
+
 export const metadata = {
   title: 'Xilematich - Admin',
   description: 'Web-admin for xilematich',
@@ -29,16 +36,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SessionProvider>
-          <ApolloProvider>
+      <SessionProvider>
+        <ApolloProvider>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
             <Header type="admin" menuItems={MenuItems} />
+
             <Container>{children}</Container>
-          </ApolloProvider>
-        </SessionProvider>
-      </body>
+            <Toaster />
+          </body>
+        </ApolloProvider>
+      </SessionProvider>
     </html>
   )
 }

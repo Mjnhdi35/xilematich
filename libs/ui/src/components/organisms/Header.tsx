@@ -8,8 +8,8 @@ import { BaseComponent } from '../../lib/types'
 import { useSession } from 'next-auth/react'
 import { Button } from '../ui/button'
 import { Container } from '../atoms/Container'
-import { Menus } from './Menus'
-import { NavSidebar } from './NavSidebar'
+import { Navbar } from './Navbar'
+import { AdminMenu } from './AdminMenu'
 
 export type IHeaderProps = {
   type?: Role
@@ -42,9 +42,9 @@ export const Header = ({ type, menuItems }: IHeaderProps) => {
             {id ? (
               <div className="flex gap-6 items-center">
                 <div className="text-sm mr-6 flex gap-3">
-                  <Menus menuItems={menuItems} />
+                  {/* <Menus menuItems={menuItems} /> */}
+                  <Navbar />
                 </div>
-                <NavSidebar menuItems={menuItems} />
               </div>
             ) : (
               <>

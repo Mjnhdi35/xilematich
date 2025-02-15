@@ -1,7 +1,7 @@
 import { Role } from '@xilematich/util/types'
 
 import { CopyToClipboard } from './CopyToClipboard'
-import { AlertSection } from './AlertSection'
+import { AlertBox } from './AlertBox'
 
 export interface ITellThemProps {
   id: string
@@ -10,7 +10,7 @@ export interface ITellThemProps {
 
 export const TellThem = ({ id, role }: ITellThemProps) => {
   return (
-    <AlertSection>
+    <AlertBox>
       <div className="max-w-sm">
         <div className="my-6 font-serif text-2xl font-semibold">Huh! 🤔</div>
         <div>Hey, we hate to break it to you...</div>{' '}
@@ -23,6 +23,6 @@ export const TellThem = ({ id, role }: ITellThemProps) => {
         </div>
         <CopyToClipboard text={id} />
       </div>
-    </AlertSection>
+    </AlertBox>
   )
 }

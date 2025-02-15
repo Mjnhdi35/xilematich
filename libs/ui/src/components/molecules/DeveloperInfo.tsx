@@ -8,7 +8,11 @@ export interface IDeveloperInfoProps {
 
 export const DeveloperInfo = ({ className }: IDeveloperInfoProps) => {
   return (
-    <Link href="/" target="_blank" className={cn('text-xs group ', className)}>
+    <Link
+      href="https://github.com/Mjnhdi35/xilematich"
+      target="_blank"
+      className={cn('text-xs group ', className)}
+    >
       <div className="flex items-center gap-1 group-hover:underline underline-offset-4">
         Made with{' '}
         <Heart

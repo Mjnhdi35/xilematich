@@ -1,9 +1,10 @@
 import { IconRotateClockwise2 } from '@tabler/icons-react'
-import { AlertSection } from './AlertSection'
+import { AlertBox } from './AlertBox'
 
 export const Loader = () => <IconRotateClockwise2 className="animate-spin" />
 export const LoaderPanel = ({ text }: { text?: string }) => (
-  <AlertSection title={text}>
+  <AlertBox>
+    {text}
     <Loader />
-  </AlertSection>
+  </AlertBox>
 )

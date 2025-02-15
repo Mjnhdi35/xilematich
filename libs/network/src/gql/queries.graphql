@@ -56,15 +56,6 @@ query Admin($where: AdminWhereUniqueInput!) {
   }
 }
 
-query AdminMe {
-  adminMe {
-    id
-    user {
-      id
-      name
-    }
-  }
-}
 query Cinema($where: CinemaWhereUniqueInput!) {
   cinema(where: $where) {
     id
@@ -306,5 +297,17 @@ query QueryAdminMe {
 query QueryMangerMe {
   managerMe {
     id
+  }
+}
+query Whoami {
+  whoami {
+    id
+    admin {
+      id
+      user {
+        id
+        name
+      }
+    }
   }
 }
