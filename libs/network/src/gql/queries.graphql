@@ -70,6 +70,12 @@ mutation MutationCreateCinema($createCinemaInput: CreateCinemaInput!) {
 mutation MutationCreateMovie($createMovieInput: CreateMovieInput!) {
   createMovie(createMovieInput: $createMovieInput) {
     id
+    title
+    director
+    duration
+    genre
+    posterUrl
+    releaseDate
   }
 }
 mutation MutationCreateManager($createManagerInput: CreateManagerInput!) {
@@ -302,12 +308,9 @@ query QueryMangerMe {
 query Whoami {
   whoami {
     id
+    name
     admin {
       id
-      user {
-        id
-        name
-      }
     }
   }
 }

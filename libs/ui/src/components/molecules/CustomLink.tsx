@@ -25,7 +25,7 @@ const CustomLinkComponent: ForwardRefRenderFunction<
       )}
       {...props}
     >
-      {active ? <ChevronRight className="absolute right-full" /> : null}{' '}
+      {active ? <ChevronRight className="absolute right-full" /> : null}
       {children}
     </NextLink>
   )

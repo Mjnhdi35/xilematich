@@ -23,6 +23,7 @@ export const formSchemaCreateMovie = z.object({
   duration: z.number({ invalid_type_error: 'Duration is required.' }),
   releaseDate: z.string(),
   posterUrl: z.any(),
+  id: z.string(),
 })
 
 export const formSchemaCreateAddress = z.object({

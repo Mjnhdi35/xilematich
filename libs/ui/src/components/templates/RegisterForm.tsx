@@ -10,11 +10,13 @@ import { Button } from '../ui/button'
 import { useFormRegister } from '@xilematich/forms/src/register'
 import { RegisterWithCredentialsDocument } from '@xilematich/network/src/gql/generated'
 import { Role } from '@xilematich/util/types'
+import { useToast } from '../molecules/Toaster/use-toast'
 export interface ISignupFormProps {
   className?: string
   role?: Role
 }
 export const RegisterForm = ({ className, role }: ISignupFormProps) => {
+  const { toast } = useToast()
   const {
     register,
     handleSubmit,
@@ -39,8 +41,10 @@ export const RegisterForm = ({ className, role }: ISignupFormProps) => {
         }
 
         if (data) {
-          alert(`User ${data.registerWithCredentials.id} created. 🎉`)
-          signIn('credentials', {
+          toast({
+            title: `User ${data.registerWithCredentials.id} created. 🎉`,
+          })
+          await signIn('credentials', {
             email: formData.email,
             password: formData.password,
             callbackUrl: '/',

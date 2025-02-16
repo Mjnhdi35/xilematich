@@ -9,6 +9,7 @@ import { Button } from '../ui/button'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { Form } from '../ui/form'
+import { useToast } from '../molecules/Toaster/use-toast'
 
 export interface ILoginFormProps {
   className?: string
@@ -22,7 +23,7 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
 
   const { replace } = useRouter()
   const [loading, setLoading] = useState(false)
-
+  const { toast } = useToast()
   return (
     <Form
       onSubmit={handleSubmit(async (data) => {
@@ -37,10 +38,11 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
         setLoading(false)
 
         if (result?.ok) {
+          await fetch('/api/auth/session')
           replace('/')
         }
         if (result?.error) {
-          alert('Login failed. Try again.')
+          toast({ title: 'Login failed. Try again.' })
         }
       })}
     >

@@ -1,12 +1,11 @@
-import { AdminMenu } from '@xilematich/ui/src/components/organisms/AdminMenu'
-import { IsAdmin } from '@xilematich/ui/src/components/templates/IsAdmin'
+import { IsLoggedIn } from '@xilematich/ui/src/components/organisms/IsLoggedIn'
 
 export default function Home() {
   return (
-    <IsAdmin>
+    <IsLoggedIn>
       <div className="flex justify-center items-center">
         Hello this is Admin
       </div>
-    </IsAdmin>
+    </IsLoggedIn>
   )
 }

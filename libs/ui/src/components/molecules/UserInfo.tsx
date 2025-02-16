@@ -12,14 +12,14 @@ export const UserInfo = ({ children, className }: BaseComponent) => {
       <Image
         src={image || '/user.png'}
         alt=""
-        width={300}
-        height={300}
+        width={255}
+        height={265}
         className="w-16 h-16 object-cover border"
       />
-      <div>
-        <div>{name}</div>
-        <div className="text-sm text-gray">{id}</div>
-      </div>
+
+      <div className="mx-5 text-xl">{name}</div>
+      {/* <div className="text-sm text-gray">{id}</div> */}
+
       {children}
     </div>
   )

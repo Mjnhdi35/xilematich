@@ -1585,7 +1585,16 @@ export type MutationCreateMovieMutationVariables = Exact<{
 
 export type MutationCreateMovieMutation = {
   __typename?: 'Mutation'
-  createMovie: { __typename?: 'Movie'; id: string }
+  createMovie: {
+    __typename?: 'Movie'
+    id: string
+    title: string
+    director: string
+    duration: number
+    genre: Genre
+    posterUrl?: string | null
+    releaseDate: any
+  }
 }
 
 export type MutationCreateManagerMutationVariables = Exact<{
@@ -1877,11 +1886,8 @@ export type WhoamiQuery = {
   whoami: {
     __typename?: 'User'
     id: string
-    admin?: {
-      __typename?: 'Admin'
-      id: string
-      user?: { __typename?: 'User'; id: string; name?: string | null } | null
-    } | null
+    name?: string | null
+    admin?: { __typename?: 'Admin'; id: string } | null
   }
 }
 
@@ -2386,6 +2392,12 @@ export const MutationCreateMovieDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'director' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'duration' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'genre' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'posterUrl' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'releaseDate' } },
               ],
             },
           },
@@ -3972,6 +3984,7 @@ export const WhoamiDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'admin' },
@@ -3979,23 +3992,6 @@ export const WhoamiDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'user' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'name' },
-                            },
-                          ],
-                        },
-                      },
                     ],
                   },
                 },

@@ -1,6 +1,6 @@
 'use client'
 
-import { Menu, Lock, LucideIcon, User, ScreenShare } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { useDialogState } from '@xilematich/util/hooks/dialog'
 import Link from 'next/link'
 import {
@@ -12,14 +12,10 @@ import {
 } from '../ui/sheet'
 import { Button, buttonVariants } from '../ui/button'
 import { useSession } from 'next-auth/react'
+import { LogoutButton } from '../molecules/LogoutButton'
+import { UserInfo } from '../molecules/UserInfo'
 
 export interface INavSidebarProps {}
-
-const menu: { href: string; title: string; icon: LucideIcon }[] = [
-  { href: '/user', title: 'user', icon: User },
-  { href: '/admin', title: 'admin', icon: Lock },
-  { href: '/manager', title: 'manager', icon: ScreenShare },
-]
 
 export function Sidebar() {
   const session = useSession()
@@ -30,8 +26,8 @@ export function Sidebar() {
 
   if (!id) {
     return (
-      <Link href="/sign-in" className={buttonVariants({ variant: 'default' })}>
-        Sign in
+      <Link href="/login" className={buttonVariants({ variant: 'default' })}>
+        Log In
       </Link>
     )
   }
@@ -44,18 +40,12 @@ export function Sidebar() {
       </SheetTrigger>
       <SheetContent className="bg-white">
         <div className="flex flex-col gap-2 mt-4 mb-8">
-          {menu.map((item) => (
-            <Link href={item.href} key={item.title}>
-              <div className="flex items-center gap-2">
-                <item.icon className="w-4 h-4" />{' '}
-                <div className="capitalize">{item.title}</div>
-              </div>
-            </Link>
-          ))}
+          <UserInfo />
         </div>
-
         <SheetFooter>
-          <SheetClose asChild>{/* <SignOutButton /> */}</SheetClose>
+          <SheetClose asChild>
+            <LogoutButton />
+          </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>

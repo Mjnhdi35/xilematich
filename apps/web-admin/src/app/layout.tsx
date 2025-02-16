@@ -7,7 +7,7 @@ import { Header } from '@xilematich/ui/src/components/organisms/Header'
 import { Container } from '@xilematich/ui/src/components/atoms/container'
 import { MenuItem } from '@xilematich/util/types'
 import { Toaster } from '@xilematich/ui/src/components/molecules/Toaster/toaster'
-import { Navbar } from '@xilematich/ui/src/components/organisms/Navbar'
+import { IsAdmin } from '@xilematich/ui/src/components/templates/IsAdmin'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -43,7 +43,9 @@ export default function RootLayout({
           >
             <Header type="admin" menuItems={MenuItems} />
 
-            <Container>{children}</Container>
+            <Container>
+              <IsAdmin>{children}</IsAdmin>
+            </Container>
             <Toaster />
           </body>
         </ApolloProvider>

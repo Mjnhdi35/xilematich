@@ -3,17 +3,17 @@ import { Link } from '../molecules/CustomLink'
 export const AdminMenu = () => {
   return (
     <div className="flex flex-col w-full max-w-xs gap-2">
-      <Link href="/admin">Dashboard</Link>
-      <Link href="/admin/cinemas">Cinemas</Link>
-      <Link className="pl-4" href="/admin/cinemas/new">
+      <Link href="/">Dashboard</Link>
+      <Link href="/cinemas">Cinemas</Link>
+      <Link className="pl-4" href="/cinemas/new">
         Create cinema
       </Link>
-      <Link href="/admin/movies">Movies</Link>
-      <Link className="pl-4" href="/admin/movies/new">
+      <Link href="/movies">Movies</Link>
+      <Link className="pl-4" href="/movies/new">
         Create movie
       </Link>
-      <Link href="/admin/admins">Manage Admins</Link>
-      <Link href="/admin/managers">Manage Managers</Link>
+      <Link href="/admins">Manage Admins</Link>
+      <Link href="/managers">Manage Managers</Link>
     </div>
   )
 }

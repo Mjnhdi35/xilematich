@@ -1,55 +1,42 @@
-'use client'
-import { TrashIcon } from 'lucide-react'
-import { ReactNode, useState, useEffect } from 'react'
-import { Button } from '../ui/button'
+import { IconTrash } from '@tabler/icons-react'
 import Image from 'next/image'
+import { BaseComponent } from '../../lib/types'
 
-export interface IImageUploadProps {
-  src?: Blob | MediaSource
+export interface IImageUploadProps extends BaseComponent {
+  srcs?: FileList
   clearImage: () => void
-  children: ReactNode
 }
 
 export const ImagePreview = ({
-  src,
+  srcs,
   clearImage,
   children,
 }: IImageUploadProps) => {
-  const [imageUrl, setImageUrl] = useState('')
-
-  useEffect(() => {
-    // Check if `src` is a FileList and has at least one file
-    if (src instanceof FileList && src.length > 0) {
-      const file = src[0] // Get the first file from the FileList
-      const objectUrl = URL.createObjectURL(file)
-      setImageUrl(objectUrl)
-
-      // Cleanup
-      return () => {
-        URL.revokeObjectURL(objectUrl)
-      }
-    }
-  }, [src])
-
-  if (src) {
+  if (srcs && srcs?.length > 0) {
     return (
-      <div className="grid items-center justify-center h-full max-w-sm grid-cols-1 grid-rows-1 aspect-square">
-        <Image
-          src={imageUrl}
-          alt=""
-          className="object-cover w-full h-full col-start-1 row-start-1 rounded shadow"
-        />
-        <Button
-          className="col-start-1 row-start-1 p-2 text-white bg-black/30 justify-self-center"
-          onClick={clearImage}
+      <div className="grid grid-cols-2 gap-2 relative">
+        <button
+          onClick={() => clearImage()}
+          className="absolute z-10 p-2 text-white bg-red/80 flex gap-2 items-center rounded left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         >
-          <TrashIcon /> Clear
-        </Button>
+          <IconTrash /> Clear all
+        </button>
+        {Array.from(srcs)?.map((src, index) => (
+          <Image
+            key={index}
+            className="object-cover h-full w-full aspect-square"
+            alt=""
+            width={300}
+            height={300}
+            src={URL.createObjectURL(src)}
+          />
+        ))}
       </div>
     )
   }
+
   return (
-    <div className="flex items-center justify-center w-full h-full  min-h-[12rem] bg-gray-100 shadow-inner">
+    <div className="flex items-center justify-center w-full h-full min-h-36">
       {children}
     </div>
   )

@@ -9,8 +9,8 @@ export const Navbar = () => {
       <Container>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {/* <UserButton /> */}
             <Sidebar />
+            {/* userprofile */}
           </div>
         </div>
       </Container>

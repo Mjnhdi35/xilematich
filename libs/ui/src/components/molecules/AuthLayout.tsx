@@ -13,7 +13,7 @@ export interface IAuthLayoutProps {
 
 export const AuthLayout = ({ title, children }: IAuthLayoutProps) => {
   return (
-    <div className="relative h-[calc(100vh-10rem)] flex justify-center items-center ">
+    <div className="relative h-[calc(100vh-12rem)] flex justify-center items-center ">
       <div className=" flex flex-col justify-center items-center absolute top-0 bg-white/25 backdrop-blur-sm bottom-0  ">
         <div className="p-8 text-black ">
           <div className="w-full max-w-lg mx-auto ">
