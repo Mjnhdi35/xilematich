@@ -1,4 +1,4 @@
-import { memo, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,12 +12,14 @@ export const useFormCreateMovie = () =>
     resolver: zodResolver(formSchemaCreateMovie),
     defaultValues: {
       director: '',
-      duration: 0,
+      duration: 1,
       genre: Genre.Action,
       posterUrl: '',
       releaseDate: '',
       title: '',
     },
+    mode: 'onChange',
+    reValidateMode: 'onBlur',
   })
 
 export const FormProviderCreateMovie = ({

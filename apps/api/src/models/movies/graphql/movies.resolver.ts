@@ -8,7 +8,11 @@ import {
 } from '@nestjs/graphql'
 import { MoviesService } from './movies.service'
 import { Movie } from './entity/movie.entity'
-import { FindManyMovieArgs, FindUniqueMovieArgs } from './dtos/find.args'
+import {
+  FindManyMovieArgs,
+  FindManyMovieArgsStrict,
+  FindUniqueMovieArgs,
+} from './dtos/find.args'
 import { CreateMovieInput } from './dtos/create-movie.input'
 import { UpdateMovieInput } from './dtos/update-movie.input'
 import { checkRowLevelPermission } from 'src/common/auth/util'
@@ -33,12 +37,12 @@ export class MoviesResolver {
     @Args('createMovieInput') args: CreateMovieInput,
     @GetUser() user: GetUserType,
   ) {
-    checkRowLevelPermission(user, args.id)
+    checkRowLevelPermission(user)
     return this.moviesService.create(args)
   }
 
   @Query(() => [Movie], { name: 'movies' })
-  findAll(@Args() args: FindManyMovieArgs) {
+  findAll(@Args() args: FindManyMovieArgsStrict) {
     return this.moviesService.findAll(args)
   }
 

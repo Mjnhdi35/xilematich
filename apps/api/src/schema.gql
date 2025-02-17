@@ -226,51 +226,41 @@ enum Genre {
 }
 
 type Query {
-  addresses(distinct: [AddressScalarFieldEnum!], where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int): [Address!]!
+  addresses(where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int, distinct: [AddressScalarFieldEnum!]): [Address!]!
   address(where: AddressWhereUniqueInput!): Address!
-  admins(distinct: [AdminScalarFieldEnum!], where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int): [Admin!]!
+  admins(where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Int, skip: Int, distinct: [AdminScalarFieldEnum!]): [Admin!]!
   admin(where: AdminWhereUniqueInput!): Admin!
   adminMe: Admin!
-  bookings(distinct: [BookingScalarFieldEnum!], where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int): [Booking!]!
+  bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   booking(where: BookingWhereUniqueInput!): Booking!
-  users(distinct: [UserScalarFieldEnum!], where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int): [User!]!
+  users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   user(where: UserWhereUniqueInput!): User!
   whoami: User!
   getAuthsProvider(id: String!): AuthsProvider
-  cinemas(distinct: [CinemaScalarFieldEnum!], where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int): [Cinema!]!
+  cinemas(where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int, distinct: [CinemaScalarFieldEnum!]): [Cinema!]!
   cinema(where: CinemaWhereUniqueInput!): Cinema!
   cinemaByManager(id: String!): Cinema!
   cinemasCount(where: CinemaWhereUniqueInput): AggregateCountOutput!
-  searchCinemas(locationFilter: LocationFilterInput!, distinct: [CinemaScalarFieldEnum!]!, where: CinemaWhereInput!, orderBy: [CinemaOrderByWithRelationInput!]!, cursor: CinemaWhereUniqueInput!, take: Int!, skip: Int!): [Cinema!]!
-  managers(distinct: [ManagerScalarFieldEnum!], where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int): [Manager!]!
+  searchCinemas(locationFilter: LocationFilterInput!, where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int, distinct: [CinemaScalarFieldEnum!]): [Cinema!]!
+  managers(where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int, distinct: [ManagerScalarFieldEnum!]): [Manager!]!
   manager(where: ManagerWhereUniqueInput!): Manager!
   managerMe: Manager!
-  movies(distinct: [MovieScalarFieldEnum!], where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int): [Movie!]!
-  movie(where: MovieWhereUniqueInput!): Movie!
+  movies(where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int, distinct: [MovieScalarFieldEnum!]): [Movie!]!
+  movie(where: MovieWhereUniqueInput): Movie!
   moviesCount(where: MovieWhereInput): AggregateCountOutput!
-  moviesPerCinema(distinct: [MovieScalarFieldEnum!], where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int, cinemaId: String!): [Movie!]!
-  screens(distinct: [ScreenScalarFieldEnum!], where: ScreenWhereInput, orderBy: [ScreenOrderByWithRelationInput!], cursor: ScreenWhereUniqueInput, take: Int, skip: Int): [Screen!]!
+  moviesPerCinema(where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int, distinct: [MovieScalarFieldEnum!], cinemaId: String!): [Movie!]!
+  screens(where: ScreenWhereInput, orderBy: [ScreenOrderByWithRelationInput!], cursor: ScreenWhereUniqueInput, take: Int, skip: Int, distinct: [ScreenScalarFieldEnum!]): [Screen!]!
   screen(where: ScreenWhereUniqueInput!): Screen!
-  seats(distinct: [SeatScalarFieldEnum!], where: SeatWhereInput, orderBy: [SeatOrderByWithRelationInput!], cursor: SeatWhereUniqueInput, take: Int, skip: Int): [Seat!]!
+  seats(where: SeatWhereInput, orderBy: [SeatOrderByWithRelationInput!], cursor: SeatWhereUniqueInput, take: Int, skip: Int, distinct: [SeatScalarFieldEnum!]): [Seat!]!
   seat(where: SeatWhereUniqueInput!): Seat!
-  showtimes(distinct: [ShowtimeScalarFieldEnum!], where: ShowtimeWhereInput, orderBy: [ShowtimeOrderByWithRelationInput!], cursor: ShowtimeWhereUniqueInput, take: Int, skip: Int): [Showtime!]!
+  showtimes(where: ShowtimeWhereInput, orderBy: [ShowtimeOrderByWithRelationInput!], cursor: ShowtimeWhereUniqueInput, take: Int, skip: Int, distinct: [ShowtimeScalarFieldEnum!]): [Showtime!]!
   showtime(where: ShowtimeWhereUniqueInput!): Showtime!
   showtimesInCinema(cinemaId: String!, movieId: String!): [GroupedShowtime!]!
   bookedSeatsInShowtime(showtimeId: String!): RemainingSeats!
-  tickets(distinct: [TicketScalarFieldEnum!], where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int): [Ticket!]!
+  tickets(where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int, distinct: [TicketScalarFieldEnum!]): [Ticket!]!
   ticket(where: TicketWhereUniqueInput!): Ticket!
-  myTickets(distinct: [TicketScalarFieldEnum!], where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int): [Ticket!]!
+  myTickets(where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int, distinct: [TicketScalarFieldEnum!]): [Ticket!]!
   ticketsCount(where: TicketWhereInput): AggregateCountOutput!
-}
-
-enum AddressScalarFieldEnum {
-  id
-  createdAt
-  updatedAt
-  cinemaId
-  address
-  lat
-  lng
 }
 
 input AddressWhereInput {
@@ -605,10 +595,14 @@ input AddressWhereUniqueInput {
   cinemaId: String
 }
 
-enum AdminScalarFieldEnum {
+enum AddressScalarFieldEnum {
   id
   createdAt
   updatedAt
+  cinemaId
+  address
+  lat
+  lng
 }
 
 input AdminWhereInput {
@@ -658,16 +652,10 @@ input AdminWhereUniqueInput {
   id: String!
 }
 
-enum BookingScalarFieldEnum {
+enum AdminScalarFieldEnum {
   id
   createdAt
   updatedAt
-  userId
-  showtimeId
-  row
-  column
-  screenId
-  ticketId
 }
 
 input BookingOrderByWithRelationInput {
@@ -756,6 +744,22 @@ input BookingWhereUniqueInput {
   id: String!
 }
 
+enum BookingScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  userId
+  showtimeId
+  row
+  column
+  screenId
+  ticketId
+}
+
+input UserWhereUniqueInput {
+  id: String!
+}
+
 enum UserScalarFieldEnum {
   id
   createdAt
@@ -764,7 +768,7 @@ enum UserScalarFieldEnum {
   image
 }
 
-input UserWhereUniqueInput {
+input CinemaWhereUniqueInput {
   id: String!
 }
 
@@ -775,15 +779,15 @@ enum CinemaScalarFieldEnum {
   name
 }
 
-input CinemaWhereUniqueInput {
-  id: String!
-}
-
 input LocationFilterInput {
   ne_lat: Float!
   ne_lng: Float!
   sw_lat: Float!
   sw_lng: Float!
+}
+
+input ManagerWhereUniqueInput {
+  id: String!
 }
 
 enum ManagerScalarFieldEnum {
@@ -792,7 +796,7 @@ enum ManagerScalarFieldEnum {
   updatedAt
 }
 
-input ManagerWhereUniqueInput {
+input MovieWhereUniqueInput {
   id: String!
 }
 
@@ -808,7 +812,7 @@ enum MovieScalarFieldEnum {
   posterUrl
 }
 
-input MovieWhereUniqueInput {
+input ScreenWhereUniqueInput {
   id: String!
 }
 
@@ -823,16 +827,6 @@ enum ScreenScalarFieldEnum {
   soundSystemType
 }
 
-input ScreenWhereUniqueInput {
-  id: String!
-}
-
-enum SeatScalarFieldEnum {
-  row
-  column
-  screenId
-}
-
 input SeatWhereUniqueInput {
   screenId_row_column: SeatScreenIdRowColumnCompoundUniqueInput!
 }
@@ -841,6 +835,16 @@ input SeatScreenIdRowColumnCompoundUniqueInput {
   screenId: String!
   row: Int!
   column: Int!
+}
+
+enum SeatScalarFieldEnum {
+  row
+  column
+  screenId
+}
+
+input ShowtimeWhereUniqueInput {
+  id: String!
 }
 
 enum ShowtimeScalarFieldEnum {
@@ -853,7 +857,7 @@ enum ShowtimeScalarFieldEnum {
   screenId
 }
 
-input ShowtimeWhereUniqueInput {
+input TicketWhereUniqueInput {
   id: String!
 }
 
@@ -863,10 +867,6 @@ enum TicketScalarFieldEnum {
   updatedAt
   userId
   qrCode
-}
-
-input TicketWhereUniqueInput {
-  id: String!
 }
 
 type Mutation {
@@ -893,7 +893,7 @@ type Mutation {
   removeManager(where: ManagerWhereUniqueInput!): Manager!
   createMovie(createMovieInput: CreateMovieInput!): Movie!
   updateMovie(updateMovieInput: UpdateMovieInput!): Movie!
-  removeMovie(where: MovieWhereUniqueInput!): Movie!
+  removeMovie(where: MovieWhereUniqueInput): Movie!
   createScreen(createScreenInput: CreateScreenInput!): Screen!
   updateScreen(updateScreenInput: UpdateScreenInput!): Screen!
   removeScreen(where: ScreenWhereUniqueInput!): Screen!
@@ -1026,7 +1026,6 @@ input UpdateManagerInput {
 input CreateMovieInput {
   genre: Genre!
   posterUrl: String
-  id: String!
   title: String!
   director: String!
   duration: Int!
@@ -1036,11 +1035,11 @@ input CreateMovieInput {
 input UpdateMovieInput {
   genre: Genre
   posterUrl: String
-  id: String!
   title: String
   director: String
   duration: Int
   releaseDate: DateTime
+  id: String!
 }
 
 input CreateScreenInput {

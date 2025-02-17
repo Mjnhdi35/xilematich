@@ -9,19 +9,24 @@ registerEnumType(Prisma.MovieScalarFieldEnum, {
 })
 
 @ArgsType()
-class FindManyMovieArgsStrict
+export class FindManyMovieArgsStrict
   implements
     RestrictProperties<
       FindManyMovieArgsStrict,
       Omit<Prisma.MovieFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: MovieWhereInput
+  @Field({ nullable: true })
   orderBy: MovieOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: MovieWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.MovieScalarFieldEnum])
+  @Field(() => [Prisma.MovieScalarFieldEnum], { nullable: true })
   distinct: Prisma.MovieScalarFieldEnum[]
 }
 
@@ -30,5 +35,6 @@ export class FindManyMovieArgs extends PartialType(FindManyMovieArgsStrict) {}
 
 @ArgsType()
 export class FindUniqueMovieArgs {
+  @Field({ nullable: true })
   where: MovieWhereUniqueInput
 }

@@ -16,12 +16,17 @@ class FindManyAddressArgsStrict
       Omit<Prisma.AddressFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: AddressWhereInput
+  @Field({ nullable: true })
   orderBy: AddressOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: AddressWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.AddressScalarFieldEnum])
+  @Field(() => [Prisma.AddressScalarFieldEnum], { nullable: true })
   distinct: Prisma.AddressScalarFieldEnum[]
 }
 

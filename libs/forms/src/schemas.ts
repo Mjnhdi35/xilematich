@@ -18,12 +18,11 @@ export const formSchemaLogin = formSchemaRegister.pick({
 
 export const formSchemaCreateMovie = z.object({
   genre: z.nativeEnum(Genre),
-  title: z.string().min(1, { message: 'Movie name is required' }),
+  title: z.string().min(1, { message: 'Title Movie name is required' }),
   director: z.string().min(1, { message: 'Director name is required' }),
   duration: z.number({ invalid_type_error: 'Duration is required.' }),
   releaseDate: z.string(),
   posterUrl: z.any(),
-  id: z.string(),
 })
 
 export const formSchemaCreateAddress = z.object({

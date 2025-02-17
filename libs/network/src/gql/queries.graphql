@@ -62,6 +62,24 @@ query Cinema($where: CinemaWhereUniqueInput!) {
     name
   }
 }
+
+query QueryMovies($skip: Int, $take: Int) {
+  movies(skip: $skip, take: $take) {
+    genre
+    posterUrl
+    id
+    createdAt
+    updatedAt
+    title
+    director
+    duration
+    releaseDate
+  }
+  moviesCount {
+    count
+  }
+}
+
 mutation MutationCreateCinema($createCinemaInput: CreateCinemaInput!) {
   createCinema(createCinemaInput: $createCinemaInput) {
     id
@@ -129,35 +147,7 @@ query SearchCinemas(
     }
   }
 }
-query Movies(
-  $skip: Int
-  $take: Int
-  $cursor: MovieWhereUniqueInput
-  $orderBy: [MovieOrderByWithRelationInput!]
-  $where: MovieWhereInput
-  $distinct: [MovieScalarFieldEnum!]
-) {
-  movies(
-    skip: $skip
-    take: $take
-    cursor: $cursor
-    orderBy: $orderBy
-    where: $where
-    distinct: $distinct
-  ) {
-    id
-    genre
-    duration
-    director
-    createdAt
-    posterUrl
-    releaseDate
-    title
-  }
-  moviesCount(where: $where) {
-    count
-  }
-}
+
 query QueryCinemas(
   $skip: Int
   $take: Int

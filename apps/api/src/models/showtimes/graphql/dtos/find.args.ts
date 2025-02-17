@@ -16,12 +16,17 @@ class FindManyShowtimeArgsStrict
       Omit<Prisma.ShowtimeFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: ShowtimeWhereInput
+  @Field({ nullable: true })
   orderBy: ShowtimeOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: ShowtimeWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.ShowtimeScalarFieldEnum])
+  @Field(() => [Prisma.ShowtimeScalarFieldEnum], { nullable: true })
   distinct: Prisma.ShowtimeScalarFieldEnum[]
 }
 

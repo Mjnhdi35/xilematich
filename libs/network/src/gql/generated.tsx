@@ -314,7 +314,6 @@ export type CreateMovieInput = {
   director: Scalars['String']['input']
   duration: Scalars['Int']['input']
   genre: Genre
-  id: Scalars['String']['input']
   posterUrl?: InputMaybe<Scalars['String']['input']>
   releaseDate: Scalars['DateTime']['input']
   title: Scalars['String']['input']
@@ -695,7 +694,7 @@ export type MutationRemoveManagerArgs = {
 }
 
 export type MutationRemoveMovieArgs = {
-  where: MovieWhereUniqueInput
+  where?: InputMaybe<MovieWhereUniqueInput>
 }
 
 export type MutationRemoveScreenArgs = {
@@ -889,7 +888,7 @@ export type QueryManagersArgs = {
 }
 
 export type QueryMovieArgs = {
-  where: MovieWhereUniqueInput
+  where?: InputMaybe<MovieWhereUniqueInput>
 }
 
 export type QueryMoviesArgs = {
@@ -938,13 +937,13 @@ export type QueryScreensArgs = {
 }
 
 export type QuerySearchCinemasArgs = {
-  cursor: CinemaWhereUniqueInput
-  distinct: Array<CinemaScalarFieldEnum>
+  cursor?: InputMaybe<CinemaWhereUniqueInput>
+  distinct?: InputMaybe<Array<CinemaScalarFieldEnum>>
   locationFilter: LocationFilterInput
-  orderBy: Array<CinemaOrderByWithRelationInput>
-  skip: Scalars['Int']['input']
-  take: Scalars['Int']['input']
-  where: CinemaWhereInput
+  orderBy?: InputMaybe<Array<CinemaOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InputMaybe<CinemaWhereInput>
 }
 
 export type QuerySeatArgs = {
@@ -1570,6 +1569,28 @@ export type CinemaQuery = {
   cinema: { __typename?: 'Cinema'; id: string; name: string }
 }
 
+export type QueryMoviesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+}>
+
+export type QueryMoviesQuery = {
+  __typename?: 'Query'
+  movies: Array<{
+    __typename?: 'Movie'
+    genre: Genre
+    posterUrl?: string | null
+    id: string
+    createdAt: any
+    updatedAt: any
+    title: string
+    director: string
+    duration: number
+    releaseDate: any
+  }>
+  moviesCount: { __typename?: 'AggregateCountOutput'; count: number }
+}
+
 export type MutationCreateCinemaMutationVariables = Exact<{
   createCinemaInput: CreateCinemaInput
 }>
@@ -1655,33 +1676,6 @@ export type SearchCinemasQuery = {
     name: string
     address?: { __typename?: 'Address'; lng: number; lat: number } | null
   }>
-}
-
-export type MoviesQueryVariables = Exact<{
-  skip?: InputMaybe<Scalars['Int']['input']>
-  take?: InputMaybe<Scalars['Int']['input']>
-  cursor?: InputMaybe<MovieWhereUniqueInput>
-  orderBy?: InputMaybe<
-    Array<MovieOrderByWithRelationInput> | MovieOrderByWithRelationInput
-  >
-  where?: InputMaybe<MovieWhereInput>
-  distinct?: InputMaybe<Array<MovieScalarFieldEnum> | MovieScalarFieldEnum>
-}>
-
-export type MoviesQuery = {
-  __typename?: 'Query'
-  movies: Array<{
-    __typename?: 'Movie'
-    id: string
-    genre: Genre
-    duration: number
-    director: string
-    createdAt: any
-    posterUrl?: string | null
-    releaseDate: any
-    title: string
-  }>
-  moviesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
 export type QueryCinemasQueryVariables = Exact<{
@@ -1897,9 +1891,9 @@ export const namedOperations = {
     Users: 'Users',
     Admin: 'Admin',
     Cinema: 'Cinema',
+    QueryMovies: 'QueryMovies',
     QueryFindCinema: 'QueryFindCinema',
     SearchCinemas: 'SearchCinemas',
-    Movies: 'Movies',
     QueryCinemas: 'QueryCinemas',
     QueryMoviesPerCinema: 'QueryMoviesPerCinema',
     BookedSeatsInShowtime: 'BookedSeatsInShowtime',
@@ -2295,6 +2289,79 @@ export const CinemaDocument = {
     },
   ],
 } as unknown as DocumentNode<CinemaQuery, CinemaQueryVariables>
+export const QueryMoviesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'QueryMovies' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'movies' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'genre' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'posterUrl' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'director' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'duration' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'releaseDate' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'moviesCount' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<QueryMoviesQuery, QueryMoviesQueryVariables>
 export const MutationCreateCinemaDocument = {
   kind: 'Document',
   definitions: [
@@ -2805,176 +2872,6 @@ export const SearchCinemasDocument = {
     },
   ],
 } as unknown as DocumentNode<SearchCinemasQuery, SearchCinemasQueryVariables>
-export const MoviesDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'Movies' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'cursor' },
-          },
-          type: {
-            kind: 'NamedType',
-            name: { kind: 'Name', value: 'MovieWhereUniqueInput' },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'orderBy' },
-          },
-          type: {
-            kind: 'ListType',
-            type: {
-              kind: 'NonNullType',
-              type: {
-                kind: 'NamedType',
-                name: { kind: 'Name', value: 'MovieOrderByWithRelationInput' },
-              },
-            },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'where' },
-          },
-          type: {
-            kind: 'NamedType',
-            name: { kind: 'Name', value: 'MovieWhereInput' },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'distinct' },
-          },
-          type: {
-            kind: 'ListType',
-            type: {
-              kind: 'NonNullType',
-              type: {
-                kind: 'NamedType',
-                name: { kind: 'Name', value: 'MovieScalarFieldEnum' },
-              },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'movies' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'skip' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'skip' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'take' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'take' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'cursor' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'cursor' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'orderBy' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'orderBy' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'where' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'distinct' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'distinct' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'genre' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'duration' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'director' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'posterUrl' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'releaseDate' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-              ],
-            },
-          },
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'moviesCount' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'where' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<MoviesQuery, MoviesQueryVariables>
 export const QueryCinemasDocument = {
   kind: 'Document',
   definitions: [

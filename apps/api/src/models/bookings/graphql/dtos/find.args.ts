@@ -16,12 +16,17 @@ class FindManyBookingArgsStrict
       Omit<Prisma.BookingFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: BookingWhereInput
+  @Field({ nullable: true })
   orderBy: BookingOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: BookingWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.BookingScalarFieldEnum])
+  @Field(() => [Prisma.BookingScalarFieldEnum], { nullable: true })
   distinct: Prisma.BookingScalarFieldEnum[]
 }
 

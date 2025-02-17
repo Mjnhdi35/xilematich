@@ -16,12 +16,17 @@ class FindManyScreenArgsStrict
       Omit<Prisma.ScreenFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: ScreenWhereInput
+  @Field({ nullable: true })
   orderBy: ScreenOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: ScreenWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.ScreenScalarFieldEnum])
+  @Field(() => [Prisma.ScreenScalarFieldEnum], { nullable: true })
   distinct: Prisma.ScreenScalarFieldEnum[]
 }
 

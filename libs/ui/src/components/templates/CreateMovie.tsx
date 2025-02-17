@@ -13,7 +13,7 @@ import {
   namedOperations,
 } from '@xilematich/network/src/gql/generated'
 import { useToast } from '../molecules/Toaster/use-toast'
-import { useRouter } from 'next/navigation'
+
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
 import { Form } from '../ui/form'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -34,16 +34,17 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
     control,
     formState: { errors },
     watch,
+    resetField,
   } = useFormCreateMovie()
   const { toast } = useToast()
 
   const [open, setOpen] = useState(false)
-  const { uploading, upload } = useCloudinaryUpload()
+  const { uploading, upload, uploadProgress } = useCloudinaryUpload()
   const { posterUrl } = watch()
   const [createMovieInput, { data, loading }] = useMutation(
     MutationCreateMovieDocument,
     {
-      refetchQueries: [namedOperations.Query.Movies],
+      refetchQueries: [namedOperations.Query.QueryMovies],
       onCompleted: () => {
         reset()
         toast({ title: 'Movie created successfully.' })
@@ -53,8 +54,20 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
       },
     },
   )
-  console.log('Form Data:', data)
-  console.log('Loading:', loading, 'Uploading:', uploading)
+  const onSubmit = handleSubmit(async (formData) => {
+    await createMovieInput({
+      variables: {
+        createMovieInput: {
+          title: formData.title,
+          director: formData.director,
+          posterUrl: formData.posterUrl,
+          duration: formData.duration,
+          genre: formData.genre,
+          releaseDate: formData.releaseDate,
+        },
+      },
+    })
+  })
   return (
     <div className="max-w-lg mx-auto">
       <Dialog open={open} onOpenChange={setOpen}>
@@ -64,42 +77,7 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
         </DialogContent>
       </Dialog>
 
-      <Form
-        onSubmit={handleSubmit(
-          async ({
-            director,
-            duration,
-            genre,
-            posterUrl,
-            releaseDate,
-            title,
-            id,
-          }) => {
-            const file = posterUrl?.[0] || null
-            let uploadedUrl = ''
-
-            if (file) {
-              const uploadedImages = await upload(file)
-              uploadedUrl = uploadedImages[0]
-            }
-
-            await createMovieInput({
-              variables: {
-                createMovieInput: {
-                  id,
-                  director,
-                  duration,
-                  genre,
-                  posterUrl: uploadedUrl,
-                  releaseDate,
-                  title,
-                },
-              },
-            })
-          },
-        )}
-        className="space-y-4"
-      >
+      <Form onSubmit={onSubmit} className="space-y-4">
         <Label title="Title" error={errors.title?.message}>
           <Input placeholder="Title" {...register('title')} />
         </Label>
@@ -142,24 +120,34 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
 
         <Label title="Poster Image">
           <ImagePreview
-            srcs={posterUrl[0]}
-            clearImage={() => reset({ posterUrl: '' })}
+            srcs={posterUrl}
+            clearImage={() => resetField('posterUrl')}
           >
             <Controller
               control={control}
-              name="posterUrl"
+              name={'posterUrl'}
               render={({ field }) => (
                 <Input
                   type="file"
                   accept="image/*"
                   multiple={false}
-                  onChange={(e) => field.onChange(e.target.files)}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      try {
+                        const url = await upload(file)
+                        field.onChange(url)
+                      } catch (error) {
+                        console.log(error)
+                      }
+                    }
+                  }}
                 />
               )}
             />
           </ImagePreview>
 
-          {uploading && <ProgressBar value={1} />}
+          {uploading && <ProgressBar value={uploadProgress} />}
 
           {errors.posterUrl && (
             <p className="text-red-500">

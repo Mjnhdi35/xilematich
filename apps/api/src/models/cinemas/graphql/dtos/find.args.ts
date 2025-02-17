@@ -16,12 +16,17 @@ export class FindManyCinemaArgsStrict
       Omit<Prisma.CinemaFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: CinemaWhereInput
+  @Field({ nullable: true })
   orderBy: CinemaOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: CinemaWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.CinemaScalarFieldEnum])
+  @Field(() => [Prisma.CinemaScalarFieldEnum], { nullable: true })
   distinct: Prisma.CinemaScalarFieldEnum[]
 }
 

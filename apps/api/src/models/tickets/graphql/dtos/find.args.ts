@@ -16,12 +16,17 @@ class FindManyTicketArgsStrict
       Omit<Prisma.TicketFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: TicketWhereInput
+  @Field({ nullable: true })
   orderBy: TicketOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: TicketWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.TicketScalarFieldEnum])
+  @Field(() => [Prisma.TicketScalarFieldEnum], { nullable: true })
   distinct: Prisma.TicketScalarFieldEnum[]
 }
 

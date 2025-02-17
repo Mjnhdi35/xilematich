@@ -16,12 +16,17 @@ class FindManyUserArgsStrict
       Omit<Prisma.UserFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: UserWhereInput
+  @Field({ nullable: true })
   orderBy: UserOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: UserWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.UserScalarFieldEnum])
+  @Field(() => [Prisma.UserScalarFieldEnum], { nullable: true })
   distinct: Prisma.UserScalarFieldEnum[]
 }
 

@@ -16,12 +16,17 @@ class FindManyAdminArgsStrict
       Omit<Prisma.AdminFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: AdminWhereInput
+  @Field({ nullable: true })
   orderBy: AdminOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: AdminWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.AdminScalarFieldEnum])
+  @Field(() => [Prisma.AdminScalarFieldEnum], { nullable: true })
   distinct: Prisma.AdminScalarFieldEnum[]
 }
 

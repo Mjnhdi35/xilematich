@@ -16,12 +16,17 @@ class FindManySeatArgsStrict
       Omit<Prisma.SeatFindManyArgs, 'include' | 'select'>
     >
 {
+  @Field({ nullable: true })
   where: SeatWhereInput
+  @Field({ nullable: true })
   orderBy: SeatOrderByWithRelationInput[]
+  @Field({ nullable: true })
   cursor: SeatWhereUniqueInput
+  @Field({ nullable: true })
   take: number
+  @Field({ nullable: true })
   skip: number
-  @Field(() => [Prisma.SeatScalarFieldEnum])
+  @Field(() => [Prisma.SeatScalarFieldEnum], { nullable: true })
   distinct: Prisma.SeatScalarFieldEnum[]
 }
 
