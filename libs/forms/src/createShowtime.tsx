@@ -10,6 +10,8 @@ export const useFormCreateShowtime = () =>
   useForm<FormTypeCreateShowtime>({
     resolver: zodResolver(formSchemaCreateShowtime),
     defaultValues: { movieId: -99, screenId: -99, showtimes: [] },
+    mode: 'onChange',
+    reValidateMode: 'onBlur',
   })
 
 export const FormProviderCreateShowtime = ({

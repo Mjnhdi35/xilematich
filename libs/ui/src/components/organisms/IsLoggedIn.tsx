@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { useSession } from 'next-auth/react'
 import { LoaderPanel } from '../molecules/Loader'
 import { AlertBox } from '../molecules/AlertBox'
-import Link from 'next/link'
+import { Link } from '../molecules/CustomLink'
 
 type RenderPropChild = (id: string) => ReactNode
 

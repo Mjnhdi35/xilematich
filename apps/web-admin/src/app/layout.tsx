@@ -7,7 +7,6 @@ import { Header } from '@xilematich/ui/src/components/organisms/Header'
 import { Container } from '@xilematich/ui/src/components/atoms/container'
 import { MenuItem } from '@xilematich/util/types'
 import { Toaster } from '@xilematich/ui/src/components/molecules/Toaster/toaster'
-import { IsAdmin } from '@xilematich/ui/src/components/templates/IsAdmin'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -19,10 +18,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const MenuItems: MenuItem[] = [
-  { label: 'Cinemas', href: '/cinemas' },
-  { label: 'Movies', href: '/movies' },
-]
+const MenuItems: MenuItem[] = [{ label: 'Search Map', href: '/search' }]
 
 export const metadata = {
   title: 'Xilematich - Admin',
@@ -43,9 +39,7 @@ export default function RootLayout({
           >
             <Header type="admin" menuItems={MenuItems} />
 
-            <Container>
-              <IsAdmin>{children}</IsAdmin>
-            </Container>
+            <Container>{children}</Container>
             <Toaster />
           </body>
         </ApolloProvider>

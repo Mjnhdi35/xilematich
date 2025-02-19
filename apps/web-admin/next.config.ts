@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
         pathname: '/dccfk1x2g/image/upload/**',
       },
     ],
+    domains: ['lh3.googleusercontent.com'],
   },
 }
 

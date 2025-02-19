@@ -39,31 +39,45 @@ mutation RegisterWithCredentials(
     createdAt
   }
 }
-
-query Users {
-  users {
+query Whoami {
+  whoami {
     id
-  }
-}
-
-query Admin($where: AdminWhereUniqueInput!) {
-  admin(where: $where) {
-    id
-    user {
+    name
+    admin {
+      user {
+        id
+        name
+      }
+    }
+    manager {
       id
-      name
     }
   }
 }
-
-query Cinema($where: CinemaWhereUniqueInput!) {
-  cinema(where: $where) {
+mutation MutationCreateMovie($createMovieInput: CreateMovieInput!) {
+  createMovie(createMovieInput: $createMovieInput) {
     id
-    name
+    duration
+    director
+    posterUrl
+    releaseDate
+    title
   }
 }
-
-query QueryMovies($skip: Int, $take: Int) {
+query QueryMovies {
+  movies {
+    genre
+    posterUrl
+    id
+    createdAt
+    updatedAt
+    title
+    director
+    duration
+    releaseDate
+  }
+}
+query QueryMovieSkipTake($skip: Int, $take: Int) {
   movies(skip: $skip, take: $take) {
     genre
     posterUrl
@@ -75,232 +89,90 @@ query QueryMovies($skip: Int, $take: Int) {
     duration
     releaseDate
   }
-  moviesCount {
-    count
-  }
 }
 
-mutation MutationCreateCinema($createCinemaInput: CreateCinemaInput!) {
-  createCinema(createCinemaInput: $createCinemaInput) {
-    id
-  }
-}
-mutation MutationCreateMovie($createMovieInput: CreateMovieInput!) {
-  createMovie(createMovieInput: $createMovieInput) {
-    id
-    title
-    director
-    duration
-    genre
-    posterUrl
-    releaseDate
-  }
-}
-mutation MutationCreateManager($createManagerInput: CreateManagerInput!) {
-  createManager(createManagerInput: $createManagerInput) {
-    id
-  }
-}
-query QueryFindCinema($where: CinemaWhereUniqueInput!) {
-  cinema(where: $where) {
-    id
+query QueryCinemas($skip: Int, $take: Int) {
+  cinemas(skip: $skip, take: $take) {
     name
-    screens {
-      id
-      numberRoom
-      seatsCount
-      showtimes {
-        id
-        startTime
-      }
-    }
-  }
-}
-mutation MutationCreateScreen($createScreenInput: CreateScreenInput!) {
-  createScreen(createScreenInput: $createScreenInput) {
     id
-  }
-}
-query SearchCinemas(
-  $locationFilter: LocationFilterInput!
-  $distinct: [CinemaScalarFieldEnum!]!
-  $where: CinemaWhereInput!
-  $orderBy: [CinemaOrderByWithRelationInput!]!
-  $cursor: CinemaWhereUniqueInput!
-  $take: Int!
-  $skip: Int!
-) {
-  searchCinemas(
-    locationFilter: $locationFilter
-    distinct: $distinct
-    where: $where
-    orderBy: $orderBy
-    cursor: $cursor
-    take: $take
-    skip: $skip
-  ) {
-    id
-    name
     address {
-      lng
+      address
       lat
+      lng
     }
-  }
-}
-
-query QueryCinemas(
-  $skip: Int
-  $take: Int
-  $cursor: CinemaWhereUniqueInput
-  $orderBy: [CinemaOrderByWithRelationInput!]
-  $where: CinemaWhereInput
-  $distinct: [CinemaScalarFieldEnum!]
-) {
-  cinemas(
-    skip: $skip
-    take: $take
-    cursor: $cursor
-    orderBy: $orderBy
-    where: $where
-    distinct: $distinct
-  ) {
-    id
-    name
     screens {
-      id
       numberRoom
-      seatsCount
+      price
+      projectionType
+      soundSystemType
+      id
       showtimes {
         id
-        startTime
         status
-        movie {
-          title
-          posterUrl
-        }
+        startTime
+        screenId
       }
     }
   }
-  cinemasCount {
-    count
-  }
 }
-
-mutation MutationCreateShowtime($createShowtimeInput: CreateShowtimeInput!) {
-  createShowtime(createShowtimeInput: $createShowtimeInput) {
-    count
-  }
-}
-query QueryMoviesPerCinema($cinemaId: String!) {
-  moviesPerCinema(cinemaId: $cinemaId) {
+query Showtimes {
+  showtimes {
     id
-    title
-    director
-    posterUrl
-  }
-}
-query BookedSeatsInShowtime($showtimeId: String!) {
-  bookedSeatsInShowtime(showtimeId: $showtimeId) {
-    total
-    booked
-  }
-}
-query ShowtimesInCinema($cinemaId: String!, $movieId: String!) {
-  showtimesInCinema(cinemaId: $cinemaId, movieId: $movieId) {
-    showtimes {
+    startTime
+    status
+    screen {
       id
-      startTime
+      price
+      numberRoom
+      projectionType
+      soundSystemType
+    }
+    movie {
+      id
+      genre
+      duration
+      director
+      posterUrl
+      releaseDate
+      title
+    }
+  }
+}
+query Showtime($where: ShowtimeWhereUniqueInput!) {
+  showtime(where: $where) {
+    id
+    status
+    startTime
+    screen {
+      id
+      seats {
+        column
+        row
+      }
+    }
+  }
+}
+query MoviesPerCinema($cinemaId: String!) {
+  moviesPerCinema(cinemaId: $cinemaId) {
+    updatedAt
+    title
+    releaseDate
+    posterUrl
+    id
+    genre
+    genre
+    duration
+    director
+    createdAt
+    showtimes {
+      status
       screen {
+        numberRoom
         id
         price
-        numberRoom
         projectionType
         soundSystemType
       }
-    }
-  }
-}
-query Showtime($where: ShowtimeWhereUniqueInput!, $showtimeId: String!) {
-  showtime(where: $where) {
-    screen {
-      price
-      seats {
-        row
-        column
-        booked(showtimeId: $showtimeId)
-      }
-    }
-  }
-}
-mutation MutationCreateBooking($createBookingInput: CreateBookingInput!) {
-  createBooking(createBookingInput: $createBookingInput) {
-    id
-  }
-}
-query Tickets(
-  $skip: Int
-  $take: Int
-  $cursor: TicketWhereUniqueInput
-  $orderBy: [TicketOrderByWithRelationInput!]
-  $where: TicketWhereInput
-  $distinct: [TicketScalarFieldEnum!]
-) {
-  tickets(
-    skip: $skip
-    take: $take
-    cursor: $cursor
-    orderBy: $orderBy
-    where: $where
-    distinct: $distinct
-  ) {
-    userId
-    qrCode
-    id
-    bookings {
-      row
-      column
-      showtime {
-        startTime
-        screen {
-          seats {
-            row
-            column
-          }
-          numberRoom
-          cinema {
-            name
-          }
-        }
-        movie {
-          title
-          posterUrl
-        }
-      }
-    }
-  }
-}
-
-mutation MutationUpdateShowtime($updateShowtimeInput: UpdateShowtimeInput!) {
-  updateShowtime(updateShowtimeInput: $updateShowtimeInput) {
-    id
-  }
-}
-query QueryAdminMe {
-  adminMe {
-    id
-  }
-}
-query QueryMangerMe {
-  managerMe {
-    id
-  }
-}
-query Whoami {
-  whoami {
-    id
-    name
-    admin {
-      id
     }
   }
 }

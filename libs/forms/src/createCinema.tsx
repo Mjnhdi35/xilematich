@@ -10,10 +10,12 @@ export const useFormCreateCinema = () =>
     resolver: zodResolver(formSchemaCreateCinema),
     defaultValues: {
       address: { address: '', lat: 0, lng: 0 },
-      cinemaName: '',
-      managerName: '',
+      name: '',
+      managers: [],
       screens: [],
     },
+    mode: 'onChange',
+    reValidateMode: 'onBlur',
   })
 
 export const FormProviderCreateCinema = ({

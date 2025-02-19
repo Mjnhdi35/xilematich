@@ -14,10 +14,16 @@ import { Button, buttonVariants } from '../ui/button'
 import { useSession } from 'next-auth/react'
 import { LogoutButton } from '../molecules/LogoutButton'
 import { UserInfo } from '../molecules/UserInfo'
+import { AdminMenu } from './AdminMenu'
+import { Menus } from './Menus'
+import { BaseComponent } from '../../lib/types'
+import { MenuItem } from '@xilematich/util/types'
 
-export interface INavSidebarProps {}
+export type INavSidebarProps = {
+  menuItems: MenuItem[]
+} & BaseComponent
 
-export function Sidebar() {
+export function Sidebar({ menuItems }: INavSidebarProps) {
   const session = useSession()
 
   const id = session?.data?.user?.id
@@ -41,6 +47,8 @@ export function Sidebar() {
       <SheetContent className="bg-white">
         <div className="flex flex-col gap-2 mt-4 mb-8">
           <UserInfo />
+          <AdminMenu />
+          <Menus menuItems={menuItems} />
         </div>
         <SheetFooter>
           <SheetClose asChild>

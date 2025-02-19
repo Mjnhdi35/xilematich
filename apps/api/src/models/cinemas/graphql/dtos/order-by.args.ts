@@ -13,13 +13,13 @@ export class CinemaOrderByWithRelationInputStrict
       Prisma.CinemaOrderByWithRelationInput
     >
 {
-  @Field(() => Prisma.SortOrder)
+  @Field(() => Prisma.SortOrder, { nullable: true })
   createdAt: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder)
+  @Field(() => Prisma.SortOrder, { nullable: true })
   updatedAt: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder)
+  @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder)
+  @Field(() => Prisma.SortOrder, { nullable: true })
   name: Prisma.SortOrder
 
   managers: ManagerOrderByRelationAggregateInput

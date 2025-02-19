@@ -4,8 +4,8 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
-  QueryMoviesDocument,
-  QueryMoviesQuery,
+  QueryMovieSkipTakeDocument,
+  QueryMovieSkipTakeQuery,
 } from '@xilematich/network/src/gql/generated'
 import { ShowData } from './ShowData'
 import { format } from 'date-fns'
@@ -16,7 +16,7 @@ export interface IListMoviesProps {}
 export const ListMovies = ({}: IListMoviesProps) => {
   const [skip, setSkip] = useState(0)
   const [take, setTake] = useState(12)
-  const { data, loading } = useQuery(QueryMoviesDocument, {
+  const { data, loading } = useQuery(QueryMovieSkipTakeDocument, {
     variables: {
       skip,
       take,
@@ -45,7 +45,7 @@ export const ListMovies = ({}: IListMoviesProps) => {
 export const MovieInfo = ({
   movie,
 }: {
-  movie: QueryMoviesQuery['movies'][number]
+  movie: QueryMovieSkipTakeQuery['movies'][number]
 }) => {
   return (
     <div key={movie.id} className="flex gap-2 flex-col shadow-md mx-auto">
@@ -53,8 +53,8 @@ export const MovieInfo = ({
         src={movie.posterUrl || '/moviess.jpg'}
         className="object-cover rounded shadow-lg"
         alt={movie.title}
-        width={480}
-        height={960}
+        width={485}
+        height={845}
         priority={movie.id === movie.id}
       />
 

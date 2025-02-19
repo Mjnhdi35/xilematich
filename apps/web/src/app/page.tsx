@@ -1,9 +1,7 @@
 'use client'
 
-import { UsersDocument } from '@xilematich/network/src/gql/generated'
-import { useQuery } from '@apollo/client'
 import { Button } from '@xilematich/ui/src/components/ui/button'
-import { useSession, signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 export default function Home() {

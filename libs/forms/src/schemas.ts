@@ -3,7 +3,7 @@ import {
   ProjectionType,
   SoundSystemType,
 } from '@xilematich/network/src/gql/generated'
-import { z } from 'zod'
+import { number, z } from 'zod'
 
 export const formSchemaRegister = z.object({
   name: z.string().optional(),
@@ -29,6 +29,7 @@ export const formSchemaCreateAddress = z.object({
   lat: z.number(),
   lng: z.number(),
   address: z.string(),
+  cinemaId: z.string(),
 })
 
 export const formSchemaCreateScreen = z.object({
@@ -37,11 +38,15 @@ export const formSchemaCreateScreen = z.object({
   rows: z.number(),
   columns: z.number(),
   price: z.number(),
+  numberRoom: z.number(),
 })
-
+export const formSchemaCreateManager = z.object({
+  userId: z.string(),
+})
 export const formSchemaCreateCinema = z.object({
-  cinemaName: z.string().min(1, { message: 'Cinema name is required' }),
-  managerName: z.string().min(1, { message: 'Manager name is required' }),
+  name: z.string().min(1, { message: 'Cinema name is required' }),
+
+  managers: z.array(formSchemaCreateManager),
   address: formSchemaCreateAddress,
   screens: z.array(formSchemaCreateScreen),
 })

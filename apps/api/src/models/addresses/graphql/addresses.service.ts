@@ -33,6 +33,7 @@ export class AddressesService {
   remove(args: FindUniqueAddressArgs) {
     return this.prisma.address.delete(args)
   }
+
   async getManagers(cinemaId: string): Promise<string[]> {
     const cinema = await this.prisma.cinema.findUnique({
       where: { id: cinemaId },

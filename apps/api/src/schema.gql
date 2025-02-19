@@ -324,11 +324,11 @@ input CinemaRelationFilter {
 input CinemaWhereInput {
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
-  id: StringFilter
   name: StringFilter
   managers: ManagerListRelationFilter
   screens: ScreenListRelationFilter
   address: AddressRelationFilter
+  id: StringFilter
   AND: [CinemaWhereInput!]
   OR: [CinemaWhereInput!]
   NOT: [CinemaWhereInput!]
