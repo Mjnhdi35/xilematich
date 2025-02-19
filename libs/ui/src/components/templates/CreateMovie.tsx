@@ -1,10 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import {
-  FormTypeCreateMovie,
-  useFormCreateMovie,
-} from '@xilematich/forms/src/createMovie'
+import { useFormCreateMovie } from '@xilematich/forms/src/createMovie'
 import { useCloudinaryUpload } from '@xilematich/util/hooks/cloudinary'
 import { useMutation } from '@apollo/client'
 import {
@@ -16,7 +13,7 @@ import { useToast } from '../molecules/Toaster/use-toast'
 
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
 import { Form } from '../ui/form'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { HtmlSelect } from '../ui/select'
@@ -54,16 +51,18 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
       },
     },
   )
-  const onSubmit = handleSubmit(async (formData) => {
+  const onSubmit = handleSubmit(async (data) => {
+    console.log('data input form', data)
+
     await createMovieInput({
       variables: {
         createMovieInput: {
-          title: formData.title,
-          director: formData.director,
-          posterUrl: formData.posterUrl,
-          duration: formData.duration,
-          genre: formData.genre,
-          releaseDate: formData.releaseDate,
+          title: data.title,
+          director: data.director,
+          posterUrl: data.posterUrl,
+          duration: data.duration,
+          genre: data.genre,
+          releaseDate: data.releaseDate,
         },
       },
     })

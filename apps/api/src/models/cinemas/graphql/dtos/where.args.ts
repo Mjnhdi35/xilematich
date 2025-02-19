@@ -1,4 +1,4 @@
-import { InputType, PartialType } from '@nestjs/graphql'
+import { Field, InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
@@ -18,12 +18,18 @@ export class CinemaWhereUniqueInput {
 export class CinemaWhereInputStrict
   implements RestrictProperties<CinemaWhereInputStrict, Prisma.CinemaWhereInput>
 {
+  @Field({ nullable: true })
   createdAt: DateTimeFilter
+  @Field({ nullable: true })
   updatedAt: DateTimeFilter
   id: StringFilter
+  @Field({ nullable: true })
   name: StringFilter
+  @Field({ nullable: true })
   managers: ManagerListRelationFilter
+  @Field({ nullable: true })
   screens: ScreenListRelationFilter
+  @Field({ nullable: true })
   address: AddressRelationFilter
   // Todo: Add the below field decorator only to the $Enums types.
   // @Field(() => $Enums.x)

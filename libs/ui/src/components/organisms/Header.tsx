@@ -33,8 +33,7 @@ export const Header = ({ type, menuItems }: IHeaderProps) => {
             {id ? (
               <div className="flex gap-6 items-center">
                 <div className="text-sm mr-6 flex gap-3">
-                  {/* <Menus menuItems={menuItems} /> */}
-                  <Navbar />
+                  <Navbar menuItems={menuItems} />
                 </div>
               </div>
             ) : (

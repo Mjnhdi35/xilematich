@@ -8,7 +8,7 @@ export const UserInfo = ({ children, className }: BaseComponent) => {
   const name = session.data?.user?.name
   const id = session.data?.user?.id
   return (
-    <div className={`flex gap-2 ${className}`}>
+    <div className={`flex gap-4 ${className}`}>
       <Image
         src={image || '/user.png'}
         alt=""
@@ -18,7 +18,7 @@ export const UserInfo = ({ children, className }: BaseComponent) => {
       />
 
       <div className="mx-5 text-xl">{name}</div>
-      {/* <div className="text-sm text-gray">{id}</div> */}
+      <div className="text-sm text-gray">{id}</div>
 
       {children}
     </div>

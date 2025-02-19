@@ -9,7 +9,7 @@ registerEnumType(Prisma.AddressScalarFieldEnum, {
 })
 
 @ArgsType()
-class FindManyAddressArgsStrict
+export class FindManyAddressArgsStrict
   implements
     RestrictProperties<
       FindManyAddressArgsStrict,

@@ -28,21 +28,6 @@ export type SimpleBound = {
   se_lng: number
 }
 
-export type MapPanelTypes = {
-  children?: ReactNode
-  className?: string
-  position?:
-    | 'left-top'
-    | 'left-center'
-    | 'left-bottom'
-    | 'center-bottom'
-    | 'right-bottom'
-    | 'right-center'
-    | 'right-top'
-    | 'center-top'
-    | 'center-center'
-}
-
 export type Viewport = {
   latitude: number
   longitude: number
