@@ -12,9 +12,12 @@ export const CinemaInfo = ({
       <div className="text-sm text-gray-600 mt-2 px-3">
         Screens : {cinema.screens.length}
       </div>
-      <div className="flex flex-col gap-4 mt-8">
-        {cinema.screens.map((screen) => (
-          <div key={screen.id} className=" flex flex-col gap-3 p-4">
+      <div className="flex flex-col gap-4 mt-8 bg-gray-200/40">
+        {cinema.screens.map((screen, index) => (
+          <div
+            key={index}
+            className=" flex flex-col gap-3 p-4 rounded-t-md border-2 border-yellow-600/30"
+          >
             <div className="text-2xl justify-center items-center my-2 font-light">
               number room : {screen.numberRoom}
             </div>

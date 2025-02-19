@@ -42,7 +42,10 @@ export class CinemasResolver {
     @Args('createCinemaInput') args: CreateCinemaInput,
     @GetUser() user: GetUserType,
   ) {
-    checkRowLevelPermission(user, args.manager.id)
+    checkRowLevelPermission(
+      user,
+      args.managers.map((m) => m.id),
+    )
     if (!(user.roles || []).includes('manager'))
       return this.cinemasService.create(args)
   }

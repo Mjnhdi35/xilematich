@@ -48,7 +48,10 @@ export const MovieInfo = ({
   movie: QueryMovieSkipTakeQuery['movies'][number]
 }) => {
   return (
-    <div key={movie.id} className="flex gap-2 flex-col shadow-md mx-auto">
+    <div
+      key={movie.id}
+      className="flex gap-2 flex-col shadow-md mx-auto bg-slate-500/30"
+    >
       <Image
         src={movie.posterUrl || '/moviess.jpg'}
         className="object-cover rounded shadow-lg"
@@ -58,7 +61,7 @@ export const MovieInfo = ({
         priority={movie.id === movie.id}
       />
 
-      <div className="items-start justify-center flex flex-col mx-4 my-2">
+      <div className="items-start justify-center flex flex-col mx-4 my-2 ">
         <div className="text-lg font-semibold">{movie.title}</div>
         <div className="text-sm text-gray-600">{movie.director}</div>
         <div className="text-sm text-gray-600">{movie.duration} mins</div>

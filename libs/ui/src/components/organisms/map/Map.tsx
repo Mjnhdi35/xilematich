@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import MapGl, { useMap } from 'react-map-gl'
 
 type MapProps = React.ComponentProps<typeof MapGl> & { height?: string }

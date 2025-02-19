@@ -29,7 +29,6 @@ export const formSchemaCreateAddress = z.object({
   lat: z.number(),
   lng: z.number(),
   address: z.string(),
-  cinemaId: z.string(),
 })
 
 export const formSchemaCreateScreen = z.object({
@@ -41,12 +40,11 @@ export const formSchemaCreateScreen = z.object({
   numberRoom: z.number(),
 })
 export const formSchemaCreateManager = z.object({
-  userId: z.string(),
+  id: z.string().min(1, { message: 'Manager name is required' }),
 })
 export const formSchemaCreateCinema = z.object({
   name: z.string().min(1, { message: 'Cinema name is required' }),
-
-  managers: z.array(formSchemaCreateManager),
+  managerId: z.string(),
   address: formSchemaCreateAddress,
   screens: z.array(formSchemaCreateScreen),
 })

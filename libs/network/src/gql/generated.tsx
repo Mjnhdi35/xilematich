@@ -297,7 +297,7 @@ export type CreateBookingInput = {
 
 export type CreateCinemaInput = {
   address: CreateAddressInputWithoutCinemaId
-  manager: CreateManagerInputWithoutCinemaId
+  managers: Array<CreateManagerInputWithoutCinemaId>
   name: Scalars['String']['input']
   screens: Array<CreateScreenInputWithoutCinemaId>
 }
@@ -322,7 +322,6 @@ export type CreateMovieInput = {
 export type CreateScreenInput = {
   cinemaId: Scalars['String']['input']
   columns: Scalars['Int']['input']
-  id: Scalars['String']['input']
   numberRoom: Scalars['Int']['input']
   price: Scalars['Float']['input']
   projectionType: ProjectionType
@@ -332,7 +331,6 @@ export type CreateScreenInput = {
 
 export type CreateScreenInputWithoutCinemaId = {
   columns: Scalars['Int']['input']
-  id: Scalars['String']['input']
   numberRoom: Scalars['Int']['input']
   price: Scalars['Float']['input']
   projectionType: ProjectionType
@@ -1381,7 +1379,7 @@ export type UpdateBookingInput = {
 export type UpdateCinemaInput = {
   address?: InputMaybe<CreateAddressInputWithoutCinemaId>
   id: Scalars['String']['input']
-  manager?: InputMaybe<CreateManagerInputWithoutCinemaId>
+  managers?: InputMaybe<Array<CreateManagerInputWithoutCinemaId>>
   name?: InputMaybe<Scalars['String']['input']>
   screens?: InputMaybe<Array<CreateScreenInputWithoutCinemaId>>
 }
@@ -1635,7 +1633,6 @@ export type QueryCinemasQuery = {
       price: number
       projectionType: ProjectionType
       soundSystemType: SoundSystemType
-      id: string
       showtimes: Array<{
         __typename?: 'Showtime'
         id: string
@@ -1647,53 +1644,13 @@ export type QueryCinemasQuery = {
   }>
 }
 
-export type ShowtimesQueryVariables = Exact<{ [key: string]: never }>
-
-export type ShowtimesQuery = {
-  __typename?: 'Query'
-  showtimes: Array<{
-    __typename?: 'Showtime'
-    id: string
-    startTime: any
-    status?: ShowtimeStatus | null
-    screen: {
-      __typename?: 'Screen'
-      id: string
-      price: number
-      numberRoom: number
-      projectionType: ProjectionType
-      soundSystemType: SoundSystemType
-    }
-    movie: {
-      __typename?: 'Movie'
-      id: string
-      genre: Genre
-      duration: number
-      director: string
-      posterUrl?: string | null
-      releaseDate: any
-      title: string
-    }
-  }>
-}
-
-export type ShowtimeQueryVariables = Exact<{
-  where: ShowtimeWhereUniqueInput
+export type MutationCreateCinemaMutationVariables = Exact<{
+  createCinemaInput: CreateCinemaInput
 }>
 
-export type ShowtimeQuery = {
-  __typename?: 'Query'
-  showtime: {
-    __typename?: 'Showtime'
-    id: string
-    status?: ShowtimeStatus | null
-    startTime: any
-    screen: {
-      __typename?: 'Screen'
-      id: string
-      seats: Array<{ __typename?: 'Seat'; column: number; row: number }>
-    }
-  }
+export type MutationCreateCinemaMutation = {
+  __typename?: 'Mutation'
+  createCinema: { __typename?: 'Cinema'; id: string; name: string }
 }
 
 export type MoviesPerCinemaQueryVariables = Exact<{
@@ -1728,6 +1685,36 @@ export type MoviesPerCinemaQuery = {
   }>
 }
 
+export type QueryShowtimeQueryVariables = Exact<{
+  where: ShowtimeWhereUniqueInput
+}>
+
+export type QueryShowtimeQuery = {
+  __typename?: 'Query'
+  showtime: {
+    __typename?: 'Showtime'
+    screenId: string
+    status?: ShowtimeStatus | null
+    startTime: any
+    id: string
+    screen: {
+      __typename?: 'Screen'
+      numberRoom: number
+      price: number
+      projectionType: ProjectionType
+      soundSystemType: SoundSystemType
+      id: string
+      seatsCount: string
+      seats: Array<{
+        __typename?: 'Seat'
+        column: number
+        row: number
+        screenId: string
+      }>
+    }
+  }
+}
+
 export const namedOperations = {
   Query: {
     GetAuthsProvider: 'GetAuthsProvider',
@@ -1735,15 +1722,15 @@ export const namedOperations = {
     QueryMovies: 'QueryMovies',
     QueryMovieSkipTake: 'QueryMovieSkipTake',
     QueryCinemas: 'QueryCinemas',
-    Showtimes: 'Showtimes',
-    Showtime: 'Showtime',
     MoviesPerCinema: 'MoviesPerCinema',
+    QueryShowtime: 'QueryShowtime',
   },
   Mutation: {
     Login: 'Login',
     RegisterWithProvider: 'RegisterWithProvider',
     RegisterWithCredentials: 'RegisterWithCredentials',
     MutationCreateMovie: 'MutationCreateMovie',
+    MutationCreateCinema: 'MutationCreateCinema',
   },
 }
 
@@ -2281,7 +2268,6 @@ export const QueryCinemasDocument = {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'soundSystemType' },
                       },
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'showtimes' },
@@ -2318,103 +2304,25 @@ export const QueryCinemasDocument = {
     },
   ],
 } as unknown as DocumentNode<QueryCinemasQuery, QueryCinemasQueryVariables>
-export const ShowtimesDocument = {
+export const MutationCreateCinemaDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'Showtimes' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'showtimes' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'startTime' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'screen' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'price' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'numberRoom' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'projectionType' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'soundSystemType' },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'movie' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'genre' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'duration' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'director' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'posterUrl' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'releaseDate' },
-                      },
-                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ShowtimesQuery, ShowtimesQueryVariables>
-export const ShowtimeDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'Showtime' },
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'MutationCreateCinema' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'where' },
+            name: { kind: 'Name', value: 'createCinemaInput' },
           },
           type: {
             kind: 'NonNullType',
             type: {
               kind: 'NamedType',
-              name: { kind: 'Name', value: 'ShowtimeWhereUniqueInput' },
+              name: { kind: 'Name', value: 'CreateCinemaInput' },
             },
           },
         },
@@ -2424,14 +2332,14 @@ export const ShowtimeDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'showtime' },
+            name: { kind: 'Name', value: 'createCinema' },
             arguments: [
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
+                name: { kind: 'Name', value: 'createCinemaInput' },
                 value: {
                   kind: 'Variable',
-                  name: { kind: 'Name', value: 'where' },
+                  name: { kind: 'Name', value: 'createCinemaInput' },
                 },
               },
             ],
@@ -2439,35 +2347,7 @@ export const ShowtimeDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'startTime' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'screen' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'seats' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'column' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'row' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
               ],
             },
           },
@@ -2475,7 +2355,10 @@ export const ShowtimeDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<ShowtimeQuery, ShowtimeQueryVariables>
+} as unknown as DocumentNode<
+  MutationCreateCinemaMutation,
+  MutationCreateCinemaMutationVariables
+>
 export const MoviesPerCinemaDocument = {
   kind: 'Document',
   definitions: [
@@ -2581,3 +2464,105 @@ export const MoviesPerCinemaDocument = {
   MoviesPerCinemaQuery,
   MoviesPerCinemaQueryVariables
 >
+export const QueryShowtimeDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'QueryShowtime' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'ShowtimeWhereUniqueInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'showtime' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'screen' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'numberRoom' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'price' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'projectionType' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'soundSystemType' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'seats' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'column' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'row' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'screenId' },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'seatsCount' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'screenId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'startTime' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<QueryShowtimeQuery, QueryShowtimeQueryVariables>

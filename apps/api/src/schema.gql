@@ -982,7 +982,7 @@ input LoginInput {
 
 input CreateCinemaInput {
   name: String!
-  manager: CreateManagerInputWithoutCinemaId!
+  managers: [CreateManagerInputWithoutCinemaId!]!
   address: CreateAddressInputWithoutCinemaId!
   screens: [CreateScreenInputWithoutCinemaId!]!
 }
@@ -1002,14 +1002,13 @@ input CreateScreenInputWithoutCinemaId {
   price: Float!
   projectionType: ProjectionType!
   soundSystemType: SoundSystemType!
-  id: String!
   rows: Int!
   columns: Int!
 }
 
 input UpdateCinemaInput {
   name: String
-  manager: CreateManagerInputWithoutCinemaId
+  managers: [CreateManagerInputWithoutCinemaId!]
   address: CreateAddressInputWithoutCinemaId
   screens: [CreateScreenInputWithoutCinemaId!]
   id: String!
@@ -1047,7 +1046,6 @@ input CreateScreenInput {
   price: Float!
   projectionType: ProjectionType!
   soundSystemType: SoundSystemType!
-  id: String!
   cinemaId: String!
   rows: Int!
   columns: Int!
@@ -1058,10 +1056,10 @@ input UpdateScreenInput {
   price: Float
   projectionType: ProjectionType
   soundSystemType: SoundSystemType
-  id: String!
   cinemaId: String
   rows: Int
   columns: Int
+  id: String!
 }
 
 input CreateSeatInput {

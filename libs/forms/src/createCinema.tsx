@@ -11,7 +11,7 @@ export const useFormCreateCinema = () =>
     defaultValues: {
       address: { address: '', lat: 0, lng: 0 },
       name: '',
-      managers: [],
+      managerId: '',
       screens: [],
     },
     mode: 'onChange',

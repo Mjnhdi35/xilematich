@@ -9,7 +9,7 @@ import { Prisma } from '@prisma/client'
 export class CinemasService {
   constructor(private readonly prisma: PrismaService) {}
   async create({
-    manager,
+    managers: [manager],
     address,
     screens,
     ...createCinemaInput
@@ -56,18 +56,18 @@ export class CinemasService {
   }
 
   async update(updateCinemaInput: UpdateCinemaInput) {
-    const { id, screens, address, manager, ...data } = updateCinemaInput
+    const { id, screens, address, managers, ...data } = updateCinemaInput
 
     return this.prisma.cinema.update({
       where: { id },
       data: {
         ...data,
 
-        managers: manager
+        managers: managers
           ? {
-              set: Array.isArray(manager)
-                ? manager.map((m) => ({ id: m.id }))
-                : [{ id: manager.id }],
+              set: Array.isArray(managers)
+                ? managers.map((m) => ({ id: m.id }))
+                : [{ id: managers }],
             }
           : undefined,
 
@@ -84,7 +84,7 @@ export class CinemasService {
         screens: screens
           ? {
               update: screens.map((screen) => ({
-                where: { id: screen.id },
+                where: { id },
                 data: {
                   numberRoom: screen.numberRoom,
                   price: screen.price,

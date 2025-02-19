@@ -6,8 +6,8 @@ import { CreateScreenInputWithoutCinemaId } from 'src/models/screens/graphql/dto
 
 @InputType()
 export class CreateCinemaInput extends PickType(Cinema, ['name'], InputType) {
-  @Field(() => CreateManagerInputWithoutCinemaId)
-  manager: CreateManagerInputWithoutCinemaId
+  @Field(() => [CreateManagerInputWithoutCinemaId])
+  managers: CreateManagerInputWithoutCinemaId[]
   @Field(() => CreateAddressInputWithoutCinemaId)
   address: CreateAddressInputWithoutCinemaId
   @Field(() => [CreateScreenInputWithoutCinemaId])

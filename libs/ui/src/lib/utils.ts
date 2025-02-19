@@ -1,4 +1,4 @@
-import { ShowtimeQuery } from '@xilematich/network/src/gql/generated'
+import { QueryShowtimeQuery } from '@xilematich/network/src/gql/generated'
 import { cva } from 'class-variance-authority'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
@@ -37,7 +37,8 @@ export const buttonVariants = cva(
   },
 )
 
-export type PartialSeat = ShowtimeQuery['showtime']['screen']['seats'][number]
+export type PartialSeat =
+  QueryShowtimeQuery['showtime']['screen']['seats'][number]
 
 export const groupSeatsByRow = (
   seats: PartialSeat[],

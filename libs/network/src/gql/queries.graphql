@@ -105,7 +105,6 @@ query QueryCinemas($skip: Int, $take: Int) {
       price
       projectionType
       soundSystemType
-      id
       showtimes {
         id
         status
@@ -115,43 +114,13 @@ query QueryCinemas($skip: Int, $take: Int) {
     }
   }
 }
-query Showtimes {
-  showtimes {
+mutation MutationCreateCinema($createCinemaInput: CreateCinemaInput!) {
+  createCinema(createCinemaInput: $createCinemaInput) {
     id
-    startTime
-    status
-    screen {
-      id
-      price
-      numberRoom
-      projectionType
-      soundSystemType
-    }
-    movie {
-      id
-      genre
-      duration
-      director
-      posterUrl
-      releaseDate
-      title
-    }
+    name
   }
 }
-query Showtime($where: ShowtimeWhereUniqueInput!) {
-  showtime(where: $where) {
-    id
-    status
-    startTime
-    screen {
-      id
-      seats {
-        column
-        row
-      }
-    }
-  }
-}
+
 query MoviesPerCinema($cinemaId: String!) {
   moviesPerCinema(cinemaId: $cinemaId) {
     updatedAt
@@ -174,5 +143,26 @@ query MoviesPerCinema($cinemaId: String!) {
         soundSystemType
       }
     }
+  }
+}
+query QueryShowtime($where: ShowtimeWhereUniqueInput!) {
+  showtime(where: $where) {
+    screen {
+      numberRoom
+      price
+      projectionType
+      soundSystemType
+      id
+      seats {
+        column
+        row
+        screenId
+      }
+      seatsCount
+    }
+    screenId
+    status
+    startTime
+    id
   }
 }
