@@ -7,13 +7,6 @@ import { ViewStateChangeEvent } from 'react-map-gl'
 import { initialViewState } from '@xilematich/util/constants'
 import { Autocomplete } from '../atoms/Autocomplete'
 
-interface SearchResult {
-  id: string
-  name: string
-  lat: number
-  lng: number
-}
-
 const SearchMap = () => {
   const [mapInstance, setMapInstance] = useState(null)
   const handleMapChange = useCallback(

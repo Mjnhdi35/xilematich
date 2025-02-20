@@ -39,12 +39,10 @@ export const formSchemaCreateScreen = z.object({
   price: z.number(),
   numberRoom: z.number(),
 })
-export const formSchemaCreateManager = z.object({
-  id: z.string().min(1, { message: 'Manager name is required' }),
-})
+
 export const formSchemaCreateCinema = z.object({
   name: z.string().min(1, { message: 'Cinema name is required' }),
-  managerId: z.string(),
+  managerId: z.string().min(1, { message: 'Manager ID is required' }),
   address: formSchemaCreateAddress,
   screens: z.array(formSchemaCreateScreen),
 })
@@ -55,8 +53,8 @@ export const formSchemaCreateTime = z.object({
 
 export const formSchemaCreateShowtime = z.object({
   showtimes: z.array(formSchemaCreateTime),
-  screenId: z.number(),
-  movieId: z.number(),
+  screenId: z.string(),
+  movieId: z.string(),
 })
 
 export const resetPasswordFormSchema = formSchemaRegister.pick({ email: true })

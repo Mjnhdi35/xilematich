@@ -1,7 +1,7 @@
 import React from 'react'
-import CreateCinema from '@xilematich/ui/src/components/templates/CreateCinema'
+import { CreateCinemas } from '@xilematich/ui/src/components/templates/CreateCinemas'
 const page = () => {
-  return <CreateCinema />
+  return <h1>createCinema</h1>
 }
 
 export default page

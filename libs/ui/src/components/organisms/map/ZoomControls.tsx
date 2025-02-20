@@ -3,6 +3,7 @@ import { MouseEventHandler, ReactNode } from 'react'
 import { IconMinus, IconParking, IconPlus } from '@tabler/icons-react'
 
 import { useMap } from 'react-map-gl'
+import { HomeIcon } from 'lucide-react'
 
 export interface IZoomControlsProps {}
 
@@ -49,10 +50,10 @@ const ZoomOut = () => {
 
 export const CenterOfMap = ({
   onClick,
-  Icon = IconParking,
+  Icon = HomeIcon,
 }: {
   onClick: (latLng: { lng: number; lat: number }) => void
-  Icon?: typeof IconParking
+  Icon?: typeof HomeIcon
 }) => {
   const { current: map } = useMap()
   return (

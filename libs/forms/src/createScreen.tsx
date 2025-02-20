@@ -14,10 +14,10 @@ export const useFormCreateScreen = () =>
   useForm<FormTypeCreateScreen>({
     resolver: zodResolver(formSchemaCreateScreen),
     defaultValues: {
-      columns: 8,
-      rows: 5,
+      columns: 0,
+      rows: 0,
       numberRoom: 0,
-      price: 49,
+      price: 0,
       projectionType: ProjectionType.Imax,
       soundSystemType: SoundSystemType.ImaxEnhanced,
     },

@@ -22,6 +22,7 @@ export class CinemaWhereInputStrict
   createdAt: DateTimeFilter
   @Field({ nullable: true })
   updatedAt: DateTimeFilter
+  @Field({ nullable: true })
   id: StringFilter
   @Field({ nullable: true })
   name: StringFilter

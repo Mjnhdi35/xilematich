@@ -7,6 +7,7 @@ import { Header } from '@xilematich/ui/src/components/organisms/Header'
 import { Container } from '@xilematich/ui/src/components/atoms/container'
 import { MenuItem } from '@xilematich/util/types'
 import { Toaster } from '@xilematich/ui/src/components/molecules/Toaster/toaster'
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

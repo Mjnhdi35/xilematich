@@ -13,7 +13,6 @@ export const useFormCreateAddress = () =>
       address: '',
       lat: 0,
       lng: 0,
-      cinemaId: '',
     },
     mode: 'onChange',
     reValidateMode: 'onBlur',

@@ -4,7 +4,7 @@ import MapGl, { useMap } from 'react-map-gl'
 
 type MapProps = React.ComponentProps<typeof MapGl> & { height?: string }
 
-export const Map = ({ height = 'calc(100vh-4rem)', ...props }: MapProps) => {
+export const Map = ({ height = 'calc(100vh-6rem)', ...props }: MapProps) => {
   return (
     <MapGl
       {...props}

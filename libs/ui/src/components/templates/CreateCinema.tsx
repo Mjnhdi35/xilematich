@@ -14,6 +14,7 @@ import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { TextArea } from '../ui/textArea'
 import { Button } from '../ui/button'
+
 const CreateCinema = () => {
   const { replace } = useRouter()
   const { toast } = useToast()

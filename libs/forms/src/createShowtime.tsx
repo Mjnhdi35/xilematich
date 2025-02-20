@@ -9,7 +9,7 @@ export type FormTypeCreateShowtime = z.infer<typeof formSchemaCreateShowtime>
 export const useFormCreateShowtime = () =>
   useForm<FormTypeCreateShowtime>({
     resolver: zodResolver(formSchemaCreateShowtime),
-    defaultValues: { movieId: -99, screenId: -99, showtimes: [] },
+    defaultValues: { movieId: '', screenId: '', showtimes: [] },
     mode: 'onChange',
     reValidateMode: 'onBlur',
   })

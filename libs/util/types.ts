@@ -31,7 +31,7 @@ export type SimpleBound = {
 export type Viewport = {
   latitude: number
   longitude: number
-  zoom: number
+  zoom?: number
 }
 
 export type StripeItemType = {

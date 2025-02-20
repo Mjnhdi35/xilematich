@@ -10,7 +10,6 @@ import {
   namedOperations,
 } from '@xilematich/network/src/gql/generated'
 import { useToast } from '../molecules/Toaster/use-toast'
-
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
 import { Form } from '../ui/form'
 import { Controller } from 'react-hook-form'
@@ -52,8 +51,6 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
     },
   )
   const onSubmit = handleSubmit(async (data) => {
-    console.log('data input form', data)
-
     await createMovieInput({
       variables: {
         createMovieInput: {
@@ -158,7 +155,7 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
         <Button
           type="submit"
           disabled={loading || uploading}
-          className="w-full"
+          className="w-full text-white"
         >
           {loading || uploading ? 'Submitting...' : 'Submit'}
         </Button>
